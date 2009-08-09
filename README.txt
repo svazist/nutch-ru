@@ -1,4 +1,3 @@
-  
 Apache Nutch README
 
 Important note: Due to licensing issues we cannot provide two libraries that
