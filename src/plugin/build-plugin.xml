@@ -55,6 +55,9 @@
     <fileset dir="${nutch.root}/lib">
       <include name="*.jar" />
     </fileset>
+  	<fileset dir="${nutch.root}/lib/admin-ui-ext">
+  		<include name="*.jar" />
+  	</fileset>  	
     <path refid="plugin.deps"/>
   </path>
 

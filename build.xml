@@ -30,6 +30,9 @@
     <fileset dir="${lib.dir}">
       <include name="*.jar" />
     </fileset>
+  	<fileset dir="${lib.dir}/admin-ui-ext">
+  		<include name="*.jar" />
+  	</fileset>  	
   </path>
 
   <!-- the unit test classpath -->

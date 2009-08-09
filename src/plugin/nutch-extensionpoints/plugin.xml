@@ -80,4 +80,7 @@
       id="org.apache.nutch.scoring.ScoringFilter"
       name="Nutch Scoring"/>
 
+<extension-point
+      id="org.apache.nutch.admin.IGuiComponent"
+      name="Nutch Administration Gui Component"/>
 </plugin>
