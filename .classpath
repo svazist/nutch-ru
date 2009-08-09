@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="src/plugin/index-more/src/java"/>
+	<classpathentry kind="src" path="src/plugin/index-more/src/test"/>
+	<classpathentry kind="src" path="src/plugin/index-basic/src/java"/>
+	<classpathentry kind="src" path="src/plugin/index-anchor/src/java"/>
+	<classpathentry kind="src" path="src/plugin/field-basic/src/java"/>
+	<classpathentry kind="src" path="src/plugin/parse-html/src/java"/>
+	<classpathentry kind="src" path="src/plugin/parse-text/src/java"/>
+	<classpathentry kind="src" path="src/plugin/parse-html/src/test"/>
+	<classpathentry kind="src" path="src/plugin/protocol-http/src/java"/>
+	<classpathentry kind="src" path="src/plugin/parse-js/src/java"/>
+	<classpathentry kind="src" path="src/plugin/lib-http/src/java"/>
+	<classpathentry kind="src" path="src/plugin/lib-http/src/test"/>
+	<classpathentry kind="src" path="src/plugin/scoring-opic/src/java"/>
+	<classpathentry kind="src" path="src/plugin/lib-regex-filter/src/java"/>
+	<classpathentry kind="src" path="src/plugin/lib-regex-filter/src/test"/>
+	<classpathentry kind="src" path="src/plugin/urlfilter-regex/src/test"/>
+	<classpathentry kind="src" path="src/plugin/urlfilter-regex/src/java"/>
+	<classpathentry kind="src" path="src/plugin/urlnormalizer-regex/src/test"/>
+	<classpathentry kind="src" path="src/plugin/urlnormalizer-pass/src/test"/>
+	<classpathentry kind="src" path="src/plugin/urlnormalizer-pass/src/java"/>
+	<classpathentry kind="src" path="src/plugin/urlnormalizer-basic/src/test"/>
+	<classpathentry kind="src" path="src/plugin/urlnormalizer-basic/src/java"/>
+	<classpathentry kind="src" path="src/plugin/urlnormalizer-regex/src/java"/>
+	<classpathentry kind="src" path="conf"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Admin-Ui-Libraries"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Nutch-Core-Libraries"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Nutch-Jetty-Ext-Libraries"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Parse-Html-Libraries"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="eclipse-classes"/>
+</classpath>
