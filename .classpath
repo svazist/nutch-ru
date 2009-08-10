@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="src/plugin/admin-configuration/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-instance/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-instance/conf"/>
 	<classpathentry kind="src" path="src/plugin/admin-welcome/src/conf"/>
@@ -29,10 +30,10 @@
 	<classpathentry kind="src" path="src/plugin/urlnormalizer-basic/src/java"/>
 	<classpathentry kind="src" path="src/plugin/urlnormalizer-regex/src/java"/>
 	<classpathentry kind="src" path="conf"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Admin-Ui-Libraries"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Nutch-Core-Libraries"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Admin-Ui-Libraries"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Nutch-Jetty-Ext-Libraries"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Parse-Html-Libraries"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="eclipse-classes"/>
 </classpath>

@@ -87,6 +87,7 @@
      <ant dir="urlnormalizer-regex" target="deploy"/>
   	 <ant dir="admin-welcome" target="deploy"/>
   	 <ant dir="admin-instance" target="deploy"/>
+	 <ant dir="admin-configuration" target="deploy"/>
   </target>
 
   <!-- ====================================================== -->
@@ -193,5 +194,6 @@
     <ant dir="urlnormalizer-regex" target="clean"/>
   	<ant dir="admin-welcome" target="clean"/>
   	<ant dir="admin-instance" target="clean"/>
+  	<ant dir="admin-configuration" target="clean"/>
   </target>
 </project>
