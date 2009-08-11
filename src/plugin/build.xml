@@ -88,6 +88,7 @@
   	 <ant dir="admin-welcome" target="deploy"/>
   	 <ant dir="admin-instance" target="deploy"/>
 	 <ant dir="admin-configuration" target="deploy"/>
+  	 <ant dir="admin-system" target="deploy"/>
   </target>
 
   <!-- ====================================================== -->
@@ -195,5 +196,6 @@
   	<ant dir="admin-welcome" target="clean"/>
   	<ant dir="admin-instance" target="clean"/>
   	<ant dir="admin-configuration" target="clean"/>
+  	<ant dir="admin-system" target="clean"/>
   </target>
 </project>
