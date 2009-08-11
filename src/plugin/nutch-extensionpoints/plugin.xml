@@ -83,4 +83,9 @@
 <extension-point
       id="org.apache.nutch.admin.IGuiComponent"
       name="Nutch Administration Gui Component"/>
+
+<extension-point
+      id="org.apache.nutch.crawl.IPreCrawl"
+      name="Nutch Pre Crawl"/>
+            
 </plugin>
