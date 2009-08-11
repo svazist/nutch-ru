@@ -89,6 +89,7 @@
   	 <ant dir="admin-instance" target="deploy"/>
 	 <ant dir="admin-configuration" target="deploy"/>
   	 <ant dir="admin-system" target="deploy"/>
+  	 <ant dir="admin-crawl" target="deploy"/>
   </target>
 
   <!-- ====================================================== -->
@@ -197,5 +198,6 @@
   	<ant dir="admin-instance" target="clean"/>
   	<ant dir="admin-configuration" target="clean"/>
   	<ant dir="admin-system" target="clean"/>
+  	<ant dir="admin-crawl" target="clean"/>
   </target>
 </project>
