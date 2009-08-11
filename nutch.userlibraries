@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="MacRoman"?>
 <eclipse-userlibraries version="2">
+<library name="Admin-Scheduling-Libraries" systemlibrary="false">
+<archive path="/nutch/src/plugin/admin-scheduling/lib/cron4j-1.1.6.jar"/>
+</library>
 <library name="Admin-Ui-Libraries" systemlibrary="false">
 <archive path="/nutch/lib/admin-ui-ext/standard-1.1.2.jar"/>
 <archive path="/nutch/lib/admin-ui-ext/spring.jar"/>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="src/plugin/admin-crawl/src/java"/>
+	<classpathentry kind="src" path="src/plugin/admin-scheduling/src/conf"/>
+	<classpathentry kind="src" path="src/plugin/admin-scheduling/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-system/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-configuration/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-instance/src/java"/>
@@ -36,5 +39,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Admin-Ui-Libraries"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Nutch-Jetty-Ext-Libraries"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Parse-Html-Libraries"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Admin-Scheduling-Libraries"/>
 	<classpathentry kind="output" path="eclipse-classes"/>
 </classpath>
