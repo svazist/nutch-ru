@@ -86,7 +86,7 @@ public class CrawlTool {
 
     injector.inject(crawlDb, urlDir);
 
-    boolean bwEnable = _configuration.getBoolean("bw.enable", true);
+    boolean bwEnable = _configuration.getBoolean("bw.enable", false);
     if (bwEnable) {
       // BwInjector deoesnt support update
       if (_fileSystem.exists(bwDb)) {
@@ -101,7 +101,8 @@ public class CrawlTool {
       }
     }
 
-    boolean metadataEnable = _configuration.getBoolean("metadata.enable", true);
+    boolean metadataEnable = _configuration
+            .getBoolean("metadata.enable", false);
     if (metadataEnable) {
       // MetadataInjector deoesnt support update
       if (_fileSystem.exists(metadataDb)) {
