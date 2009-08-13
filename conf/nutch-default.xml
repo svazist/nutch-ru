@@ -1277,4 +1277,21 @@
   </description>
 </property>
 
+<!-- admin ui related -->
+<property>
+  <name>bw.enable</name>
+  <value>true</value>
+  <description>
+  If true, black white filtering (See: NUTCH-249) is enabled. Otherwise disabled.
+  </description>
+</property>
+
+<property>
+  <name>metadata.enable</name>
+  <value>true</value>
+  <description>
+  If true, metadata injection/update (See: NUTCH-747) is enabled. Otherwise disabled.
+  </description>
+</property>
+
 </configuration>

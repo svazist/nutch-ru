@@ -30,7 +30,7 @@ public class CrawlTool {
   private static final Log LOG = LogFactory.getLog(CrawlTool.class);
 
   public CrawlTool(Configuration configuration, Path crawlDir)
-      throws IOException {
+          throws IOException {
     _configuration = configuration;
     _crawlDir = crawlDir;
     _preCrawls = new PreCrawls(configuration);
@@ -85,43 +85,54 @@ public class CrawlTool {
     HostStatistic hostStatistic = new HostStatistic(_configuration);
 
     injector.inject(crawlDb, urlDir);
-    // BwInjector deoesnt support update
-    if (_fileSystem.exists(bwDb)) {
-      LOG.info("bwdb exists, delete it: " + bwDb);
-      _fileSystem.delete(bwDb, true);
-    }
-    if (_fileSystem.exists(limitDir)) {
-      bwInjector.inject(bwDb, limitDir, false);
-    }
-    if (_fileSystem.exists(excludeDir)) {
-      bwInjector.inject(bwDb, excludeDir, true);
+
+    boolean bwEnable = _configuration.getBoolean("bw.enable", true);
+    if (bwEnable) {
+      // BwInjector deoesnt support update
+      if (_fileSystem.exists(bwDb)) {
+        LOG.info("bwdb exists, delete it: " + bwDb);
+        _fileSystem.delete(bwDb, true);
+      }
+      if (_fileSystem.exists(limitDir)) {
+        bwInjector.inject(bwDb, limitDir, false);
+      }
+      if (_fileSystem.exists(excludeDir)) {
+        bwInjector.inject(bwDb, excludeDir, true);
+      }
     }
 
-    // MetadataInjector deoesnt support update
-    if (_fileSystem.exists(metadataDb)) {
-      LOG.info("metadatadb exists, delete it: " + metadataDb);
-      _fileSystem.delete(metadataDb, true);
-    }
-    if (_fileSystem.exists(metadataDir)) {
-      metadataInjector.inject(metadataDb, metadataDir);
+    boolean metadataEnable = _configuration.getBoolean("metadata.enable", true);
+    if (metadataEnable) {
+      // MetadataInjector deoesnt support update
+      if (_fileSystem.exists(metadataDb)) {
+        LOG.info("metadatadb exists, delete it: " + metadataDb);
+        _fileSystem.delete(metadataDb, true);
+      }
+      if (_fileSystem.exists(metadataDir)) {
+        metadataInjector.inject(metadataDb, metadataDir);
+      }
     }
 
     int i;
     for (i = 0; i < depth; i++) { // generate new segment
       Path segment = generator.generate(crawlDb, segments, -1, topn, System
-          .currentTimeMillis());
+              .currentTimeMillis());
       if (segment == null) {
         LOG.info("Stopping at depth=" + i + " - no more URLs to fetch.");
         break;
       }
       fetcher.fetch(segment, threads, org.apache.nutch.fetcher.Fetcher
-          .isParsing(_configuration)); // fetch it
+              .isParsing(_configuration)); // fetch it
       if (!Fetcher.isParsing(_configuration)) {
         parseSegment.parse(segment); // parse it, if needed
       }
       hostStatistic.statistic(crawlDb, segment);
-      bwUpdateDb.update(crawlDb, bwDb, new Path[] { segment }, true, true); // update
-      parseDataUpdater.update(metadataDb, segment);
+      if (bwEnable) {
+        bwUpdateDb.update(crawlDb, bwDb, new Path[] { segment }, true, true); // update
+      }
+      if (metadataEnable) {
+        parseDataUpdater.update(metadataDb, segment);
+      }
     }
     if (i > 0) {
       linkDbTool.invert(linkDb, segments, true, true, false); // invert links
@@ -142,15 +153,15 @@ public class CrawlTool {
 
       // index, dedup & merge
       FileStatus[] fstats = _fileSystem.listStatus(segments, HadoopFSUtil
-          .getPassDirectoriesFilter(_fileSystem));
+              .getPassDirectoriesFilter(_fileSystem));
       indexer.index(indexes, crawlDb, linkDb, Arrays.asList(HadoopFSUtil
-          .getPaths(fstats)));
+              .getPaths(fstats)));
       if (indexes != null) {
         dedup.dedup(new Path[] { indexes });
         fstats = _fileSystem.listStatus(indexes, HadoopFSUtil
-            .getPassDirectoriesFilter(_fileSystem));
+                .getPassDirectoriesFilter(_fileSystem));
         Path tmpDir = new Path(_configuration.get("mapred.temp.dir", ".")
-            + CrawlTool.class.getName() + "_mergeIndex");
+                + CrawlTool.class.getName() + "_mergeIndex");
         merger.merge(HadoopFSUtil.getPaths(fstats), index, tmpDir);
       }
     } else {
