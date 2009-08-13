@@ -91,6 +91,7 @@
   	 <ant dir="admin-system" target="deploy"/>
   	 <ant dir="admin-crawl" target="deploy"/>
   	 <ant dir="admin-scheduling" target="deploy"/>
+  	 <ant dir="admin-url-upload" target="deploy"/>
   </target>
 
   <!-- ====================================================== -->
@@ -201,5 +202,6 @@
   	<ant dir="admin-system" target="clean"/>
   	<ant dir="admin-crawl" target="clean"/>
   	<ant dir="admin-scheduling" target="clean"/>
+  	<ant dir="admin-url-upload" target="clean"/>
   </target>
 </project>

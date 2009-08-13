@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="src/plugin/admin-url-upload/src/conf"/>
+	<classpathentry kind="src" path="src/plugin/admin-url-upload/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-crawl/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-scheduling/src/conf"/>
 	<classpathentry kind="src" path="src/plugin/admin-scheduling/src/java"/>
