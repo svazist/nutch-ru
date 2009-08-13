@@ -177,6 +177,52 @@
 					    }();
 					});
 					</script>						
+
+					<div>&nbsp;</div>
+					<h3>Index</h3>
+					<div id="markupIndex">
+					    <table id="index">
+					        <thead>
+					            <tr>
+					            	<th>Index</th>
+					                <th>Größe in MB</th>
+					            </tr>
+					        </thead>
+					        <tbody>
+								<c:forEach items="${indexes}" var="index">
+						            <tr>
+						            	<td>${index.path.name}</td>
+						                <td>${index.size}</td>
+						            </tr>
+								</c:forEach>
+					        </tbody>
+					    </table>
+					</div>
+					<script type="text/javascript">
+					YAHOO.util.Event.addListener(window, "load", function() {
+					    YAHOO.example.EnhanceFromMarkup = function() {
+					        var myColumnDefs = [
+								{key:"path",label:"Index", sortable:true},
+					            {key:"size",label:"Größe in MB", sortable:true},
+					        ];
+					
+					        var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("index"));
+					        myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+					        myDataSource.responseSchema = {
+					            fields: [{key:"path"},
+								        {key:"size", parser:"number"}
+					            ]
+					        };
+					
+					        var myDataTable = new YAHOO.widget.DataTable("markupIndex", myColumnDefs, myDataSource, {sortedBy:{key:"path",dir:"desc"}});
+					        
+					        return {
+					            oDS: myDataSource,
+					            oDT: myDataTable
+					        };
+					    }();
+					});
+					</script>						
 				
 				</div>
 			</div>

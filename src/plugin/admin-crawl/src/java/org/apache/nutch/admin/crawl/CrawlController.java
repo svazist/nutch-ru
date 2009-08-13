@@ -30,6 +30,7 @@ import org.apache.hadoop.fs.ContentSummary;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.PathFilter;
 import org.apache.nutch.admin.NavigationSelector;
 import org.apache.nutch.admin.NutchInstance;
 import org.apache.nutch.crawl.CrawlTool;
@@ -47,10 +48,10 @@ public class CrawlController extends NavigationSelector {
 
   @ModelAttribute("crawlPaths")
   public CrawlPath[] referenceDataCrawlFolders(HttpSession session)
-      throws IOException {
+          throws IOException {
     ServletContext servletContext = session.getServletContext();
     NutchInstance nutchInstance = (NutchInstance) servletContext
-        .getAttribute("nutchInstance");
+            .getAttribute("nutchInstance");
 
     // local folder for configuration files
     File instanceFolder = nutchInstance.getInstanceFolder();
@@ -58,7 +59,12 @@ public class CrawlController extends NavigationSelector {
     Path path = new Path(instanceFolder.getAbsolutePath(), "crawls");
     Configuration configuration = nutchInstance.getConfiguration();
     FileSystem fileSystem = FileSystem.get(configuration);
-    CrawlPath[] crawlPathArray = listPaths(path, fileSystem);
+    CrawlPath[] crawlPathArray = listPaths(path, fileSystem, new PathFilter() {
+      @Override
+      public boolean accept(Path path) {
+        return path.getName().startsWith("Crawl");
+      }
+    });
     return crawlPathArray;
   }
 
@@ -81,7 +87,7 @@ public class CrawlController extends NavigationSelector {
   public String createCrawl(HttpSession session) throws IOException {
     ServletContext servletContext = session.getServletContext();
     NutchInstance nutchInstance = (NutchInstance) servletContext
-        .getAttribute("nutchInstance");
+            .getAttribute("nutchInstance");
     // local folder for configuration files
     File instanceFolder = nutchInstance.getInstanceFolder();
     // look in the same path in hdfs
@@ -96,46 +102,61 @@ public class CrawlController extends NavigationSelector {
   }
 
   @RequestMapping(value = "/startCrawl.html", method = RequestMethod.GET)
-  public String startCrawl(Model model,
-      @RequestParam(value = "crawlFolder", required = true) String crawlFolder,
-      HttpSession session) throws IOException {
+  public String startCrawl(
+          Model model,
+          @RequestParam(value = "crawlFolder", required = true) String crawlFolder,
+          HttpSession session) throws IOException {
     ServletContext servletContext = session.getServletContext();
     NutchInstance nutchInstance = (NutchInstance) servletContext
-        .getAttribute("nutchInstance");
+            .getAttribute("nutchInstance");
     // local folder for configuration files
     File instanceFolder = nutchInstance.getInstanceFolder();
     // look in the same path in hdfs
     Path crawlsPath = new Path(instanceFolder.getAbsolutePath(), "crawls");
-    Path segmentsPath = new Path(crawlsPath, new Path(crawlFolder, "segments"));
+    Path crawlPath = new Path(crawlsPath, new Path(crawlFolder));
+    Path segmentsPath = new Path(crawlPath, "segments");
     Configuration configuration = nutchInstance.getConfiguration();
     FileSystem fileSystem = FileSystem.get(configuration);
-    CrawlPath[] listPaths = listPaths(segmentsPath, fileSystem);
-    model.addAttribute("segments", listPaths);
     model.addAttribute("crawlFolder", crawlFolder);
 
-    // db's
-    CrawlPath[] dbPaths = new CrawlPath[4];
-    dbPaths[0] = createCrawlPath(new Path(crawlsPath, new Path(crawlFolder,
-        "crawldb")), fileSystem);
-    dbPaths[1] = createCrawlPath(new Path(crawlsPath, new Path(crawlFolder,
-        "bwdb")), fileSystem);
-    dbPaths[2] = createCrawlPath(new Path(crawlsPath, new Path(crawlFolder,
-        "metadatadb")), fileSystem);
-    dbPaths[3] = createCrawlPath(new Path(crawlsPath, new Path(crawlFolder,
-        "linkdb")), fileSystem);
-    model.addAttribute("dbs", dbPaths);
+    CrawlPath[] segments = listPaths(segmentsPath, fileSystem,
+            new PathFilter() {
+              @Override
+              public boolean accept(Path path) {
+                return path.getName().startsWith("20");
+              }
+            });
+    model.addAttribute("segments", segments);
+
+    CrawlPath[] dbs = listPaths(crawlPath, fileSystem, new PathFilter() {
+      @Override
+      public boolean accept(Path path) {
+        return path.getName().endsWith("db");
+      }
+    });
+    model.addAttribute("dbs", dbs);
+
+    CrawlPath[] index = listPaths(crawlPath, fileSystem, new PathFilter() {
+      @Override
+      public boolean accept(Path path) {
+        return path.getName().equals("index");
+      }
+    });
+    model.addAttribute("indexes", index);
+
+    
 
     return "startCrawl";
   }
 
   @RequestMapping(value = "/startCrawl.html", method = RequestMethod.POST)
   public String postStartCrawl(
-      @ModelAttribute("crawlCommand") CrawlCommand crawlCommand,
-      HttpSession session) throws IOException {
+          @ModelAttribute("crawlCommand") CrawlCommand crawlCommand,
+          HttpSession session) throws IOException {
     ServletContext servletContext = session.getServletContext();
     NutchInstance nutchInstance = (NutchInstance) servletContext
-        .getAttribute("nutchInstance");
-  
+            .getAttribute("nutchInstance");
+
     // local folder for configuration files
     File instanceFolder = nutchInstance.getInstanceFolder();
     // look in the same path in hdfs
@@ -143,7 +164,7 @@ public class CrawlController extends NavigationSelector {
     Configuration configuration = nutchInstance.getConfiguration();
     Path crawlDir = new Path(path, crawlCommand.getCrawlFolder());
     CrawlTool crawlTool = new CrawlTool(configuration, crawlDir);
-  
+
     Integer topn = crawlCommand.getTopn();
     Integer depth = crawlCommand.getDepth();
     Runnable runnable = new StartCrawlRunnable(crawlTool, topn, depth);
@@ -153,9 +174,10 @@ public class CrawlController extends NavigationSelector {
     return "redirect:/index.html";
   }
 
-  private CrawlPath[] listPaths(Path path, FileSystem fileSystem)
-      throws IOException {
-    FileStatus[] fileStatusArray = fileSystem.listStatus(path);
+  private CrawlPath[] listPaths(Path path, FileSystem fileSystem,
+          PathFilter filter)
+          throws IOException {
+    FileStatus[] fileStatusArray = fileSystem.listStatus(path, filter);
     CrawlPath[] crawlPathArray = new CrawlPath[fileStatusArray.length];
     int counter = 0;
     for (FileStatus fileStatus : fileStatusArray) {
@@ -167,7 +189,7 @@ public class CrawlController extends NavigationSelector {
   }
 
   private CrawlPath createCrawlPath(Path path, FileSystem fileSystem)
-      throws IOException {
+          throws IOException {
     long len = 0;
     if (fileSystem.exists(path)) {
       ContentSummary contentSummary = fileSystem.getContentSummary(path);
