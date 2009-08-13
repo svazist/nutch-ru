@@ -1294,4 +1294,10 @@
   </description>
 </property>
 
+<property>
+  <name>crawl-prepare.order</name>
+  <value>org.apache.nutch.admin.urlupload.UrlExporter</value>
+  <description>space delimited list of IPreCrawl Implementations to execute these classes in order</description>
+</property>
+
 </configuration>
