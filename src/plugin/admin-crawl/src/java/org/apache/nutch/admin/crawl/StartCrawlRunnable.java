@@ -29,10 +29,10 @@ public class StartCrawlRunnable implements Runnable {
   private final CrawlTool _crawlTool;
   private final Integer _topN;
   private final Integer _depth;
-  private static final Log LOG = LogFactory.getLog(PreCrawlRunnable.class);
+  private static final Log LOG = LogFactory.getLog(StartCrawlRunnable.class);
 
   public StartCrawlRunnable(final CrawlTool crawlTool, Integer topN,
-      Integer depth) {
+          Integer depth) {
     _crawlTool = crawlTool;
     _topN = topN;
     _depth = depth;
@@ -45,6 +45,7 @@ public class StartCrawlRunnable implements Runnable {
     Path lockPath = new Path(crawlDir, "crawl.running");
     try {
       fileSystem.createNewFile(lockPath);
+      _crawlTool.preCrawl();
       _crawlTool.crawl(_topN, _depth);
     } catch (IOException e) {
       LOG.warn("can not start crawl.", e);

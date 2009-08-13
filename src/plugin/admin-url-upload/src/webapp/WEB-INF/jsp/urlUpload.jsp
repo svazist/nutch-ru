@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-	<title>Admin - Crawls</title>
+	<title>Admin - Url Upload</title>
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css">
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/container/assets/skins/sam/container.css" />
@@ -91,7 +91,25 @@
 			<div id="yui-main">
 				<div class="yui-b">
 					
-					//TODO
+					//TODO 
+					bw.enable: ${isBwEnabled}
+					metadata.enable: ${isMetadataEnabled}
+					
+					<c:forEach items="${startUrls}" var="zip">
+						${zip.name}
+					</c:forEach>
+
+					<c:forEach items="${limitUrls}" var="zip">
+						${zip.name}
+					</c:forEach>
+
+					<c:forEach items="${excludeUrls}" var="zip">
+						${zip.name}
+					</c:forEach>
+
+					<c:forEach items="${metadataUrls}" var="zip">
+						${zip.name}
+					</c:forEach>
 					
 				
 				</div>	

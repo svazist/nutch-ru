@@ -92,12 +92,6 @@ public class CrawlController extends NavigationSelector {
     Path crawlDir = new Path(path, folderName);
     fileSystem.mkdirs(crawlDir);
 
-    CrawlTool crawlTool = new CrawlTool(configuration, crawlDir);
-
-    PreCrawlRunnable runnable = new PreCrawlRunnable(crawlTool);
-    Thread thread = new Thread(runnable);
-    thread.setDaemon(true);
-    thread.start();
     return "redirect:/index.html";
   }
 
