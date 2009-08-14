@@ -113,6 +113,15 @@ public class UrlUploadController extends NavigationSelector {
     return "redirect:/index.html";
   }
 
+  @RequestMapping(value = "/deleteZip.html", method = RequestMethod.POST)
+  public String deleteZipFile(@RequestParam("file") String file,
+          @RequestParam("type") String type, HttpSession session) {
+    File folder = getOutputFile(type, session);
+    File zipFile = new File(folder, file);
+    zipFile.delete();
+    return "redirect:/index.html";
+  }
+
   private File getOutputFile(String type, HttpSession session) {
     ServletContext servletContext = session.getServletContext();
     NutchInstance nutchInstance = (NutchInstance) servletContext
@@ -154,4 +163,5 @@ public class UrlUploadController extends NavigationSelector {
     Configuration configuration = nutchInstance.getConfiguration();
     return configuration.getBoolean(key, defaultValue);
   }
+
 }
