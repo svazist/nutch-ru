@@ -48,7 +48,7 @@
 	
 </head>
 <body class="yui-skin-sam">
-	<div id="doc2">
+	<div id="doc2" class="yui-t4">
 		<div id="hd">
 			<%@ include file="/WEB-INF/jsp/includes/header.jsp" %>
 		</div>
@@ -90,43 +90,114 @@
 		<div id="bd">
 			<div id="yui-main">
 				<div class="yui-b">
+					<h3>Konfiguration</h3>
+					<div class="row">
+						<label>Black / White Liste:</label> <c:choose><c:when test="${isBwEnabled}">An</c:when><c:otherwise>Aus</c:otherwise></c:choose>
+					</div>
+					<div class="row">
+						<label>Metadaten:</label> <c:choose><c:when test="${isMetadataEnabled}">An</c:when><c:otherwise>Aus</c:otherwise></c:choose>
+					</div>
 					
-					//TODO 
-					bw.enable: ${isBwEnabled}
-					metadata.enable: ${isMetadataEnabled}
-					
+					<br/>
+					<h3>URLs Hochladen</h3>
 					<form action="upload.html" method="post" enctype="multipart/form-data">
-						<select name="type">
-							<option value="start">Start URLs</option>
-							<option value="limit">Limit URLs</option>
-							<option value="exclude">Exclude URLs</option>
-							<option value="metadata">URL Metadata</option>
-						</select>
-						<input name="file" type="file" value=""/>
-						<input type="submit" value="Upload Zip File"/>
+					<fieldset>
+					    <legend>Neue Urls als Zip Hochladen</legend>
+					    
+					    <row>
+					        <label>Typ:</label>
+					        <field>
+					           <select name="type">
+									<option value="start">Start URLs</option>
+									<option value="limit" <c:if test="${!isBwEnabled}">disabled="disabled"</c:if>>Limit URLs</option>
+									<option value="exclude" <c:if test="${!isBwEnabled}">disabled="disabled"</c:if>>Exclude URLs</option>
+									<option value="metadata" <c:if test="${!isMetadataEnabled}">disabled="disabled"</c:if>>URL Metadata</option>
+								</select>
+						     </field>
+					        <desc></desc>
+					    </row>
+					    
+					    <row>
+					        <label>Zip Datei:</label>
+					        <field>
+					           <input name="file" type="file" value=""/>
+						     </field>
+					        <desc></desc>
+					    </row>
+					    
+					     <row>
+					        <label>&nbsp;</label>
+					        <field>
+					            <input type="submit" value="Hochladen"/>
+					        </field>
+					    </row>
+					</fieldset>
 					</form>
 					
 					
+					<h3>Vorhandene Dateien</h3>
+					<div class="row">
+						<label>Start URL Dateien:</label>
+						&nbsp;<c:forEach items="${startUrls}" var="zip">${zip.name} <img src="${theme}/gfx/delete.png" align="absmiddle" style="cursor:pointer" onclick="submitDelete('start','${zip.name}')" titel="Löschen"/>, </c:forEach>
+					</div>
+					<div class="row">
+						<label>Limit URL Dateien:</label>&nbsp;
+						<c:choose>
+							<c:when test="${isBwEnabled}">
+								<c:forEach items="${limitUrls}" var="zip">${zip.name} <img src="${theme}/gfx/delete.png" align="absmiddle" style="cursor:pointer" onclick="submitDelete('limit','${zip.name}')" titel="Löschen"/>, </c:forEach>
+							</c:when>
+							<c:otherwise>
+								Nicht verfügbar
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<div class="row">
+						<label>Exclude URL Dateien:</label>&nbsp;
+						<c:choose>
+							<c:when test="${isBwEnabled}">
+								<c:forEach items="${excludeUrls}" var="zip">${zip.name} <img src="${theme}/gfx/delete.png" align="absmiddle" style="cursor:pointer" onclick="submitDelete('exclude','${zip.name}')" titel="Löschen"/>, </c:forEach>
+							</c:when>
+							<c:otherwise>
+								Nicht verfügbar
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<div class="row">
+						<label>Metadaten Dateien:</label>&nbsp;
+						<c:choose>
+							<c:when test="${isMetadataEnabled}">
+								<c:forEach items="${metadataUrls}" var="zip">${zip.name} <img src="${theme}/gfx/delete.png" align="absmiddle" style="cursor:pointer" onclick="submitDelete('metadata','${zip.name}')" titel="Löschen"/>, </c:forEach>
+							</c:when>
+							<c:otherwise>
+								Nicht verfügbar
+							</c:otherwise>
+						</c:choose>
+					</div>
 					
-					<c:forEach items="${startUrls}" var="zip">
-						${zip.name}
-					</c:forEach>
-
-					<c:forEach items="${limitUrls}" var="zip">
-						${zip.name}
-					</c:forEach>
-
-					<c:forEach items="${excludeUrls}" var="zip">
-						${zip.name}
-					</c:forEach>
-
-					<c:forEach items="${metadataUrls}" var="zip">
-						${zip.name}
-					</c:forEach>
+					<script>
+						function submitDelete(type, fileName){
+							document.getElementById('deleteType').value = type; 
+							document.getElementById('deleteFile').value = fileName;
+							document.getElementById('deleteForm').submit();
+						}
+					</script>
+					
+					<form action="deleteZip.html" method="POST" id="deleteForm">
+						<input type="hidden" name="type" id="deleteType"/>
+						<input type="hidden" name="file" id="deleteFile"/>
+					</form>
 					
 				
 				</div>	
 		</div>
+		<div class="yui-b">
+			<h3>Hilfe</h3>
+			<ul class="decorated">
+				<li>Wo schaltet man Config An / Aus?</li>
+				<li>Was machen Limit / Exclude / Metadaten</li>
+				<li>Wie ist eine Datei aufgebaut? (1 Url pro Zeile, Metadaten tab-sep. key:value ...)</li>
+			</ul>
+		</div> 
 	</div>
 	<div id="ft">
 		<%@ include file="/WEB-INF/jsp/includes/footer.jsp" %>

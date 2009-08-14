@@ -1,6 +1,9 @@
 a {color:#DC8600}
 a:hover {color:#FF9B00}
 
+ul.decorated {margin-left:20px}
+ul.decorated li {list-style-type:square;}
+
 #hd{
 	background:#FF9B00;
 }
