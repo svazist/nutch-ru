@@ -52,11 +52,11 @@ public class ConfigurationUtil {
   }
 
   public Configuration createNewConfiguration(String folderName)
-      throws IOException {
+          throws IOException {
     File folder = new File(_workingDirectory, folderName);
     if (existsConfiguration(folderName)) {
       throw new IllegalArgumentException("configuration already exists: "
-          + folder.getAbsolutePath());
+              + folder.getAbsolutePath());
     }
     File conf = new File(folder, "conf");
     conf.mkdirs();
@@ -99,13 +99,20 @@ public class ConfigurationUtil {
   }
 
   private void copyConfigurationFiles(File target)
-      throws FileNotFoundException, IOException {
+          throws FileNotFoundException, IOException {
     InputStream in = ConfigurationUtil.class
-        .getResourceAsStream("/nutch-default.xml");
+            .getResourceAsStream("/nutch-default.xml");
+    if (in == null) {
+      throw new FileNotFoundException("nutch-default.xml is not in classpath");
+    }
+
     OutputStream out = new FileOutputStream(new File(target,
-        "nutch-default.xml"));
+            "nutch-default.xml"));
     copy(in, out);
     in = ConfigurationUtil.class.getResourceAsStream("/nutch-site.xml");
+    if (in == null) {
+      throw new FileNotFoundException("nutch-site.xml is not in classpath");
+    }
     out = new FileOutputStream(new File(target, "nutch-site.xml"));
     copy(in, out);
   }
@@ -122,7 +129,7 @@ public class ConfigurationUtil {
   }
 
   private void configure(Configuration configuration, String folderName)
-      throws IOException {
+          throws IOException {
     File folder = new File(_workingDirectory, folderName);
     File conf = new File(folder, "conf");
     if (conf.exists()) {
