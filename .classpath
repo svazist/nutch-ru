@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/JVM 1.6"/>
 	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="src/plugin/index-metadata/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-url-upload/src/conf"/>
 	<classpathentry kind="src" path="src/plugin/admin-url-upload/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-crawl/src/java"/>

@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
@@ -29,6 +31,8 @@ import org.apache.nutch.crawl.IPreCrawl;
 public class UrlExporter implements IPreCrawl {
 
   private Configuration _conf;
+
+  private static final Log LOG = LogFactory.getLog(UrlExporter.class);
 
   @Override
   public void preCrawl(Path crawlDir) throws IOException {
@@ -64,13 +68,15 @@ public class UrlExporter implements IPreCrawl {
     File zipOut = new File(tmpDir, "url-export-" + System.currentTimeMillis());
     for (File file : zipFiles) {
       // unzip zipfile
+      LOG.info("unzip file [" + file + "] to [" + zipOut + "]");
       FileUtil.unZip(file, zipOut);
       // list content of extracted zip file
       File[] urlFiles = zipOut.listFiles();
       for (File urlFile : urlFiles) {
         // copy zip content into hdfs
-        fileSystem.copyFromLocalFile(true, new Path(urlFile.getAbsolutePath()),
-                new Path(out, file.getName()));
+        Path src = new Path(urlFile.getAbsolutePath());
+        LOG.info("upload src [" + src + "] to [" + out + "]");
+        fileSystem.copyFromLocalFile(true, src, out);
       }
     }
   }
