@@ -87,7 +87,7 @@ public class UrlUploadController extends NavigationSelector {
     return new UploadBean();
   }
 
-  @RequestMapping(method = RequestMethod.POST)
+  @RequestMapping(value = "/upload.html", method = RequestMethod.POST)
   public String upload(@ModelAttribute("uploadBean") UploadBean uploadBean,
           @RequestParam(value = "type", required = true) String type,
           HttpSession session) throws IOException {

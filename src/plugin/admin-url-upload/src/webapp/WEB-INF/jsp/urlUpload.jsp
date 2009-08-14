@@ -95,6 +95,19 @@
 					bw.enable: ${isBwEnabled}
 					metadata.enable: ${isMetadataEnabled}
 					
+					<form action="upload.html" method="post" enctype="multipart/form-data">
+						<select name="type">
+							<option value="start">Start URLs</option>
+							<option value="limit">Limit URLs</option>
+							<option value="exclude">Exclude URLs</option>
+							<option value="metadata">URL Metadata</option>
+						</select>
+						<input name="file" type="file" value=""/>
+						<input type="submit" value="Upload Zip File"/>
+					</form>
+					
+					
+					
 					<c:forEach items="${startUrls}" var="zip">
 						${zip.name}
 					</c:forEach>
