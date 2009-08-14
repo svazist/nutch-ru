@@ -93,10 +93,13 @@ public class UrlUploadController extends NavigationSelector {
           HttpSession session) throws IOException {
     MultipartFile file = uploadBean.getFile();
     File out = getOutputFile(type, session);
+    if (!out.exists()) {
+      out.mkdirs();
+    }
 
     // copy file
     FileOutputStream fileOutputStream = new FileOutputStream(new File(out, file
-            .getName()), false);
+            .getOriginalFilename()), false);
     InputStream inputStream = file.getInputStream();
     byte[] buffer = new byte[1024];
     int read = -1;
