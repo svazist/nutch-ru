@@ -80,7 +80,7 @@ public class CrawlController extends NavigationSelector {
 
   @RequestMapping(value = "/index.html", method = RequestMethod.GET)
   public String crawl() {
-    return "createCrawl";
+    return "listCrawls";
   }
 
   @RequestMapping(value = "/createCrawl.html", method = RequestMethod.POST)
@@ -101,7 +101,7 @@ public class CrawlController extends NavigationSelector {
     return "redirect:/index.html";
   }
 
-  @RequestMapping(value = "/startCrawl.html", method = RequestMethod.GET)
+  @RequestMapping(value = "/crawlDetails.html", method = RequestMethod.GET)
   public String startCrawl(
           Model model,
           @RequestParam(value = "crawlFolder", required = true) String crawlFolder,
@@ -144,9 +144,7 @@ public class CrawlController extends NavigationSelector {
     });
     model.addAttribute("indexes", index);
 
-    
-
-    return "startCrawl";
+    return "crawlDetails";
   }
 
   @RequestMapping(value = "/startCrawl.html", method = RequestMethod.POST)
@@ -174,9 +172,47 @@ public class CrawlController extends NavigationSelector {
     return "redirect:/index.html";
   }
 
-  private CrawlPath[] listPaths(Path path, FileSystem fileSystem,
-          PathFilter filter)
+  @RequestMapping(method = RequestMethod.POST, value = "/addToSearch.html")
+  public String addToSearch(
+          HttpSession session,
+          @RequestParam(required = true, value = "crawlFolder") final String crawlFolder)
           throws IOException {
+
+    switchSearch(session, crawlFolder, true);
+
+    return "redirect:/index.html";
+  }
+
+  @RequestMapping(method = RequestMethod.POST, value = "/removeFromSearch.html")
+  public String removeFromSearch(
+          HttpSession session,
+          @RequestParam(required = true, value = "crawlFolder") final String crawlFolder)
+          throws IOException {
+    switchSearch(session, crawlFolder, false);
+    return "redirect:/index.html";
+  }
+
+  private void switchSearch(HttpSession session, final String crawlFolder,
+          boolean create) throws IOException {
+    ServletContext servletContext = session.getServletContext();
+    NutchInstance nutchInstance = (NutchInstance) servletContext
+            .getAttribute("nutchInstance");
+
+    // local folder for configuration files
+    File instanceFolder = nutchInstance.getInstanceFolder();
+
+    FileSystem fileSystem = FileSystem.get(nutchInstance.getConfiguration());
+    Path searchDoneFile = new Path(instanceFolder.getAbsolutePath(), "crawls"
+            + File.separator + crawlFolder + File.separator + "search.done");
+    if (create) {
+      fileSystem.createNewFile(searchDoneFile);
+    } else {
+      fileSystem.delete(searchDoneFile, false);
+    }
+  }
+
+  private CrawlPath[] listPaths(Path path, FileSystem fileSystem,
+          PathFilter filter) throws IOException {
     FileStatus[] fileStatusArray = fileSystem.listStatus(path, filter);
     CrawlPath[] crawlPathArray = new CrawlPath[fileStatusArray.length];
     int counter = 0;
@@ -199,6 +235,7 @@ public class CrawlController extends NavigationSelector {
     CrawlPath crawlPath = new CrawlPath();
     crawlPath.setPath(path);
     crawlPath.setSize(len);
+    crawlPath.setSearchable(fileSystem.exists(new Path(path, "search.done")));
     return crawlPath;
   }
 }

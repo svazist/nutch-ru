@@ -23,6 +23,16 @@ public class CrawlPath {
   private Path _path;
 
   private long _size;
+  
+  private boolean _isSearchable;
+
+  public boolean isSearchable() {
+    return _isSearchable;
+  }
+
+  public void setSearchable(boolean isSearchable) {
+    _isSearchable = isSearchable;
+  }
 
   public Path getPath() {
     return _path;

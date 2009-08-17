@@ -107,7 +107,7 @@
 						            <tr>
 						            	<td>
 						            		<!-- Marko: if searchable set class = switchOff -->
-						            		<div class="switchOn" id="switch_${i.index}">
+						            		<div class="<c:choose><c:when test="${crawlPath.searchable}">switchOff</c:when><c:otherwise>switchOn</c:otherwise></c:choose>" id="switch_${i.index}">
 						            			<img src="${theme}/gfx/switch_button.png" id="button_${i.index}"/>
 						            		</div>
 						            		
@@ -124,8 +124,7 @@
 														 myAnimOn_${i.index}.onComplete.subscribe(switchOff_${i.index}); 				
 														 myAnimOn_${i.index}.animate();
 													 });
-													 alert('submit remove from search with: ${crawlPath.path.name}');
-													 // document.getElementById('addToSearch_${i.index}${i.index}').submit();
+													  document.getElementById('addToSearch_${i.index}').submit();
 													 }		
 												 var switchOff_${i.index} = function(){
 													 var myAnimOff_${i.index} = new YAHOO.util.Motion('button_${i.index}', {points: { by: [-29, 0] } }, 0.5, YAHOO.util.Easing.easeOut);
@@ -134,14 +133,20 @@
 														 myAnimOff_${i.index}.onComplete.subscribe(switchOn_${i.index}); 
 														 myAnimOff_${i.index}.animate();
 													 });
-													 alert('submit add to search with: ${crawlPath.path.name}');
-													 // document.getElementById('removeFromSearch_${i.index}${i.index}').submit();
+													  document.getElementById('removeFromSearch_${i.index}').submit();
 													 }
 												
 												 YAHOO.util.Event.addListener("switch_${i.index}", "mousedown", function(){ 
-													 // Marko: if searchable, rename myAnimOn to myAnimOff and subscribe switchOn_${i.index} below
-													 myAnimOn_${i.index}.onComplete.subscribe(switchOff_${i.index}); 
-													 myAnimOn_${i.index}.animate();
+													 <c:choose>
+													 	<c:when test="${crawlPath.searchable}">
+														 	myAnimOff_${i.index}.onComplete.subscribe(switchOff_${i.index}); 
+														 	myAnimOff_${i.index}.animate();
+													 	</c:when>
+													 	<c:when test="${!crawlPath.searchable}">
+														 	myAnimOn_${i.index}.onComplete.subscribe(switchOn_${i.index}); 
+														 	myAnimOn_${i.index}.animate();
+													 	</c:when>
+													 </c:choose>	
 													 }
 												 );
 											}
@@ -149,10 +154,10 @@
 											</script>
 						            		
 						            		
-						            		<form id="addToSearch_${i.index}" action="" method="post">
+						            		<form id="addToSearch_${i.index}" action="addToSearch.html" method="post">
 						            			<input type="hidden" name="crawlFolder" value="${crawlPath.path.name}"/>
 						            		</form>
-						            		<form id="removeFromSearch_${i.index}" action="" method="post">
+						            		<form id="removeFromSearch_${i.index}" action="removeFromSearch.html" method="post">
 						            			<input type="hidden" name="crawlFolder" value="${crawlPath.path.name}"/>
 						            		</form>
 						            	</td>
@@ -164,7 +169,7 @@
 											-->
 											
 						            	</td>
-						            	<td><a href="startCrawl.html?crawlFolder=${crawlPath.path.name}">${crawlPath.path.name}</a></td>
+						            	<td><a href="crawlDetails.html?crawlFolder=${crawlPath.path.name}">${crawlPath.path.name}</a></td>
 						                <td>${crawlPath.size}</td>
 						            </tr>
 								</c:forEach>
