@@ -2,6 +2,13 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/JVM 1.6"/>
 	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="src/plugin/query-url/src/java"/>
+	<classpathentry kind="src" path="src/plugin/query-basic/src/java"/>
+	<classpathentry kind="src" path="src/plugin/query-site/src/java"/>
+	<classpathentry kind="src" path="src/plugin/query-url/src/test"/>
+	<classpathentry kind="src" path="src/plugin/admin-search/src/test"/>
+	<classpathentry kind="src" path="src/plugin/admin-search/src/java"/>
+	<classpathentry kind="src" path="src/plugin/admin-search/src/conf"/>
 	<classpathentry kind="src" path="src/plugin/index-metadata/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-url-upload/src/conf"/>
 	<classpathentry kind="src" path="src/plugin/admin-url-upload/src/java"/>
