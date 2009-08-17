@@ -97,9 +97,9 @@ form input[type='submit']:hover, form input[type='button']:hover, button:hover {
 
 .row {border-bottom:1px dotted #FFCE00; padding:10px 0 10px 0; clear:both}
 
-.switchOn, .switchOff {width:60px ; height:26px ; background-image:url('../gfx/switch_bg.png'); background-repeat: no-repeat;}
-.switchOn {padding-left:1px; padding-top:1px}
-.switchOff {padding-left:30px; padding-top:1px}
+.switchOn, .switchOff {width:60px ; height:26px ; background-image:url('../gfx/switch_bg.png'); background-repeat: no-repeat; cursor:pointer}
+.switchOn {padding-left:1px; padding-top:1px; cursor:pointer}
+.switchOff {padding-left:30px; padding-top:1px; cursor:pointer}
 
 /* Paging */
 #paging .activePage {background:#DC8600; float:left; ; margin-left:1px}

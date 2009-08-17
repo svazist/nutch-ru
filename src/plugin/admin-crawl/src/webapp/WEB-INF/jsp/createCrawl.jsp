@@ -111,37 +111,41 @@
 						            			<img src="${theme}/gfx/switch_button.png" id="button_${i.index}"/>
 						            		</div>
 						            		
+						            		
 						            		<script>
-											 var myAnimOn_${i.index} = new YAHOO.util.Motion('button_${i.index}', {points: { by: [29, 0] } }, 0.5, YAHOO.util.Easing.easeOut);
-											 var myAnimOff_${i.index} = new YAHOO.util.Motion('button_${i.index}', {points: { by: [-29, 0] } }, 0.5, YAHOO.util.Easing.easeOut);
+											function init_${i.index}(){
+												var myAnimOn_${i.index} = new YAHOO.util.Motion('button_${i.index}', {points: { by: [29, 0] } }, 0.5, YAHOO.util.Easing.easeOut);
+												var myAnimOff_${i.index} = new YAHOO.util.Motion('button_${i.index}', {points: { by: [-29, 0] } }, 0.5, YAHOO.util.Easing.easeOut);
 
-											 var switchOn_${i.index} = function(){
-												 var myAnimOn_${i.index} = new YAHOO.util.Motion('button_${i.index}', {points: { by: [29, 0] } }, 0.5, YAHOO.util.Easing.easeOut);
-												 YAHOO.util.Event.removeListener("switch_${i.index}", "click");	
-												 YAHOO.util.Event.addListener("switch_${i.index}", "click", function(){ 
-													 myAnimOn_${i.index}.onComplete.subscribe(switchOff_${i.index}); 				
+												 var switchOn_${i.index} = function(){
+													 var myAnimOn_${i.index} = new YAHOO.util.Motion('button_${i.index}', {points: { by: [29, 0] } }, 0.5, YAHOO.util.Easing.easeOut);
+													 YAHOO.util.Event.removeListener("switch_${i.index}", "mousedown");	
+													 YAHOO.util.Event.addListener("switch_${i.index}", "mousedown", function(){ 
+														 myAnimOn_${i.index}.onComplete.subscribe(switchOff_${i.index}); 				
+														 myAnimOn_${i.index}.animate();
+													 });
+													 alert('submit remove from search with: ${crawlPath.path.name}');
+													 // document.getElementById('addToSearch_${i.index}${i.index}').submit();
+													 }		
+												 var switchOff_${i.index} = function(){
+													 var myAnimOff_${i.index} = new YAHOO.util.Motion('button_${i.index}', {points: { by: [-29, 0] } }, 0.5, YAHOO.util.Easing.easeOut);
+													 YAHOO.util.Event.removeListener("switch_${i.index}", "mousedown");	
+													 YAHOO.util.Event.addListener("switch_${i.index}", "mousedown", function(){ 
+														 myAnimOff_${i.index}.onComplete.subscribe(switchOn_${i.index}); 
+														 myAnimOff_${i.index}.animate();
+													 });
+													 alert('submit add to search with: ${crawlPath.path.name}');
+													 // document.getElementById('removeFromSearch_${i.index}${i.index}').submit();
+													 }
+												
+												 YAHOO.util.Event.addListener("switch_${i.index}", "mousedown", function(){ 
+													 // Marko: if searchable, rename myAnimOn to myAnimOff and subscribe switchOn_${i.index} below
+													 myAnimOn_${i.index}.onComplete.subscribe(switchOff_${i.index}); 
 													 myAnimOn_${i.index}.animate();
-												 });
-												 alert('submit remove from search with: ${crawlPath.path.name}');
-												 // document.getElementById('addToSearch_${i.index}${i.index}').submit();
-												 }		
-											 var switchOff_${i.index} = function(){
-												 var myAnimOff_${i.index} = new YAHOO.util.Motion('button_${i.index}', {points: { by: [-29, 0] } }, 0.5, YAHOO.util.Easing.easeOut);
-												 YAHOO.util.Event.removeListener("switch_${i.index}", "click");	
-												 YAHOO.util.Event.addListener("switch_${i.index}", "click", function(){ 
-													 myAnimOff_${i.index}.onComplete.subscribe(switchOn_${i.index}); 
-													 myAnimOff_${i.index}.animate();
-												 });
-												 alert('submit add to search with: ${crawlPath.path.name}');
-												 // document.getElementById('removeFromSearch_${i.index}${i.index}').submit();
-												 }	
-
-											 YAHOO.util.Event.addListener("switch_${i.index}", "click", function(){ 
-												 // Marko: if searchable, rename myAnimOn to myAnimOff and subscribe switchOn_${i.index} below
-												 myAnimOn_${i.index}.onComplete.subscribe(switchOff_${i.index}); 
-												 myAnimOn_${i.index}.animate();
-												 }
-											 );
+													 }
+												 );
+											}
+											YAHOO.util.Event.onAvailable("switch_${i.index}", init_${i.index});
 											</script>
 						            		
 						            		
