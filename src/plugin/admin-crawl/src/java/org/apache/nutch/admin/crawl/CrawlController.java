@@ -46,9 +46,18 @@ public class CrawlController extends NavigationSelector {
 
   private DateFormat _format = new SimpleDateFormat("yyyy.MM.dd_HH.mm.ss");
 
-  @ModelAttribute("crawlPaths")
-  public CrawlPath[] referenceDataCrawlFolders(HttpSession session)
-          throws IOException {
+  @ModelAttribute("depths")
+  public Integer[] referenceDataDepths() {
+    return new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+  }
+
+  @ModelAttribute("crawlCommand")
+  public CrawlCommand referenceDataCrawlCommand() {
+    return new CrawlCommand();
+  }
+
+  @RequestMapping(value = "/index.html", method = RequestMethod.GET)
+  public String crawl(Model model, HttpSession session) throws IOException {
     ServletContext servletContext = session.getServletContext();
     NutchInstance nutchInstance = (NutchInstance) servletContext
             .getAttribute("nutchInstance");
@@ -65,21 +74,13 @@ public class CrawlController extends NavigationSelector {
         return path.getName().startsWith("Crawl");
       }
     });
-    return crawlPathArray;
-  }
-
-  @ModelAttribute("depths")
-  public Integer[] referenceDataDepths() {
-    return new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-  }
-
-  @ModelAttribute("crawlCommand")
-  public CrawlCommand referenceDataCrawlCommand() {
-    return new CrawlCommand();
-  }
-
-  @RequestMapping(value = "/index.html", method = RequestMethod.GET)
-  public String crawl() {
+    model.addAttribute("crawlPaths", crawlPathArray);
+    for (CrawlPath crawlPath : crawlPathArray) {
+      if (crawlPath.isRunning()) {
+        model.addAttribute("runningCrawl", new Object());
+        break;
+      }
+    }
     return "listCrawls";
   }
 
