@@ -18,16 +18,18 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-<title>Nutch Administration - Willkommen</title>
+<title>Nutch Administration - Suche</title>
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css" />
 	<script type="text/javascript" src="${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
 	<script type="text/javascript" src="${theme}/js/yui/build/element/element-min.js"></script>
 	<script type="text/javascript" src="${theme}/js/yui/build/tabview/tabview-min.js"></script>
+	<script type="text/javascript" src="${theme}/js/yui/build/paginator/paginator-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/paginator/assets/skins/sam/paginator.css"> 
 	<link rel="stylesheet" type="text/css" href="${theme}/css/style.css" />
 </head>
 <body class="yui-skin-sam">
-	<div id="doc2">					
+	<div id="doc2" class="yui-t4">					
 		<div id="hd">
 			<%@ include file="/WEB-INF/jsp/includes/header.jsp" %>
 		</div>
@@ -69,15 +71,76 @@
 		<div id="bd">
 			<div id="yui-main">
 				<div class="yui-b">
-					<h3>Search</h3>
-					<div>
-				        <div>
-				        	<p>&nbsp;</p>
-				        	<p>Bitte treffen Sie eine Auswahl.</p>
-				        </div>
-				    </div>
+					<h3>Suche</h3>
+					<form method="get" action="search.html" id="searchForm">
+						<input type="hidden" name="start" id="start" value="0"/>
+						<fieldset>
+					    <legend>Index Testen</legend>
+						    <row>
+						        <field>
+						           <input type="text" name="query" value=""/>
+						        </field>
+						        <desc> <input type="submit" value="Suchen"/></desc>
+						    </row>
+						</fieldset>
+					</form>
+					
+					<div style="text-align:right">X hits total</div>
+					
+					<div class="result">
+						<div>
+							<a href="" class="searchResultTitle">The page title</a>
+						</div>
+						<div class="searchResultSummary">
+							The page summary. The page summary. The page summary. The page summary. The page summary. The page summary. The page summary. The page summary. The page summary.
+						</div>
+						<div>
+							<a href="" class="searchResultUrl">http://www.pageurl.com</a>
+						</div>
+					</div>
+					
+					<div id="paging"></div>
+					<script>
+					var pag = new YAHOO.widget.Paginator({
+					    rowsPerPage : 10,
+					    totalRecords : 100,
+					    containers : "paging",
+					    firstPageLinkLabel : "&lt;&lt;",
+					    lastPageLinkLabel : "&gt;&gt;",
+					    previousPageLinkLabel: "&lt;",
+					    nextPageLinkLabel : "&gt;"
+					});
+					
+					var Search = {
+					    handlePagination : function (newState) {
+					        pag.setState(newState);
+							alert(newState.page + ' clicked');
+							// TODO: set start in form and submit
+							//	YAHOO.util.Dom.get("start").value = (newState.page -1) * ${hitsPerPage};
+							//YAHOO.util.Dom.get("searchForm").submit();
+					    }
+					};
+
+					pag.setState(
+						{
+						    paginator    : pag,
+						    page         : 7, // the current page
+						    //records      : [ 10, 19 ], // index offsets of first and last records on the current page
+						    //recordOffset : 10, // index offset of the first record on the current page
+						    //totalRecords : 100, // current totalRecords value
+						    //rowsPerPage  : 10  // current rowsPerPage value
+						}
+					);
+					pag.subscribe('changeRequest',Search.handlePagination);
+					pag.render();
+					</script>
+					
+					
 				</div>
 			</div>
+				<div class="yui-b">
+					
+				</div> 
 		</div>		
 		<div id="ft">
 			<%@ include file="/WEB-INF/jsp/includes/footer.jsp" %>

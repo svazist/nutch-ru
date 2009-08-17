@@ -107,3 +107,8 @@ form input[type='submit']:hover, form input[type='button']:hover, button:hover {
 #paging .activePage a , #paging .inactivePage a {color:#FFFFFF; text-decoration:none; padding:2px}
 #paging .activePage:hover, #paging .inactivePage:hover {background:#FF9B00}
 #paging .meta {padding:2px; color:#AAAAAA} 
+
+.result {margin-bottom:20px; clear:both}
+.searchResultTitle{font-size:15px; font-weight:bold;}
+.searchResultSummary {}
+.searchResultUrl {text-decoration:none; color:#FF9B00}
