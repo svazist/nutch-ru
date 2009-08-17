@@ -236,6 +236,7 @@ public class CrawlController extends NavigationSelector {
     crawlPath.setPath(path);
     crawlPath.setSize(len);
     crawlPath.setSearchable(fileSystem.exists(new Path(path, "search.done")));
+    crawlPath.setRunning(fileSystem.exists(new Path(path, "crawl.running")));
     return crawlPath;
   }
 }

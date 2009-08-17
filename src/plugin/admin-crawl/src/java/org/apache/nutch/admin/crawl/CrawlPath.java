@@ -25,6 +25,16 @@ public class CrawlPath {
   private long _size;
   
   private boolean _isSearchable;
+  
+  private boolean _isRunning;
+
+  public boolean isRunning() {
+    return _isRunning;
+  }
+
+  public void setRunning(boolean isRunning) {
+    _isRunning = isRunning;
+  }
 
   public boolean isSearchable() {
     return _isSearchable;

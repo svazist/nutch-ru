@@ -162,12 +162,21 @@
 						            		</form>
 						            	</td>
 						            	<td>
-						            		<a href="#" id="showStartCrawl${i.index}" onclick="document.getElementById('crawlFolder').value = '${crawlPath.path.name}'"><img src="${theme}/gfx/play.png"/></a>
-						            		<!-- 
-						            		<img src="${theme}/gfx/play_inactive.png"/>
-						            		<img src="${theme}/gfx/loading.gif"/>
-											-->
-											
+						            		<c:choose>
+						            			<c:when test="${empty runningCrawl}">
+								            		<a href="#" id="showStartCrawl${i.index}" onclick="document.getElementById('crawlFolder').value = '${crawlPath.path.name}'"><img src="${theme}/gfx/play.png"/></a>
+						            			</c:when>
+						            			<c:otherwise>
+						            				<c:choose>
+						            					<c:when test="${crawlPath.running}">
+										            		<img src="${theme}/gfx/loading.gif"/>
+						            					</c:when>
+						            					<c:otherwise>
+										            		<img src="${theme}/gfx/play_inactive.png"/>
+						            					</c:otherwise>
+						            				</c:choose>
+						            			</c:otherwise>
+						            		</c:choose>
 						            	</td>
 						            	<td><a href="crawlDetails.html?crawlFolder=${crawlPath.path.name}">${crawlPath.path.name}</a></td>
 						                <td>${crawlPath.size}</td>
