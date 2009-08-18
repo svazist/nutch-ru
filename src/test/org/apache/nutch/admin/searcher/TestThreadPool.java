@@ -1,4 +1,6 @@
-package org.apache.nutch.admin.search;
+package org.apache.nutch.admin.searcher;
+
+import org.apache.nutch.admin.searcher.ThreadPool;
 
 import junit.framework.TestCase;
 

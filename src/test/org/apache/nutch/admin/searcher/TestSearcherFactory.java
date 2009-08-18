@@ -1,4 +1,4 @@
-package org.apache.nutch.admin.search;
+package org.apache.nutch.admin.searcher;
 
 import java.io.File;
 
@@ -6,6 +6,8 @@ import junit.framework.TestCase;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileUtil;
+import org.apache.nutch.admin.searcher.MultipleSearcher;
+import org.apache.nutch.admin.searcher.SearcherFactory;
 import org.apache.nutch.util.NutchConfiguration;
 
 public class TestSearcherFactory extends TestCase {

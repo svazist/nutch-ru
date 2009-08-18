@@ -26,6 +26,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.nutch.admin.NavigationSelector;
 import org.apache.nutch.admin.NutchInstance;
+import org.apache.nutch.admin.searcher.MultipleSearcher;
+import org.apache.nutch.admin.searcher.SearcherFactory;
 import org.apache.nutch.searcher.Hit;
 import org.apache.nutch.searcher.HitDetails;
 import org.apache.nutch.searcher.Hits;

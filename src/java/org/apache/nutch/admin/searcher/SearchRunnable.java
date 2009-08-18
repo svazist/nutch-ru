@@ -1,4 +1,4 @@
-package org.apache.nutch.admin.search;
+package org.apache.nutch.admin.searcher;
 
 import java.util.concurrent.BlockingQueue;
 
