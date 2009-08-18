@@ -34,6 +34,7 @@ import org.apache.nutch.indexer.lucene.LuceneWriter;
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.parse.Parse;
 import org.apache.nutch.parse.ParseData;
+import org.apache.nutch.plugin.PluginDescriptor;
 import org.apache.nutch.plugin.PluginRepository;
 
 public class MetadataIndexingFilter implements IndexingFilter {
@@ -48,16 +49,16 @@ public class MetadataIndexingFilter implements IndexingFilter {
       Object value = _properties.get(key);
       String[] splits = value.toString().split(",");
       LuceneWriter.STORE store = "STORE".equalsIgnoreCase(splits[0]) ? LuceneWriter.STORE.YES
-          : LuceneWriter.STORE.NO;
+              : LuceneWriter.STORE.NO;
       LuceneWriter.INDEX index = "TOKENIZED".equalsIgnoreCase(splits[1]) ? LuceneWriter.INDEX.TOKENIZED
-          : LuceneWriter.INDEX.UNTOKENIZED;
+              : LuceneWriter.INDEX.UNTOKENIZED;
       LuceneWriter.addFieldOptions(key.toString(), store, index, conf);
     }
   }
 
   @Override
   public NutchDocument filter(NutchDocument doc, Parse parse, Text url,
-      CrawlDatum datum, Inlinks inlinks) throws IndexingException {
+          CrawlDatum datum, Inlinks inlinks) throws IndexingException {
     ParseData data = parse.getData();
     Enumeration<Object> enumeration = _properties.keys();
     while (enumeration.hasMoreElements()) {
@@ -79,15 +80,17 @@ public class MetadataIndexingFilter implements IndexingFilter {
   @Override
   public void setConf(Configuration conf) {
     PluginRepository pluginRepository = PluginRepository.get(conf);
-    String pluginPath = pluginRepository.getPluginDescriptor("index-metadata")
-        .getPluginPath();
+
+    PluginDescriptor pluginDescriptor = pluginRepository
+            .getPluginDescriptor("index-metadata");
+    String pluginPath = pluginDescriptor.getPluginPath();
     File file = new File(pluginPath, "plugin.properties");
     _properties = new Properties();
     try {
       _properties.load(new FileInputStream(file));
     } catch (Exception e) {
       throw new RuntimeException("plugin.properties not found under ["
-          + pluginPath + "]", e);
+              + pluginPath + "]", e);
     }
     _conf = conf;
   }
