@@ -74,36 +74,39 @@
 					<h3>Suche</h3>
 					<form method="get" action="search.html" id="searchForm">
 						<input type="hidden" name="start" id="start" value="0"/>
+						<input type="hidden" name="length" id="length" value="10"/>
 						<fieldset>
 					    <legend>Index Testen</legend>
 						    <row>
 						        <field>
-						           <input type="text" name="query" value=""/>
+						           <input type="text" name="query" value="${query}"/>
 						        </field>
 						        <desc> <input type="submit" value="Suchen"/></desc>
 						    </row>
 						</fieldset>
 					</form>
 					
-					<div style="text-align:right">X hits total</div>
+					<div style="text-align:right">${totalHits} hits total</div>
 					
 					<div class="result">
-						<div>
-							<a href="" class="searchResultTitle">The page title</a>
-						</div>
-						<div class="searchResultSummary">
-							The page summary. The page summary. The page summary. The page summary. The page summary. The page summary. The page summary. The page summary. The page summary.
-						</div>
-						<div>
-							<a href="" class="searchResultUrl">http://www.pageurl.com</a>
-						</div>
+						<c:forEach items="${searchResults}" var="searchResult">
+							<div>
+								<a href="${searchResult.url}" class="searchResultTitle">${searchResult.title}</a>
+							</div>
+							<div class="searchResultSummary">
+								${searchResult.summary}
+							</div>
+							<div>
+								<a href="${searchResult.url}" class="searchResultUrl">${searchResult.url}</a>
+							</div>
+						</c:forEach>
 					</div>
 					
 					<div id="paging"></div>
 					<script>
 					var pag = new YAHOO.widget.Paginator({
 					    rowsPerPage : 10,
-					    totalRecords : 100,
+					    totalRecords : ${totalHits},
 					    containers : "paging",
 					    firstPageLinkLabel : "&lt;&lt;",
 					    lastPageLinkLabel : "&gt;&gt;",
@@ -114,17 +117,15 @@
 					var Search = {
 					    handlePagination : function (newState) {
 					        pag.setState(newState);
-							alert(newState.page + ' clicked');
-							// TODO: set start in form and submit
-							//	YAHOO.util.Dom.get("start").value = (newState.page -1) * ${hitsPerPage};
-							//YAHOO.util.Dom.get("searchForm").submit();
+							YAHOO.util.Dom.get("start").value = (newState.page - 1) * 10;
+							YAHOO.util.Dom.get("searchForm").submit();
 					    }
 					};
 
 					pag.setState(
 						{
 						    paginator    : pag,
-						    page         : 7, // the current page
+						    page         : ${page}, // the current page
 						    //records      : [ 10, 19 ], // index offsets of first and last records on the current page
 						    //recordOffset : 10, // index offset of the first record on the current page
 						    //totalRecords : 100, // current totalRecords value
