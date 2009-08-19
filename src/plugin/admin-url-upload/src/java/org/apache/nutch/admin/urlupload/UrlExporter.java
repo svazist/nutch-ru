@@ -39,25 +39,34 @@ public class UrlExporter implements IPreCrawl {
 
     boolean enableBw = _conf.getBoolean("bw.enable", false);
     boolean enableMetadata = _conf.getBoolean("metadata.enable", false);
+    FileSystem fileSystem = FileSystem.get(_conf);
 
     // unzip and upload start urls
     File[] zipFiles = getZipFiles(_conf, "url-uploads/start");
-    copyToHdfs(new Path(crawlDir, "urls/start"), zipFiles);
+    Path out = new Path(crawlDir, "urls/start");
+    fileSystem.delete(out, true);
+    copyToHdfs(out, zipFiles);
 
     if (enableBw) {
       // unzip and upload limit urls
       zipFiles = getZipFiles(_conf, "url-uploads/limit");
-      copyToHdfs(new Path(crawlDir, "urls/limit"), zipFiles);
+      out = new Path(crawlDir, "urls/limit");
+      fileSystem.delete(out, true);
+      copyToHdfs(out, zipFiles);
 
       // unzip and upload exclude urls
       zipFiles = getZipFiles(_conf, "url-uploads/exclude");
-      copyToHdfs(new Path(crawlDir, "urls/exclude"), zipFiles);
+      out = new Path(crawlDir, "urls/exclude");
+      fileSystem.delete(out, true);
+      copyToHdfs(out, zipFiles);
     }
 
     if (enableMetadata) {
       // unzip and upload metadata urls
       zipFiles = getZipFiles(_conf, "url-uploads/metadata");
-      copyToHdfs(new Path(crawlDir, "urls/metadata"), zipFiles);
+      out = new Path(crawlDir, "urls/metadata");
+      fileSystem.delete(out, true);
+      copyToHdfs(out, zipFiles);
     }
 
   }

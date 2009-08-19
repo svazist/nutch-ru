@@ -32,11 +32,17 @@
       <import plugin="nutch-extensionpoints"/>
    </requires>
 
-   <extension id="org.apache.nutch.indexer.metadata"
+   <extension id="org.apache.nutch.indexer.metadata.index"
               name="Nutch Metadata Indexing Filter"
               point="org.apache.nutch.indexer.IndexingFilter">
       <implementation id="MetadataIndexingFilter"
-                      class="org.apache.nutch.indexer.metadata.MetadataIndexingFilter"/>
+                      class="org.apache.nutch.indexer.metadata.MetadataIndexingFilter">
+<!--
+        <parameter name="raw-fields" value="foo"/>
+        <parameter name="fields" value="bar"/>
+-->        
+      </implementation> 
+                      
    </extension>
 
    <extension id="org.apache.nutch.indexer.metadata.query"
@@ -44,7 +50,10 @@
               point="org.apache.nutch.searcher.QueryFilter">
       <implementation id="MetadataQueryFilter"
                       class="org.apache.nutch.indexer.metadata.MetadataQueryFilter">
+<!--   
         <parameter name="raw-fields" value="foo"/>
+        <parameter name="fields" value="bar"/>
+-->        
       </implementation>
       
    </extension>

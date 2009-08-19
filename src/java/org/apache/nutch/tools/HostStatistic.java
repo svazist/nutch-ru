@@ -145,7 +145,6 @@ public class HostStatistic extends Configured {
       }
       _sum._fetchSuccessCount.set(fetchSuccesCounter);
       _sum._overallCount.set(overallCounter);
-      System.out.println(key + ": " + _sum);
       collector.collect(key, _sum);
     }
 

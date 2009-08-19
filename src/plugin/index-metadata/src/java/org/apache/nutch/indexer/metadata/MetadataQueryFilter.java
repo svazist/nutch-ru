@@ -68,25 +68,24 @@ public class MetadataQueryFilter implements QueryFilter {
 
     Extension[] extensions = pluginDescriptor.getExtensions();
     for (Extension extension : extensions) {
-
-      // add raw fields query filter
-      String rawFields = extension.getAttribute("raw-fields");
-      if (rawFields != null) {
-        String[] splits = rawFields.split(",");
-        for (String split : splits) {
-          _queryFilterChain.add(new UnTokenizedQueryFilter(split.trim()));
+      if (MetadataQueryFilter.class.getSimpleName().equals(extension.getId())) {
+        // add raw fields query filter
+        String rawFields = extension.getAttribute("raw-fields");
+        if (rawFields != null) {
+          String[] splits = rawFields.split(",");
+          for (String split : splits) {
+            _queryFilterChain.add(new UnTokenizedQueryFilter(split.trim()));
+          }
+        }
+        // add fields query filter
+        String fields = extension.getAttribute("fields");
+        if (fields != null) {
+          String[] splits = fields.split(",");
+          for (String split : splits) {
+            _queryFilterChain.add(new TokenizedQueryFilter(split.trim()));
+          }
         }
       }
-
-      // add fields query filter
-      String fields = extension.getAttribute("fields");
-      if (fields != null) {
-        String[] splits = fields.split(",");
-        for (String split : splits) {
-          _queryFilterChain.add(new TokenizedQueryFilter(split.trim()));
-        }
-      }
-
     }
     _conf = conf;
   }
