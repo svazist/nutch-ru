@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-	<title>Admin - Instanzen</title>
+	<title><fmt:message key="instance.title" bundle="${localBundle}"/></title>
 
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css" />
@@ -68,10 +68,10 @@
 	<div id="bd"> 
 		<div id="yui-main"> 
 			<div class="yui-b">
-				<h3>Instanzen</h3>
+				<h3><fmt:message key="instance.headline" bundle="${localBundle}"/></h3>
 				<form:form commandName="createInstance" action="index.html" method="post">
 				<fieldset>
-				    <legend>Neue Instanz anlegen</legend>
+				    <legend><fmt:message key="instance.text" bundle="${localBundle}"/></legend>
 				    
 				    <row>
 				        <label><form:label path="folderName" >Name: </form:label></label>
@@ -85,7 +85,7 @@
 				     <row>
 				        <label>&nbsp;</label>
 				        <field>
-				            <input type="submit" value="Speichern"/>
+				            <input type="submit" value="<fmt:message key="instance.submit.button" bundle="${localBundle}"/>"/>
 				        </field>
 				    </row>
 				</fieldset>
@@ -93,8 +93,8 @@
 			</div> 
 		</div> 
 		<div class="yui-b">
-			<h3>Hilfe</h3>
-			Nach dem Anlegen einige Sekunden warten und diese Seite neu laden. Die Instanz erscheint als Tab in der Hauptnavigation.
+			<h3><fmt:message key="instance.help.headline" bundle="${localBundle}"/></h3>
+			<fmt:message key="instance.help.text" bundle="${localBundle}"/>
 		</div> 
 	</div>
 	
