@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-<title>Nutch Administration - Willkommen</title>
+	<title><fmt:message key="welcome.title" bundle="${localBundle}"/></title>
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css" />
 	<script type="text/javascript" src="${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
@@ -69,11 +69,11 @@
 		<div id="bd">
 			<div id="yui-main">
 				<div class="yui-b">
-					<h3>Willkommen</h3>
+					<h3><fmt:message key="welcome.headline" bundle="${localBundle}"/></h3>
 					<div>
 				        <div>
 				        	<p>&nbsp;</p>
-				        	<p>Bitte treffen Sie eine Auswahl.</p>
+				        	<p><fmt:message key="welcome.text" bundle="${localBundle}"/></p>
 				        </div>
 				    </div>
 				</div>
