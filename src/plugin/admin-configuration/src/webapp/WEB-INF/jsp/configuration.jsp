@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-	<title>Admin - Konfiguration</title>
+	<title><fmt:message key="configuration.title" bundle="${localBundle}"/></title>
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css">
 	<script type="text/javascript" src="${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
@@ -82,18 +82,19 @@
 		<div id="bd">
 			<div id="yui-main">
 				<div class="yui-b">
-				<h3>Konfiguration</h3>
+				<h3><fmt:message key="configuration.headline" bundle="${localBundle}"/></h3>
 				<p>
-					Um Standardwerte zu überschreiben, klicken Sie in das Feld "Eigener Wert".
+					<fmt:message key="configuration.byline" bundle="${localBundle}"/>
 				</p>
 				<div id="markup">
 				    <table id="configurations">
 				        <thead>
 				            <tr>
-				            	<th>Position</th>
-				                <th>Name</th>
-				                <th>Value</th>
-				                <th>Description</th>
+				            	<th><fmt:message key="configuration.position" bundle="${localBundle}"/></th>
+				                <th><fmt:message key="configuration.name" bundle="${localBundle}"/></th>
+				                <th><fmt:message key="configuration.description" bundle="${localBundle}"/></th>
+				                <th><fmt:message key="configuration.value" bundle="${localBundle}"/></th>
+				                <th><fmt:message key="configuration.finalValue" bundle="${localBundle}"/></th>
 				            </tr>
 				        </thead>
 				        <tbody>
@@ -113,11 +114,12 @@
 				YAHOO.util.Event.addListener(window, "load", function() {
 				    YAHOO.example.EnhanceFromMarkup = function() {
 				        var myColumnDefs = [
-							{key:"position",label:"Pos", sortable:true},
-				            {key:"name",label:"Name", sortable:true},
-				            {key:"description",label:"Beschreibung", sortable:true, maxAutoWidth:210},
-				            {key:"value",label:"Standard Wert", sortable:true, maxAutoWidth:190},
-				            {key:"finalValue",label:"Eigener Wert", sortable:true, maxAutoWidth:190, editor: new YAHOO.widget.TextareaCellEditor()}
+							{key:"position",label:"<fmt:message key="configuration.position" bundle="${localBundle}"/>", sortable:true},
+				            {key:"name",label:"<fmt:message key="configuration.name" bundle="${localBundle}"/>", sortable:true},
+				            {key:"description",label:"<fmt:message key="configuration.description" bundle="${localBundle}"/>", sortable:true, maxAutoWidth:210},
+				            {key:"value",label:"<fmt:message key="configuration.value" bundle="${localBundle}"/>", sortable:true, maxAutoWidth:190},
+				            {key:"finalValue",label:"<fmt:message key="configuration.finalValue" bundle="${localBundle}"/>", sortable:true, maxAutoWidth:190, 
+					            editor: new YAHOO.widget.TextareaCellEditor({LABEL_CANCEL :"<fmt:message key="button.cancel" bundle="${globalBundle}"/>", LABEL_SAVE :"<fmt:message key="button.save" bundle="${globalBundle}"/>"})}
 				        ];
 				
 				        var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("configurations"));

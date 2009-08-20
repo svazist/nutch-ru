@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-	<title>Welcome</title>
+	<title><fmt:message key="crawlDetails.title" bundle="${localBundle}"/></title>
 
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	
@@ -88,9 +88,9 @@
 					    <table id="crawls">
 					        <thead>
 					            <tr>
-					            	<th>Segmente</th>
-					                <th>Größe in MB</th>
-					                <th>Host Statistik</th>
+					            	<th><fmt:message key="crawlDetails.segments" bundle="${localBundle}"/></th>
+					                <th><fmt:message key="crawlDetails.size" bundle="${localBundle}"/></th>
+					                <th><fmt:message key="crawlDetails.hostStats" bundle="${localBundle}"/></th>
 					            </tr>
 					        </thead>
 					        <tbody>
@@ -98,7 +98,7 @@
 						            <tr>
 						            	<td>${segment.path.name}</td>
 						                <td>${segment.size}</td>
-						                <td><a href="statistic.html?crawlFolder=${crawlFolder}&segment=${segment.path.name}&maxCount=10">Host Statistik</a></td>
+						                <td><a href="statistic.html?crawlFolder=${crawlFolder}&segment=${segment.path.name}&maxCount=10"><fmt:message key="crawlDetails.hostStats" bundle="${localBundle}"/></a></td>
 						            </tr>
 								</c:forEach>
 					        </tbody>
@@ -108,9 +108,9 @@
 					YAHOO.util.Event.addListener(window, "load", function() {
 					    YAHOO.example.EnhanceFromMarkup = function() {
 					        var myColumnDefs = [
-								{key:"path",label:"Segmente", sortable:true},
-					            {key:"size",label:"Größe in MB", sortable:true},
-					            {key:"hostStatistic",label:"Host Statistik", sortable:false}
+								{key:"path",label:"<fmt:message key="crawlDetails.segments" bundle="${localBundle}"/>", sortable:true},
+					            {key:"size",label:"<fmt:message key="crawlDetails.size" bundle="${localBundle}"/>", sortable:true},
+					            {key:"hostStatistic",label:"<fmt:message key="crawlDetails.hostStats" bundle="${localBundle}"/>", sortable:false}
 					        ];
 					
 					        var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("crawls"));
@@ -138,8 +138,8 @@
 					    <table id="dbs">
 					        <thead>
 					            <tr>
-					            	<th>Datenbank</th>
-					                <th>Größe in MB</th>
+					            	<th><fmt:message key="crawlDetails.database" bundle="${localBundle}"/></th>
+					                <th><fmt:message key="crawlDetails.size" bundle="${localBundle}"/></th>
 					            </tr>
 					        </thead>
 					        <tbody>
@@ -156,8 +156,8 @@
 					YAHOO.util.Event.addListener(window, "load", function() {
 					    YAHOO.example.EnhanceFromMarkup = function() {
 					        var myColumnDefs = [
-								{key:"path",label:"Datenbank", sortable:true},
-					            {key:"size",label:"Größe in MB", sortable:true},
+								{key:"path",label:"<fmt:message key="crawlDetails.database" bundle="${localBundle}"/>", sortable:true},
+					            {key:"size",label:"<fmt:message key="crawlDetails.size" bundle="${localBundle}"/>", sortable:true},
 					        ];
 					
 					        var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("dbs"));
@@ -184,8 +184,8 @@
 					    <table id="index">
 					        <thead>
 					            <tr>
-					            	<th>Index</th>
-					                <th>Größe in MB</th>
+					            	<th><fmt:message key="crawlDetails.index" bundle="${localBundle}"/></th>
+					                <th><fmt:message key="crawlDetails.size" bundle="${localBundle}"/></th>
 					            </tr>
 					        </thead>
 					        <tbody>
@@ -202,8 +202,8 @@
 					YAHOO.util.Event.addListener(window, "load", function() {
 					    YAHOO.example.EnhanceFromMarkup = function() {
 					        var myColumnDefs = [
-								{key:"path",label:"Index", sortable:true},
-					            {key:"size",label:"Größe in MB", sortable:true},
+								{key:"path",label:"<fmt:message key="crawlDetails.index" bundle="${localBundle}"/>", sortable:true},
+					            {key:"size",label:"<fmt:message key="crawlDetails.size" bundle="${localBundle}"/>", sortable:true},
 					        ];
 					
 					        var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("index"));

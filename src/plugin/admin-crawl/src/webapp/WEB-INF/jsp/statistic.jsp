@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-	<title>Admin - Statistic</title>
+	<title><fmt:message key="crawlStatistics.title" bundle="${localBundle}"/></title>
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css">
 	<script type="text/javascript" src="${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
@@ -73,7 +73,7 @@
 		<div id="bd">
 			<div id="yui-main">
 				<div class="yui-b">
-					<h3>Crawldb Statistik Gesamt</h3>
+					<h3><fmt:message key="crawlStatistics.crawlDbStatsTotal" bundle="${localBundle}"/></h3>
 					<div id="chart" style="height:${(fn:length(crawldbStatistic)) * 100}px">Unable to load Flash content.</div>
 
 					<script type="text/javascript">
@@ -109,11 +109,11 @@
 							[
 								{
 									xField: "crawlDbCount",
-									displayName: "URLs gesamt"
+									displayName: "<fmt:message key="crawlStatistics.urlsTotal" bundle="${localBundle}"/>"
 								},
 								{
 									xField: "segmentCount",
-									displayName: "URLs gefetched"
+									displayName: "<fmt:message key="crawlStatistics.urlsFetched" bundle="${localBundle}"/>"
 								},
 								
 							];
@@ -135,7 +135,7 @@
 					</script>
 					
 					<div style="margin-top:25px"></div>
-					<h3>Segment Statistik</h3>
+					<h3><fmt:message key="crawlStatistics.segmentStats" bundle="${localBundle}"/></h3>
 					
 					<div id="chart2" style="height:${(fn:length(shardStatistic)) * 100}px">Unable to load Flash content.</div>
 
@@ -173,11 +173,11 @@
 							[
 								{
 									xField: "crawlDbCount",
-									displayName: "URLs gesamt"
+									displayName: "<fmt:message key="crawlStatistics.urlsTotal" bundle="${localBundle}"/>"
 								},
 								{
 									xField: "segmentCount",
-									displayName: "URLs gefetched"
+									displayName: "<fmt:message key="crawlStatistics.urlsFetched" bundle="${localBundle}"/>"
 								},
 								
 							];

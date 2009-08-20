@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-	<title>Admin - Crawls</title>
+	<title><fmt:message key="listCrawls.title" bundle="${localBundle}"/></title>
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css">
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/container/assets/skins/sam/container.css" />
@@ -89,17 +89,17 @@
 				<div class="yui-b">
 					
 					<div style="float:right">
-						<img src="${theme}/gfx/add.png" align="absmiddle"/> <b><a href="#" id="showCreateCrawl">Neuen Crawl anlegen</a></b>
+						<img src="${theme}/gfx/add.png" align="absmiddle"/> <b><a href="#" id="showCreateCrawl"><fmt:message key="listCrawls.createCrawl" bundle="${localBundle}"/></a></b>
 					</div>
-					<h3>Crawls</h3>
+					<h3><fmt:message key="listCrawls.headline" bundle="${localBundle}"/></h3>
 					<div id="markup">
 					    <table id="crawls">
 					        <thead>
 					            <tr>
-					            	<th>Suchbar</th>
-					            	<th>Status</th>
-					            	<th>Pfad</th>
-					                <th>Größe in MB</th>
+					            	<th><fmt:message key="listCrawls.searchable" bundle="${localBundle}"/></th>
+					            	<th><fmt:message key="listCrawls.status" bundle="${localBundle}"/></th>
+					            	<th><fmt:message key="listCrawls.status" bundle="${localBundle}"/></th>
+					                <th><fmt:message key="listCrawls.status" bundle="${localBundle}"/></th>
 					            </tr>
 					        </thead>
 					        <tbody>
@@ -189,10 +189,10 @@
 					 function renderTable() {
 					    YAHOO.example.EnhanceFromMarkup = function() {
 					        var myColumnDefs = [
-								{key:"searchable",label:"Suchbar", sortable:true},
-								{key:"status",label:"Status", sortable:true},
-								{key:"path",label:"Pfad", sortable:true},
-					            {key:"size",label:"Größe in MB", sortable:true},
+								{key:"searchable",label:"<fmt:message key="listCrawls.searchable" bundle="${localBundle}"/>", sortable:true},
+								{key:"status",label:"<fmt:message key="listCrawls.status" bundle="${localBundle}"/>", sortable:true},
+								{key:"path",label:"<fmt:message key="listCrawls.path" bundle="${localBundle}"/>", sortable:true},
+					            {key:"size",label:"<fmt:message key="listCrawls.size" bundle="${localBundle}"/>", sortable:true},
 					        ];
 					
 					        var myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("crawls"));
@@ -230,13 +230,13 @@
 						               visible: false,
 						               draggable: false,
 						               close: true,
-						               text: "Möchten Sie fortfahren?",
+						               text: "<fmt:message key="listCrawls.wantContinue" bundle="${localBundle}"/>",
 						               icon: YAHOO.widget.SimpleDialog.ICON_HELP,
 						               constraintoviewport: true,
-						               buttons: [ { text:"Ja", handler:handleYes, isDefault:true },
-						                          { text:"Nein",  handler:handleNo } ]
+						               buttons: [ { text:"<fmt:message key="button.yes" bundle="${globalBundle}"/>", handler:handleYes, isDefault:true },
+						                          { text:"<fmt:message key="button.no" bundle="${globalBundle}"/>",  handler:handleNo } ]
 						             } );
-						YAHOO.example.container.createCrawl.setHeader("Sind Sie sicher?");
+						YAHOO.example.container.createCrawl.setHeader("<fmt:message key="listCrawls.areYouSure" bundle="${localBundle}"/>");
 						YAHOO.example.container.createCrawl.render();
 						YAHOO.util.Event.addListener("showCreateCrawl", "click", YAHOO.example.container.createCrawl.show, YAHOO.example.container.createCrawl, true);
 
@@ -248,8 +248,8 @@
 						               draggable: false,
 						               close: true,
 						               constraintoviewport: true,
-						               buttons: [ { text:"Starten", handler:handleYes, isDefault:true },
-						                          { text:"Abbrechen",  handler:handleNo } ]
+						               buttons: [ { text:"<fmt:message key="button.start" bundle="${globalBundle}"/>", handler:handleYes, isDefault:true },
+						                          { text:"<fmt:message key="button.cancel" bundle="${globalBundle}"/>",  handler:handleNo } ]
 						             } );
 						YAHOO.example.container.startCrawl.render();
 						<c:forEach items="${crawlPaths}" var="crawlPath" varStatus="i">
@@ -271,14 +271,14 @@
 					<form:form method="post" action="startCrawl.html" modelAttribute="crawlCommand">
 						
 						<fieldset>
-							<legend>Crawl Starten</legend>
+							<legend><fmt:message key="listCrawls.startCrawl" bundle="${localBundle}"/></legend>
 							<row>
-								<label>Crawl Name</label>
+								<label><fmt:message key="listCrawls.crawlName" bundle="${localBundle}"/>:</label>
 								<field><input type="text" name="crawlFolder" id="crawlFolder" value="" readonly="readonly"/></field>
 								<desc></desc>
 							</row>
 							<row>
-								<label>Crawl Tiefe</label>
+								<label><fmt:message key="listCrawls.crawlDepth" bundle="${localBundle}"/>:</label>
 								<field>
 						           <form:select path="depth" items="${depths}"/>
 						            <div class="error"><form:errors path="depth" /></div>
@@ -286,7 +286,7 @@
 						        <desc></desc>
 					        </row>
 						    <row>
-						        <label>Anz. Seiten pro Segment:</label>
+						        <label><fmt:message key="listCrawls.pagesPerSegment" bundle="${localBundle}"/>:</label>
 						        <field>
 						         <form:input path="topn"/>
 						            <div class="error"><form:errors path="topn" /></div>
