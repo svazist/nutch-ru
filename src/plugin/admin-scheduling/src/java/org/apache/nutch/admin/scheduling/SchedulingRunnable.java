@@ -71,7 +71,7 @@ public class SchedulingRunnable implements Runnable {
         ConfigurationUtil configurationUtil = new ConfigurationUtil(
                 workingDirectory);
         Configuration configuration = configurationUtil
-                .loadConfiguration(workingDirectory.getName());
+                .loadConfiguration(crawlDirectory.getName());
         fileSystem = FileSystem.get(configuration);
         String folderName = "Crawl-" + _format.format(new Date());
         Path crawlDir = new Path(path, folderName);
