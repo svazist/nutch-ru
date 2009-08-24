@@ -54,21 +54,20 @@ public class SchedulingRunnable implements Runnable {
       return;
     }
     LOG.info("try to get lock for directory: "
-        + crawlData.getWorkingDirectory().getAbsolutePath());
+            + crawlData.getWorkingDirectory().getAbsolutePath());
     if (!LOCK) {
       LOG.info("success.");
       LOG.info("lock the scheduled crawl: "
-          + crawlData.getWorkingDirectory().getAbsolutePath());
+              + crawlData.getWorkingDirectory().getAbsolutePath());
       LOCK = true;
       try {
 
         File workingDirectory = crawlData.getWorkingDirectory();
-        Path path = new Path(workingDirectory.getAbsolutePath(),
-            "crawls");
+        Path path = new Path(workingDirectory.getAbsolutePath(), "crawls");
         ConfigurationUtil configurationUtil = new ConfigurationUtil(
-            workingDirectory);
+                workingDirectory);
         Configuration configuration = configurationUtil
-            .loadConfiguration(workingDirectory.getName());
+                .loadConfiguration(workingDirectory.getName());
         FileSystem fileSystem = FileSystem.get(configuration);
         String folderName = "Crawl-" + _format.format(new Date());
         Path crawlDir = new Path(path, folderName);
@@ -78,15 +77,16 @@ public class SchedulingRunnable implements Runnable {
         crawlTool.preCrawl();
         crawlTool.crawl(crawlData.getTopn(), crawlData.getDepth());
       } catch (Throwable e) {
+        LOG.error("crawl fails.", e);
       } finally {
         LOG.info("unlock the scheduled crawl: "
-            + crawlData.getWorkingDirectory().getAbsolutePath());
+                + crawlData.getWorkingDirectory().getAbsolutePath());
         LOCK = false;
       }
     } else {
       LOG.info("fails...");
       LOG.info("crawl is locked: "
-          + crawlData.getWorkingDirectory().getAbsolutePath());
+              + crawlData.getWorkingDirectory().getAbsolutePath());
     }
 
   }
