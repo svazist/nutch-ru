@@ -22,6 +22,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.nutch.admin.NavigationSelector;
 import org.apache.nutch.admin.system.SystemTool.SystemInfo;
 import org.springframework.stereotype.Controller;
@@ -33,7 +35,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class SystemController extends NavigationSelector {
-  
+
+  private static final Log LOG = LogFactory.getLog(SystemController.class);
+
   @ModelAttribute("systemInfo")
   public SystemInfo referenceDataSystemCommand() {
     SystemInfo systemInfo = SystemTool.getSystemInfo();
@@ -47,21 +51,28 @@ public class SystemController extends NavigationSelector {
 
   @RequestMapping(value = "/log.html", method = RequestMethod.GET)
   public String log(@RequestParam("file") String logFileName,
-      @RequestParam("lines") Integer lines, HttpServletResponse response, final Model model)
-      throws IOException {
+          @RequestParam("lines") Integer lines, HttpServletResponse response,
+          final Model model) throws IOException {
 
     StringBuilder stringBuilder = new StringBuilder();
     try {
-        List<String> list = SystemTool.tailLogFile(new File(logFileName), lines);
-        for (String currentLine : list) {
-            stringBuilder.append(currentLine);
-            stringBuilder.append("\n");
-        }
+
+      File logfile = new File(logFileName);
+      if (!logfile.exists()) {
+        // try another folder
+        logfile = new File("logs", logFileName);
+      }
+      // LOG.debug("tail logfile: " + logfile.getAbsolutePath());
+      List<String> list = SystemTool.tailLogFile(logfile, lines);
+      for (String currentLine : list) {
+        stringBuilder.append(currentLine);
+        stringBuilder.append("\n");
+      }
     } catch (RuntimeException e) {
-        stringBuilder.append(e.getMessage());
+      stringBuilder.append(e.getMessage());
     }
     model.addAttribute("logText", stringBuilder.toString());
     return "log";
   }
-  
+
 }

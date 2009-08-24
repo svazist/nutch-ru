@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/JVM 1.6"/>
 	<classpathentry kind="src" path="src/java"/>
+	<classpathentry kind="src" path="src/plugin/admin-instance/src/conf"/>
 	<classpathentry kind="src" path="src/plugin/query-more/src/java"/>
 	<classpathentry kind="src" path="src/plugin/query-custom/src/java"/>
 	<classpathentry kind="src" path="src/test"/>
@@ -21,7 +22,6 @@
 	<classpathentry kind="src" path="src/plugin/admin-system/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-configuration/src/java"/>
 	<classpathentry kind="src" path="src/plugin/admin-instance/src/java"/>
-	<classpathentry kind="src" path="src/plugin/admin-instance/conf"/>
 	<classpathentry kind="src" path="src/plugin/admin-welcome/src/conf"/>
 	<classpathentry kind="src" path="src/plugin/admin-welcome/src/java"/>
 	<classpathentry kind="src" path="src/plugin/index-more/src/java"/>
@@ -88,7 +88,7 @@
 	<classpathentry kind="lib" path="src/plugin/parse-html/lib/tagsoup-1.2.jar"/>
 	<classpathentry kind="lib" path="src/plugin/lib-nekohtml/lib/nekohtml-0.9.4.jar"/>
 	<classpathentry kind="lib" path="src/plugin/admin-scheduling/lib/cron4j-1.1.6.jar"/>
-	<classpathentry kind="lib" path="src/plugin/admin-url-upload/lib/commons-fileupload-1.2.1.jar"/>
-	<classpathentry kind="lib" path="src/plugin/admin-url-upload/lib/commons-io-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/admin-ui-ext/commons-fileupload-1.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/admin-ui-ext/commons-io-1.4.jar"/>
 	<classpathentry kind="output" path="eclipse-classes"/>
 </classpath>
