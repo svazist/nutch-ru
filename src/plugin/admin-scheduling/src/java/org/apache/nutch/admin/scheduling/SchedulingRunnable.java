@@ -17,6 +17,7 @@
 package org.apache.nutch.admin.scheduling;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,19 +61,24 @@ public class SchedulingRunnable implements Runnable {
       LOG.info("lock the scheduled crawl: "
               + crawlData.getWorkingDirectory().getAbsolutePath());
       LOCK = true;
+      FileSystem fileSystem = null;
+      Path lockPath = null;
       try {
 
-        File workingDirectory = crawlData.getWorkingDirectory();
-        Path path = new Path(workingDirectory.getAbsolutePath(), "crawls");
+        File crawlDirectory = crawlData.getWorkingDirectory();
+        File workingDirectory = crawlDirectory.getParentFile();
+        Path path = new Path(crawlDirectory.getAbsolutePath(), "crawls");
         ConfigurationUtil configurationUtil = new ConfigurationUtil(
                 workingDirectory);
         Configuration configuration = configurationUtil
                 .loadConfiguration(workingDirectory.getName());
-        FileSystem fileSystem = FileSystem.get(configuration);
+        fileSystem = FileSystem.get(configuration);
         String folderName = "Crawl-" + _format.format(new Date());
         Path crawlDir = new Path(path, folderName);
         fileSystem.mkdirs(crawlDir);
 
+        lockPath = new Path(crawlDir, "crawl.running");
+        fileSystem.createNewFile(lockPath);
         CrawlTool crawlTool = new CrawlTool(configuration, crawlDir);
         crawlTool.preCrawl();
         crawlTool.crawl(crawlData.getTopn(), crawlData.getDepth());
@@ -82,6 +88,11 @@ public class SchedulingRunnable implements Runnable {
         LOG.info("unlock the scheduled crawl: "
                 + crawlData.getWorkingDirectory().getAbsolutePath());
         LOCK = false;
+        try {
+          fileSystem.delete(lockPath, false);
+        } catch (IOException e) {
+          LOG.warn("can not delete lock file.", e);
+        }
       }
     } else {
       LOG.info("fails...");
