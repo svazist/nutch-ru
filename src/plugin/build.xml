@@ -93,6 +93,7 @@
   	 <ant dir="admin-scheduling" target="deploy"/>
   	 <ant dir="admin-url-upload" target="deploy"/>
   	 <ant dir="admin-search" target="deploy"/>
+  	 <ant dir="index-metadata" target="deploy"/>
   </target>
 
   <!-- ====================================================== -->
@@ -205,5 +206,6 @@
   	<ant dir="admin-scheduling" target="clean"/>
   	<ant dir="admin-url-upload" target="clean"/>
   	<ant dir="admin-search" target="clean"/>
+  	<ant dir="index-metadata" target="clean"/>
   </target>
 </project>

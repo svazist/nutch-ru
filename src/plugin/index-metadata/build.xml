@@ -19,10 +19,4 @@
 
 	<import file="../build-plugin.xml" />
 
-	<target name="init-plugin">
-		<echo>Copying property file</echo>
-		<copy todir="${deploy.dir}">
-			<fileset dir="${basedir}" includes="**/*.properties" />
-		</copy>
-	</target>
 </project>

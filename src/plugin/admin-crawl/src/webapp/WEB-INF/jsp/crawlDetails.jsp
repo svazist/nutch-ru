@@ -83,7 +83,7 @@
 	<div id="bd">
 		<div id="yui-main" class="yui-t4">
 				<div class="yui-b">
-					<h3>Segmente</h3>
+					<h3><fmt:message key="crawlDetails.segments" bundle="${localBundle}"/></h3>
 					<div id="markup">
 					    <table id="crawls">
 					        <thead>
@@ -133,7 +133,7 @@
 					</script>						
 
 					<div>&nbsp;</div>
-					<h3>Datenbanken</h3>
+					<h3><fmt:message key="crawlDetails.database" bundle="${localBundle}"/></h3>
 					<div id="markupDbs">
 					    <table id="dbs">
 					        <thead>
@@ -179,7 +179,7 @@
 					</script>						
 
 					<div>&nbsp;</div>
-					<h3>Index</h3>
+					<h3><fmt:message key="crawlDetails.index" bundle="${localBundle}"/></h3>
 					<div id="markupIndex">
 					    <table id="index">
 					        <thead>
