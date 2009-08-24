@@ -73,10 +73,10 @@
 				<c:forEach items="${componentNavigation}" var="navigation">
 					<c:choose>
 						<c:when test="${navigation.name == selectedComponent}">
-							<li class="selected"><a href="${navigation.link}"><em>${navigation.name}</em></a></li>
+							<li class="selected"><a href="${navigation.link}"><em><fmt:message key="plugin.${navigation.name}" bundle="${globalBundle}"/></em></a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="${navigation.link}"><em>${navigation.name}</em></a></li>
+							<li><a href="${navigation.link}"><em><fmt:message key="plugin.${navigation.name}" bundle="${globalBundle}"/></em></a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -98,15 +98,14 @@
 					            <tr>
 					            	<th><fmt:message key="listCrawls.searchable" bundle="${localBundle}"/></th>
 					            	<th><fmt:message key="listCrawls.status" bundle="${localBundle}"/></th>
-					            	<th><fmt:message key="listCrawls.status" bundle="${localBundle}"/></th>
-					                <th><fmt:message key="listCrawls.status" bundle="${localBundle}"/></th>
+					            	<th><fmt:message key="listCrawls.path" bundle="${localBundle}"/></th>
+					                <th><fmt:message key="listCrawls.size" bundle="${localBundle}"/></th>
 					            </tr>
 					        </thead>
 					        <tbody>
 								<c:forEach items="${crawlPaths}" var="crawlPath" varStatus="i">
 						            <tr>
 						            	<td>
-						            		<!-- Marko: if searchable set class = switchOff -->
 						            		<div class="<c:choose><c:when test="${crawlPath.searchable}">switchOff</c:when><c:otherwise>switchOn</c:otherwise></c:choose>" id="switch_${i.index}">
 						            			<img src="${theme}/gfx/switch_button.png" id="button_${i.index}"/>
 						            		</div>

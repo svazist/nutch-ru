@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-	<title>Admin - Url Upload</title>
+	<title><fmt:message key="urlupload.title" bundle="${localBundle}"/></title>
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css">
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/container/assets/skins/sam/container.css" />
@@ -76,10 +76,10 @@
 				<c:forEach items="${componentNavigation}" var="navigation">
 					<c:choose>
 						<c:when test="${navigation.name == selectedComponent}">
-							<li class="selected"><a href="${navigation.link}"><em>${navigation.name}</em></a></li>
+							<li class="selected"><a href="${navigation.link}"><em><fmt:message key="plugin.${navigation.name}" bundle="${globalBundle}"/></em></a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="${navigation.link}"><em>${navigation.name}</em></a></li>
+							<li><a href="${navigation.link}"><em><fmt:message key="plugin.${navigation.name}" bundle="${globalBundle}"/></em></a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -90,35 +90,35 @@
 		<div id="bd">
 			<div id="yui-main">
 				<div class="yui-b">
-					<h3>Konfiguration</h3>
+					<h3><fmt:message key="urlupload.headline" bundle="${localBundle}"/></h3>
 					<div class="row">
-						<label>Black / White Liste:</label> <c:choose><c:when test="${isBwEnabled}">An</c:when><c:otherwise>Aus</c:otherwise></c:choose>
+						<label><fmt:message key="urlupload.bwList" bundle="${localBundle}"/>:</label> <c:choose><c:when test="${isBwEnabled}"><fmt:message key="urlupload.on" bundle="${localBundle}"/></c:when><c:otherwise><fmt:message key="urlupload.off" bundle="${localBundle}"/></c:otherwise></c:choose>
 					</div>
 					<div class="row">
-						<label>Metadaten:</label> <c:choose><c:when test="${isMetadataEnabled}">An</c:when><c:otherwise>Aus</c:otherwise></c:choose>
+						<label><fmt:message key="urlupload.metadata" bundle="${localBundle}"/>:</label> <c:choose><c:when test="${isMetadataEnabled}"><fmt:message key="urlupload.on" bundle="${localBundle}"/></c:when><c:otherwise><fmt:message key="urlupload.off" bundle="${localBundle}"/></c:otherwise></c:choose>
 					</div>
 					
 					<br/>
-					<h3>URLs Hochladen</h3>
+					<h3><fmt:message key="urlupload.uploadUrls" bundle="${localBundle}"/></h3>
 					<form action="upload.html" method="post" enctype="multipart/form-data">
 					<fieldset>
-					    <legend>Neue Urls als Zip Hochladen</legend>
+					    <legend><fmt:message key="urlupload.uploadUrlsAsZip" bundle="${localBundle}"/></legend>
 					    
 					    <row>
-					        <label>Typ:</label>
+					        <label><fmt:message key="urlupload.type" bundle="${localBundle}"/>:</label>
 					        <field>
 					           <select name="type">
-									<option value="start">Start URLs</option>
-									<option value="limit" <c:if test="${!isBwEnabled}">disabled="disabled"</c:if>>Limit URLs</option>
-									<option value="exclude" <c:if test="${!isBwEnabled}">disabled="disabled"</c:if>>Exclude URLs</option>
-									<option value="metadata" <c:if test="${!isMetadataEnabled}">disabled="disabled"</c:if>>URL Metadata</option>
+									<option value="start"><fmt:message key="urlupload.startUrls" bundle="${localBundle}"/></option>
+									<option value="limit" <c:if test="${!isBwEnabled}">disabled="disabled"</c:if>><fmt:message key="urlupload.limitUrls" bundle="${localBundle}"/></option>
+									<option value="exclude" <c:if test="${!isBwEnabled}">disabled="disabled"</c:if>><fmt:message key="urlupload.excludeUrls" bundle="${localBundle}"/></option>
+									<option value="metadata" <c:if test="${!isMetadataEnabled}">disabled="disabled"</c:if>><fmt:message key="urlupload.urlMetadata" bundle="${localBundle}"/></option>
 								</select>
 						     </field>
 					        <desc></desc>
 					    </row>
 					    
 					    <row>
-					        <label>Zip Datei:</label>
+					        <label><fmt:message key="urlupload.zipFile" bundle="${localBundle}"/>:</label>
 					        <field>
 					           <input name="file" type="file" value=""/>
 						     </field>
@@ -128,48 +128,48 @@
 					     <row>
 					        <label>&nbsp;</label>
 					        <field>
-					            <input type="submit" value="Hochladen"/>
+					            <input type="submit" value="<fmt:message key="button.upload" bundle="${globalBundle}"/>"/>
 					        </field>
 					    </row>
 					</fieldset>
 					</form>
 					
 					
-					<h3>Vorhandene Dateien</h3>
+					<h3><fmt:message key="urlupload.availableFiles" bundle="${localBundle}"/></h3>
 					<div class="row">
-						<label>Start URL Dateien:</label>
-						&nbsp;<c:forEach items="${startUrls}" var="zip">${zip.name} <img src="${theme}/gfx/delete.png" align="absmiddle" style="cursor:pointer" onclick="submitDelete('start','${zip.name}')" titel="Löschen"/>, </c:forEach>
+						<label><fmt:message key="urlupload.startUrlFiles" bundle="${localBundle}"/>:</label>
+						&nbsp;<c:forEach items="${startUrls}" var="zip">${zip.name} <img src="${theme}/gfx/delete.png" align="absmiddle" style="cursor:pointer" onclick="submitDelete('start','${zip.name}')" titel="<fmt:message key="button.delete" bundle="${globalBundle}"/>"/>, </c:forEach>
 					</div>
 					<div class="row">
-						<label>Limit URL Dateien:</label>&nbsp;
+						<label><fmt:message key="urlupload.limitUrlFiles" bundle="${localBundle}"/>:</label>&nbsp;
 						<c:choose>
 							<c:when test="${isBwEnabled}">
-								<c:forEach items="${limitUrls}" var="zip">${zip.name} <img src="${theme}/gfx/delete.png" align="absmiddle" style="cursor:pointer" onclick="submitDelete('limit','${zip.name}')" titel="Löschen"/>, </c:forEach>
+								<c:forEach items="${limitUrls}" var="zip">${zip.name} <img src="${theme}/gfx/delete.png" align="absmiddle" style="cursor:pointer" onclick="submitDelete('limit','${zip.name}')" titel="<fmt:message key="button.delete" bundle="${globalBundle}"/>"/>, </c:forEach>
 							</c:when>
 							<c:otherwise>
-								Nicht verfügbar
+								<fmt:message key="urlupload.na" bundle="${localBundle}"/>
 							</c:otherwise>
 						</c:choose>
 					</div>
 					<div class="row">
-						<label>Exclude URL Dateien:</label>&nbsp;
+						<label><fmt:message key="urlupload.excludeUrlFiles" bundle="${localBundle}"/>:</label>&nbsp;
 						<c:choose>
 							<c:when test="${isBwEnabled}">
-								<c:forEach items="${excludeUrls}" var="zip">${zip.name} <img src="${theme}/gfx/delete.png" align="absmiddle" style="cursor:pointer" onclick="submitDelete('exclude','${zip.name}')" titel="Löschen"/>, </c:forEach>
+								<c:forEach items="${excludeUrls}" var="zip">${zip.name} <img src="${theme}/gfx/delete.png" align="absmiddle" style="cursor:pointer" onclick="submitDelete('exclude','${zip.name}')" titel="<fmt:message key="button.delete" bundle="${globalBundle}"/>"/>, </c:forEach>
 							</c:when>
 							<c:otherwise>
-								Nicht verfügbar
+								<fmt:message key="urlupload.na" bundle="${localBundle}"/>
 							</c:otherwise>
 						</c:choose>
 					</div>
 					<div class="row">
-						<label>Metadaten Dateien:</label>&nbsp;
+						<label><fmt:message key="urlupload.metadataFiles" bundle="${localBundle}"/>:</label>&nbsp;
 						<c:choose>
 							<c:when test="${isMetadataEnabled}">
 								<c:forEach items="${metadataUrls}" var="zip">${zip.name} <img src="${theme}/gfx/delete.png" align="absmiddle" style="cursor:pointer" onclick="submitDelete('metadata','${zip.name}')" titel="Löschen"/>, </c:forEach>
 							</c:when>
 							<c:otherwise>
-								Nicht verfügbar
+								<fmt:message key="urlupload.na" bundle="${localBundle}"/>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -191,12 +191,15 @@
 				</div>	
 		</div>
 		<div class="yui-b">
-			<h3>Hilfe</h3>
+			<h3><fmt:message key="urlupload.help" bundle="${localBundle}"/></h3>
+			<fmt:message key="urlupload.helpText" bundle="${localBundle}"/>
+			<!-- 
 			<ul class="decorated">
 				<li>Wo schaltet man Config An / Aus?</li>
 				<li>Was machen Limit / Exclude / Metadaten</li>
 				<li>Wie ist eine Datei aufgebaut? (1 Url pro Zeile, Metadaten tab-sep. key:value ...)</li>
 			</ul>
+			 -->
 		</div> 
 	</div>
 	<div id="ft">

@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-	<title>Admin - System</title>
+	<title><fmt:message key="system.title" bundle="${localBundle}"/></title>
 
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css" />
@@ -62,10 +62,10 @@
 			<c:forEach items="${componentNavigation}" var="navigation">
 				<c:choose>
 					<c:when test="${navigation.name == selectedComponent}">
-						<li class="selected"><a href="${navigation.link}"><em>${navigation.name}</em></a></li>
+						<li class="selected"><a href="${navigation.link}"><em><fmt:message key="plugin.${navigation.name}" bundle="${globalBundle}"/></em></a></li>
 					</c:when>
 					<c:otherwise>
-						<li><a href="${navigation.link}"><em>${navigation.name}</em></a></li>
+						<li><a href="${navigation.link}"><em><fmt:message key="plugin.${navigation.name}" bundle="${globalBundle}"/></em></a></li>
 					</c:otherwise>
 				</c:choose>
 			</c:forEach>
@@ -75,23 +75,23 @@
 	<div id="bd"> 
 		<div id="yui-main"> 
 			<div class="yui-b">
-				<h3>System Übersicht</h3>
+				<h3><fmt:message key="system.headline" bundle="${localBundle}"/></h3>
 				<div>
 					<div style="border-bottom:1px dotted #CCCCCC; padding:10px 0 10px 0">
-						<label>RAM (benutzt):</label> ${systemInfo.usedMemory} MB
+						<label><fmt:message key="system.ramUsed" bundle="${localBundle}"/>:</label> ${systemInfo.usedMemory} MB
 					</div>
 					<div style="border-bottom:1px dotted #CCCCCC; padding:10px 0 10px 0">
-						<label>RAM (verfügbar):</label> ${systemInfo.maxMemory} MB
+						<label><fmt:message key="system.ramAvailable" bundle="${localBundle}"/>:</label> ${systemInfo.maxMemory} MB
 					</div>
 					<div style="border-bottom:1px dotted #CCCCCC; padding:10px 0 10px 0">
-						<label>Auslastung:</label> ${systemInfo.usedMemoryInPercent}%
+						<label><fmt:message key="system.load" bundle="${localBundle}"/>:</label> ${systemInfo.usedMemoryInPercent}%
 					</div>
 				</div>	
 				
 				<div style="margin-top:25px"></div>
 				<input type="hidden" id="mode" value="start"/>
-				<h3>Log Datei</h3>
-				<img src="${theme}/gfx/console.png" align="absmiddle"/> Zeige <input type="text" id="lineCount" value="" size="5"/> letzte Zeilen <input type="button" value="Setzen" onClick="lineCount = document.getElementById('lineCount').value; getLog(lineCount); "/>
+				<h3><fmt:message key="system.logfile" bundle="${localBundle}"/></h3>
+				<img src="${theme}/gfx/console.png" align="absmiddle"/> <fmt:message key="system.show" bundle="${localBundle}"/> <input type="text" id="lineCount" value="" size="5"/> <fmt:message key="system.recentLines" bundle="${localBundle}"/> <input type="button" value="<fmt:message key="button.set" bundle="${globalBundle}"/>" onClick="lineCount = document.getElementById('lineCount').value; getLog(lineCount); "/>
 				<img src="${theme}/gfx/play_inactive.png" align="absmiddle" id="start" onclick="handleStartStop('start')" style="cursor:pointer">
 				<img src="${theme}/gfx/pause.png" align="absmiddle" id="stop" onclick="handleStartStop('stop')"  style="cursor:pointer">
 				<script>

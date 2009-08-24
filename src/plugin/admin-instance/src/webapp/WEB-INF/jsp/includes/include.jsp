@@ -20,4 +20,4 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %> 
 
 <fmt:setBundle basename="webapp/${theme}/i18n/messages" var="globalBundle" />
-<fmt:setBundle basename="${theme}/i18n/messages" var="localBundle" /> 
+<fmt:setBundle basename="${theme}/i18n/instance_messages" var="localBundle" /> 

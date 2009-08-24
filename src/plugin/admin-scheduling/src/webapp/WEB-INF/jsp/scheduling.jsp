@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-	<title>Admin - Scheduling</title>
+	<title><fmt:message key="scheduling.title" bundle="${localBundle}"/></title>
 
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	
@@ -60,10 +60,10 @@
 				<c:forEach items="${componentNavigation}" var="navigation">
 					<c:choose>
 						<c:when test="${navigation.name == selectedComponent}">
-							<li class="selected"><a href="${navigation.link}"><em>${navigation.name}</em></a></li>
+							<li class="selected"><a href="${navigation.link}"><em><fmt:message key="plugin.${navigation.name}" bundle="${globalBundle}"/></em></a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="${navigation.link}"><em>${navigation.name}</em></a></li>
+							<li><a href="${navigation.link}"><em><fmt:message key="plugin.${navigation.name}" bundle="${globalBundle}"/></em></a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -74,35 +74,35 @@
 	<div id="bd">
 		<div id="yui-main">
 				<div class="yui-b">
-					<h3>Scheduling</h3>
-					<div style="border-bottom:1px dotted #CCCCCC; padding:10px 0 10px 0">
+					<h3><fmt:message key="scheduling.headline" bundle="${localBundle}"/></h3>
+					<div class="row">
 						<form action="delete.html" method="post">
-							<label>Cron Pattern:</label> ${savedPattern}
+							<label><fmt:message key="scheduling.cronPattern" bundle="${localBundle}"/>:</label>&nbsp;${savedPattern}
 							<input type="image" src="${theme}/gfx/delete.png" title="Löschen" align="absmiddle">
 						</form>
 					</div>
-					<div style="border-bottom:1px dotted #CCCCCC; padding:10px 0 10px 0">
-						<label>Crawl Parameter:</label> ${savedCrawlData}
+					<div class="row">
+						<label><fmt:message key="scheduling.crawlParams" bundle="${localBundle}"/>:</label>&nbsp;${savedCrawlData}
 					</div>
 					
 					<div style="margin-top:25px"></div>
 					
 					<div id="schedulingTabs" class="yui-navset">
 					    <ul class="yui-nav">
-					        <li class="selected"><a href="#tab1"><em>Tag</em></a></li>
-					        <li><a href="#tab2"><em>Woche</em></a></li>
-					        <li><a href="#tab3"><em>Monat</em></a></li>
-					        <li><a href="#tab4"><em>Erweitert</em></a></li>
+					        <li class="selected"><a href="#tab1"><em><fmt:message key="scheduling.day" bundle="${localBundle}"/></em></a></li>
+					        <li><a href="#tab2"><em><fmt:message key="scheduling.week" bundle="${localBundle}"/></em></a></li>
+					        <li><a href="#tab3"><em><fmt:message key="scheduling.month" bundle="${localBundle}"/></em></a></li>
+					        <li><a href="#tab4"><em><fmt:message key="scheduling.advanced" bundle="${localBundle}"/></em></a></li>
 					    </ul>            
 					    <div class="yui-content">
 					        <div id="tab1">
 					        	<p>
 					        		<form:form action="daily.html" method="post" commandName="clockCommand">
 					        			<fieldset>
-					        				<legend>Täglich</legend>
+					        				<legend><fmt:message key="scheduling.daily" bundle="${localBundle}"/></legend>
 						        			
 						        			<row>
-										        <label>Stunde:</label>
+										        <label><fmt:message key="scheduling.hour" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="hour">
 								        				<form:options items="${hours}"/>
@@ -113,7 +113,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>Minute:</label>
+										        <label><fmt:message key="scheduling.minute" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="minute">
 								        				<form:options items="${minutes}"/>
@@ -124,7 +124,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>Tageszeit:</label>
+										        <label><fmt:message key="scheduling.daytime" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="period">
 								        				<form:options items="${periods}"/>	
@@ -135,10 +135,10 @@
 										    </row>
 					        			</fieldset>
 					        			<fieldset>
-					        				<legend>Crawl Parameter</legend>
+					        				<legend><fmt:message key="scheduling.crawlParams" bundle="${localBundle}"/></legend>
 					        				
 					        				<row>
-										        <label>Crawl Tiefe:</label>
+										        <label><fmt:message key="scheduling.crawlDepth" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="depth">
 								        				<form:options items="${depths}"/>
@@ -149,7 +149,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>Seiten pro Segment:</label>
+										        <label><fmt:message key="scheduling.pagesPerSegment" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:input path="topn" />
 										            <div class="error"><form:errors path="topn" /></div>
@@ -161,7 +161,7 @@
 					        			<fieldset>
 					        				<label>&nbsp;</label>
 									        <field>
-									           	<input type="submit" value="Speichern" />
+									           	<input type="submit" value="<fmt:message key="button.save" bundle="${globalBundle}"/>" />
 									        </field>
 									        <desc></desc>	
 					        			</fieldset>
@@ -174,10 +174,10 @@
 					        	
 					        		<form:form action="weekly.html" method="post" commandName="weeklyCommand">
 					        			<fieldset>
-					        				<legend>Wöchentlich</legend>
+					        				<legend><fmt:message key="scheduling.weekly" bundle="${localBundle}"/></legend>
 						        			
 						        			<row>
-										        <label>Stunde:</label>
+										        <label><fmt:message key="scheduling.hour" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="hour">
 								        				<form:options items="${hours}"/>
@@ -188,7 +188,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>Minute:</label>
+										        <label><fmt:message key="scheduling.minute" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="minute">
 								        				<form:options items="${minutes}"/>
@@ -199,7 +199,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>Tageszeit:</label>
+										        <label><fmt:message key="scheduling.daytime" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="period">
 								        				<form:options items="${periods}"/>	
@@ -210,7 +210,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>An Wochentagen:</label>
+										        <label><fmt:message key="scheduling.weekdays" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<c:forEach var="day" items="${days}">
 										           		<div id="dayOfWeekButtons" style="float:left; margin:2px 2px 0 0 ;">
@@ -238,10 +238,10 @@
 										</script>
 					        			
 					        			<fieldset>
-					        				<legend>Crawl Parameter</legend>
+					        				<legend><fmt:message key="scheduling.crawlParams" bundle="${localBundle}"/></legend>
 					        				
 					        				<row>
-										        <label>Crawl Tiefe:</label>
+										        <label><fmt:message key="scheduling.crawlDepth" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="depth">
 								        				<form:options items="${depths}"/>
@@ -252,7 +252,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>Seiten pro Segment:</label>
+										        <label><fmt:message key="scheduling.pagesPerSegment" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:input path="topn" />
 										            <div class="error"><form:errors path="topn" /></div>
@@ -264,7 +264,7 @@
 					        			<fieldset>
 					        				<label>&nbsp;</label>
 									        <field>
-									           	<input type="submit" value="Speichern" />
+									           	<input type="submit" value="<fmt:message key="button.save" bundle="${globalBundle}"/>" />
 									        </field>
 									        <desc></desc>	
 					        			</fieldset>
@@ -279,10 +279,10 @@
 		
 									<form:form action="monthly.html" method="post" commandName="monthlyCommand">
 					        			<fieldset>
-					        				<legend>Monatlich</legend>
+					        				<legend><fmt:message key="scheduling.monthly" bundle="${localBundle}"/></legend>
 						        			
 						        			<row>
-										        <label>Stunde:</label>
+										        <label><fmt:message key="scheduling.hour" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="hour">
 								        				<form:options items="${hours}"/>
@@ -293,7 +293,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>Minute:</label>
+										        <label><fmt:message key="scheduling.minute" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="minute">
 								        				<form:options items="${minutes}"/>
@@ -304,7 +304,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>Tageszeit:</label>
+										        <label><fmt:message key="scheduling.daytime" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="period">
 								        				<form:options items="${periods}"/>	
@@ -315,7 +315,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>An Tagen:</label>
+										        <label><fmt:message key="scheduling.atDays" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<c:forEach items="${month}" var="dayOfMonth">
 		     											<div id="checkboxButtons" style="float:left; margin:2px 2px 0 0 ">
@@ -343,10 +343,10 @@
 										</script>
 					        			
 					        			<fieldset>
-					        				<legend>Crawl Parameter</legend>
+					        				<legend><fmt:message key="scheduling.crawlParams" bundle="${localBundle}"/></legend>
 					        				
 					        				<row>
-										        <label>Crawl Tiefe:</label>
+										        <label><fmt:message key="scheduling.crawlDepth" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="depth">
 								        				<form:options items="${depths}"/>
@@ -357,7 +357,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>Seiten pro Segment:</label>
+										        <label><fmt:message key="scheduling.pagesPerSegment" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:input path="topn" />
 										            <div class="error"><form:errors path="topn" /></div>
@@ -369,7 +369,7 @@
 					        			<fieldset>
 					        				<label>&nbsp;</label>
 									        <field>
-									           	<input type="submit" value="Speichern" />
+									           	<input type="submit" value="<fmt:message key="button.save" bundle="${globalBundle}"/>" />
 									        </field>
 									        <desc></desc>	
 					        			</fieldset>
@@ -381,10 +381,10 @@
 					        	<p>
 						        	<form:form action="advanced.html" method="post" commandName="advancedCommand">
 						        		<fieldset>
-					        				<legend>Erweitert</legend>
+					        				<legend><fmt:message key="scheduling.advanced" bundle="${localBundle}"/></legend>
 					        				
 					        				<row>
-					        					<label>Cron Pattern:</label>
+					        					<label><fmt:message key="scheduling.cronPattern" bundle="${localBundle}"/>:</label>
 					        					<field>
 					        						<form:input path="pattern" />
 					        						<div class="error"><form:errors path="pattern" /></div>
@@ -393,10 +393,10 @@
 						        		</fieldset>
 					        			
 					        			<fieldset>
-					        				<legend>Crawl Parameter</legend>
+					        				<legend><fmt:message key="scheduling.crawlParams" bundle="${localBundle}"/></legend>
 					        				
 					        				<row>
-										        <label>Crawl Tiefe:</label>
+										        <label><fmt:message key="scheduling.crawlDepth" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:select path="depth">
 								        				<form:options items="${depths}"/>
@@ -407,7 +407,7 @@
 										    </row>
 										    
 										    <row>
-										        <label>Seiten pro Segment:</label>
+										        <label><fmt:message key="scheduling.pagesPerSegment" bundle="${localBundle}"/>:</label>
 										        <field>
 										           	<form:input path="topn" />
 										            <div class="error"><form:errors path="topn" /></div>
@@ -419,7 +419,7 @@
 					        			<fieldset>
 					        				<label>&nbsp;</label>
 									        <field>
-									           	<input type="submit" value="Speichern" />
+									           	<input type="submit" value="<fmt:message key="button.save" bundle="${globalBundle}"/>" />
 									        </field>
 									        <desc></desc>	
 					        			</fieldset>

@@ -18,7 +18,7 @@
 <%@ include file="/WEB-INF/jsp/includes/include.jsp" %>
 <html>
 <head>
-<title>Nutch Administration - Suche</title>
+	<title><fmt:message key="search.title" bundle="${localBundle}"/></title>
 	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
 	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css" />
 	<script type="text/javascript" src="${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
@@ -57,10 +57,10 @@
 				<c:forEach items="${componentNavigation}" var="navigation">
 					<c:choose>
 						<c:when test="${navigation.name == selectedComponent}">
-							<li class="selected"><a href="${navigation.link}"><em>${navigation.name}</em></a></li>
+							<li class="selected"><a href="${navigation.link}"><em><fmt:message key="plugin.${navigation.name}" bundle="${globalBundle}"/></em></a></li>
 						</c:when>
 						<c:otherwise>
-							<li><a href="${navigation.link}"><em>${navigation.name}</em></a></li>
+							<li><a href="${navigation.link}"><em><fmt:message key="plugin.${navigation.name}" bundle="${globalBundle}"/></em></a></li>
 						</c:otherwise>
 					</c:choose>
 				</c:forEach>
@@ -71,22 +71,24 @@
 		<div id="bd">
 			<div id="yui-main">
 				<div class="yui-b">
-					<h3>Suche</h3>
+					<h3><fmt:message key="search.headline" bundle="${localBundle}"/></h3>
 					<form method="get" action="search.html" id="searchForm">
 						<input type="hidden" name="start" id="start" value="0"/>
 						<input type="hidden" name="length" id="length" value="10"/>
 						<fieldset>
-					    <legend>Index Testen</legend>
+					    <legend><fmt:message key="search.testIndex" bundle="${localBundle}"/></legend>
 						    <row>
 						        <field>
 						           <input type="text" name="query" value="${query}"/>
 						        </field>
-						        <desc> <input type="submit" value="Suchen"/></desc>
+						        <desc> <input type="submit" value="<fmt:message key="button.search" bundle="${globalBundle}"/>"/></desc>
 						    </row>
 						</fieldset>
 					</form>
 					
-					<div style="text-align:right">${totalHits} hits total</div>
+					<c:if test="${!empty totalHits}">
+					<div style="text-align:right">${totalHits} <fmt:message key="search.hitsTotal" bundle="${localBundle}"/></div>
+					</c:if>
 					
 					<div class="result">
 						<c:forEach items="${searchResults}" var="searchResult">
@@ -102,6 +104,7 @@
 						</c:forEach>
 					</div>
 					
+					<c:if test="${!empty totalHits && totalHits > 0}">
 					<div id="paging"></div>
 					<script>
 					var pag = new YAHOO.widget.Paginator({
@@ -125,7 +128,7 @@
 					pag.setState(
 						{
 						    paginator    : pag,
-						    page         : ${page}, // the current page
+						    page         : ${page} // the current page
 						    //records      : [ 10, 19 ], // index offsets of first and last records on the current page
 						    //recordOffset : 10, // index offset of the first record on the current page
 						    //totalRecords : 100, // current totalRecords value
@@ -135,6 +138,7 @@
 					pag.subscribe('changeRequest',Search.handlePagination);
 					pag.render();
 					</script>
+					</c:if>
 					
 					
 				</div>
