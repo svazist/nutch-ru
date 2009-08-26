@@ -132,7 +132,9 @@ public class CrawlTool {
         bwUpdateDb.update(crawlDb, bwDb, new Path[] { segment }, true, true); // update
       }
       if (metadataEnable) {
-        parseDataUpdater.update(metadataDb, segment);
+        if (_fileSystem.exists(metadataDb)) {
+          parseDataUpdater.update(metadataDb, segment);
+        }
       }
     }
     if (i > 0) {
