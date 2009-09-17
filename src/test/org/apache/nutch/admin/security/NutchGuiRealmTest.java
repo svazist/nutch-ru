@@ -47,13 +47,6 @@ public class NutchGuiRealmTest extends TestCase {
     assertEquals(principal, principal2);
   }
 
-  public void testLogout() throws Exception {
-    UserRealm realm = new NutchGuiRealm();
-    Principal principal = new NutchGuiPrincipal.KnownPrincipal("user",
-            "password", null);
-    realm.logout(principal);
-  }
-
   public void testIsUserInRole() throws Exception {
     UserRealm realm = new NutchGuiRealm();
     Set<String> set = new HashSet<String>();
@@ -63,7 +56,6 @@ public class NutchGuiRealmTest extends TestCase {
     assertTrue(realm.isUserInRole(principal, "role"));
     assertFalse(realm.isUserInRole(principal, "foo"));
   }
-
 
   public void testGetPrincipal() throws Exception {
     UserRealm realm = new NutchGuiRealm();
@@ -108,6 +100,15 @@ public class NutchGuiRealmTest extends TestCase {
     assertTrue(realm.isUserInRole(principal, "user"));
     assertTrue(realm.isUserInRole(principal, "admin"));
     assertFalse(realm.isUserInRole(principal, "foobar"));
+  }
+
+  public void testLogout() throws Exception {
+    UserRealm realm = new NutchGuiRealm();
+    Mockito.when(_request.getParameter("j_username")).thenReturn("foo");
+    Mockito.when(_request.getParameter("j_password")).thenReturn("bar");
+
+    Principal principal = realm.authenticate(null, null, _request);
+    realm.logout(principal);
   }
 
 }

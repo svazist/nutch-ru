@@ -25,6 +25,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.nutch.admin.security.NutchGuiRealm;
 import org.apache.nutch.plugin.Extension;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.SocketListener;
@@ -84,6 +85,7 @@ public class HttpServer extends Thread {
         + contextPath + "] to webserver");
     WebApplicationContext context = _server.addWebApplication(contextPath,
         webApp);
+    context.setRealm(new NutchGuiRealm());
     context.setClassLoader(extension.getDescriptor().getClassLoader());
     context.setAttribute("nutchInstance", nutchInstance);
     

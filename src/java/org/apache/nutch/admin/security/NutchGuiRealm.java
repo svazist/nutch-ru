@@ -35,6 +35,11 @@ public class NutchGuiRealm implements UserRealm {
       Subject subject = loginContext.getSubject();
       Set<Principal> principals = subject.getPrincipals();
       principal = principals.isEmpty() ? null : principals.iterator().next();
+      if (principal != null) {
+        KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
+        knownPrincipal.setLoginContext(loginContext);
+        LOG.info("principal has logged in: " + principal);
+      }
     } catch (LoginException e) {
       LOG.error("login failed", e);
     }
@@ -59,16 +64,21 @@ public class NutchGuiRealm implements UserRealm {
   @Override
   public boolean isUserInRole(Principal principal, String role) {
     boolean bit = false;
-    if (principal instanceof KnownPrincipal) {
-      KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
-      bit = knownPrincipal.isInRole(role);
-    }
+    KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
+    bit = knownPrincipal.isInRole(role);
     return bit;
   }
 
   @Override
   public void logout(Principal principal) {
-    // nothing todo
+    try {
+      KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
+      LoginContext loginContext = knownPrincipal.getLoginContext();
+      loginContext.logout();
+      LOG.info("principal has logged out: " + knownPrincipal);
+    } catch (LoginException e) {
+      LOG.warn("logout failed", e);
+    }
   }
 
   @Override
