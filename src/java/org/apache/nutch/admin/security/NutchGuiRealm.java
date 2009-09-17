@@ -26,7 +26,7 @@ public class NutchGuiRealm implements UserRealm {
   @Override
   public Principal authenticate(String userName, Object password,
           HttpRequest request) {
-    Principal principal = null;
+    Principal principal = new NutchGuiPrincipal.AnonymousPrincipal();
     try {
       JUserJPasswordCallbackHandler handler = new JUserJPasswordCallbackHandler(
               request);
@@ -34,8 +34,9 @@ public class NutchGuiRealm implements UserRealm {
       loginContext.login();
       Subject subject = loginContext.getSubject();
       Set<Principal> principals = subject.getPrincipals();
-      principal = principals.isEmpty() ? null : principals.iterator().next();
-      if (principal != null) {
+      principal = principals.isEmpty() ? principal : principals.iterator()
+              .next();
+      if (principal instanceof KnownPrincipal) {
         KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
         knownPrincipal.setLoginContext(loginContext);
         LOG.info("principal has logged in: " + principal);
@@ -64,18 +65,22 @@ public class NutchGuiRealm implements UserRealm {
   @Override
   public boolean isUserInRole(Principal principal, String role) {
     boolean bit = false;
-    KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
-    bit = knownPrincipal.isInRole(role);
+    if (principal instanceof KnownPrincipal) {
+      KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
+      bit = knownPrincipal.isInRole(role);
+    }
     return bit;
   }
 
   @Override
   public void logout(Principal principal) {
     try {
-      KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
-      LoginContext loginContext = knownPrincipal.getLoginContext();
-      loginContext.logout();
-      LOG.info("principal has logged out: " + knownPrincipal);
+      if (principal instanceof KnownPrincipal) {
+        KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
+        LoginContext loginContext = knownPrincipal.getLoginContext();
+        loginContext.logout();
+        LOG.info("principal has logged out: " + knownPrincipal);
+      }
     } catch (LoginException e) {
       LOG.warn("logout failed", e);
     }
