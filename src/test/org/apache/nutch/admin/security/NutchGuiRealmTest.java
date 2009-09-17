@@ -64,6 +64,7 @@ public class NutchGuiRealmTest extends TestCase {
     assertFalse(realm.isUserInRole(principal, "foo"));
   }
 
+
   public void testGetPrincipal() throws Exception {
     UserRealm realm = new NutchGuiRealm();
     try {
@@ -97,4 +98,16 @@ public class NutchGuiRealmTest extends TestCase {
     KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
     assertEquals("foo", knownPrincipal.getName());
   }
+
+  public void testIsUserInRoleAfterLogin() throws Exception {
+    UserRealm realm = new NutchGuiRealm();
+    Mockito.when(_request.getParameter("j_username")).thenReturn("foo");
+    Mockito.when(_request.getParameter("j_password")).thenReturn("bar");
+
+    Principal principal = realm.authenticate(null, null, _request);
+    assertTrue(realm.isUserInRole(principal, "user"));
+    assertTrue(realm.isUserInRole(principal, "admin"));
+    assertFalse(realm.isUserInRole(principal, "foobar"));
+  }
+
 }
