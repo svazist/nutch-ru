@@ -30,6 +30,7 @@ import org.apache.nutch.plugin.Extension;
 import org.mortbay.http.HttpContext;
 import org.mortbay.http.SocketListener;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.servlet.HashSessionManager;
 import org.mortbay.jetty.servlet.WebApplicationContext;
 
 public class HttpServer extends Thread {
@@ -57,6 +58,7 @@ public class HttpServer extends Thread {
       SocketListener listener = new SocketListener();
       listener.setPort(_port);
       _server.addListener(listener);
+      _server.addRealm(new NutchGuiRealm());
       start();
     }
   }
@@ -68,9 +70,9 @@ public class HttpServer extends Thread {
   }
 
   public void addGuiComponentExtension(Extension extension,
-      NutchInstance nutchInstance) throws Exception {
+          NutchInstance nutchInstance) throws Exception {
     IGuiComponent guiComponent = (IGuiComponent) extension
-        .getExtensionInstance();
+            .getExtensionInstance();
     guiComponent.configure(extension, nutchInstance);
     String pluginId = extension.getDescriptor().getPluginId();
     String contextPath = "/" + nutchInstance.getInstanceName();
@@ -79,21 +81,22 @@ public class HttpServer extends Thread {
     }
 
     String webApp = new File(extension.getDescriptor().getPluginPath()
-        + File.separator + "src/webapp" + File.separator).getCanonicalPath();
+            + File.separator + "src/webapp" + File.separator)
+            .getCanonicalPath();
 
     LOG.info("add webapplication [" + webApp + "] with contextPath ["
-        + contextPath + "] to webserver");
+            + contextPath + "] to webserver");
     WebApplicationContext context = _server.addWebApplication(contextPath,
-        webApp);
-    context.setRealm(new NutchGuiRealm());
+            webApp);
     context.setClassLoader(extension.getDescriptor().getClassLoader());
     context.setAttribute("nutchInstance", nutchInstance);
-    
+
     // add theme into view to load different css files
     String theme = System.getProperty("nutch.gui.theme", "default");
     context.setAttribute("theme", theme);
-    
-    
+    ((HashSessionManager) context.getServletHandler().getSessionManager())
+            .setCrossContextSessionIDs(true);
+
     Set<Entry<String, Object>> entrySet = _contextAttributes.entrySet();
     for (Entry<String, Object> entry : entrySet) {
       context.setAttribute(entry.getKey(), entry.getValue());

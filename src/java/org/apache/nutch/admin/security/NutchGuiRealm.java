@@ -1,6 +1,9 @@
 package org.apache.nutch.admin.security;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.security.auth.Subject;
@@ -11,11 +14,31 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.nutch.admin.security.NutchGuiPrincipal.KnownPrincipal;
 import org.mortbay.http.HttpRequest;
+import org.mortbay.http.HttpResponse;
+import org.mortbay.http.SSORealm;
 import org.mortbay.http.UserRealm;
+import org.mortbay.jetty.servlet.ServletHttpRequest;
+import org.mortbay.util.Credential;
 
-public class NutchGuiRealm implements UserRealm {
+public class NutchGuiRealm implements UserRealm, SSORealm {
+
+  class SSOToken {
+    private final Principal _principal;
+    private final Credential _credential;
+
+    public SSOToken(Principal principal, Credential credential) {
+      _principal = principal;
+      _credential = credential;
+    }
+
+    @Override
+    public String toString() {
+      return _principal.getName();
+    }
+  }
 
   private final Log LOG = LogFactory.getLog(NutchGuiRealm.class);
+  private Map<String, SSOToken> _ssoMap = new HashMap<String, SSOToken>();
 
   public NutchGuiRealm() {
     System.setProperty("java.security.auth.login.config", System
@@ -54,7 +77,7 @@ public class NutchGuiRealm implements UserRealm {
 
   @Override
   public String getName() {
-    throw new UnsupportedOperationException("not implemented");
+    return NutchGuiRealm.class.getSimpleName();
   }
 
   @Override
@@ -101,5 +124,56 @@ public class NutchGuiRealm implements UserRealm {
   @Override
   public boolean reauthenticate(Principal principal) {
     return (principal instanceof KnownPrincipal);
+  }
+
+  @Override
+  public void clearSingleSignOn(String userName) {
+    Iterator<String> iterator = _ssoMap.keySet().iterator();
+    while (iterator.hasNext()) {
+      String id = (String) iterator.next();
+      SSOToken ssoToken = _ssoMap.get(id);
+      if (ssoToken._principal.getName().equals(userName)) {
+        LOG.info("remove sso token for id: " + id + " and user name:"
+                + userName);
+        iterator.remove();
+      }
+    }
+    LOG.info("sso tokens in memory: " + _ssoMap);
+  }
+
+  @Override
+  public Credential getSingleSignOn(HttpRequest request, HttpResponse response) {
+    Credential credential = null;
+    String id = generateId(request);
+    LOG.info("try to load sso token with id: " + id);
+    if (_ssoMap.containsKey(id)) {
+      SSOToken ssoToken = _ssoMap.get(id);
+      Principal principal = ssoToken._principal;
+      LOG.info("found principal: " + principal);
+      if (response.getHttpContext().getRealm().reauthenticate(principal)) {
+        request.setUserPrincipal(principal);
+        request.setAuthUser(principal.getName());
+        credential = ssoToken._credential;
+      } else {
+        _ssoMap.remove(id);
+      }
+    }
+    LOG.info("found credential for id: " + id);
+    return credential;
+  }
+
+  @Override
+  public void setSingleSignOn(HttpRequest request, HttpResponse response,
+          Principal principal, Credential credential) {
+    String id = generateId(request);
+    LOG.info("create new sso token for id: " + id);
+    _ssoMap.put(id, new SSOToken(principal, credential));
+    LOG.info("sso tokens in memory: " + _ssoMap);
+  }
+
+  private String generateId(HttpRequest request) {
+    ServletHttpRequest servletHttpRequest = (ServletHttpRequest) request
+            .getWrapper();
+    return servletHttpRequest.getSession().getId();
   }
 }
