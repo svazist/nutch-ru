@@ -14,4 +14,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
+
+<div style="text-align:right;float:right;margin:10px">
+<%
+java.security.Principal  principal = request.getUserPrincipal();
+if(principal != null) {
+%>
+	<a href ="logout.html" style="color:black">Logout</a>
+<%
+}
+%>
+</div>
 <img src="${theme}/gfx/logo.gif" />

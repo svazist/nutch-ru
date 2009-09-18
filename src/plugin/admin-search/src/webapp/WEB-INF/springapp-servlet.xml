@@ -36,6 +36,6 @@
 				<value>messages</value> 
 			</list> 
 		</property> 
-	</bean> 
-    
+	</bean>
+	
 </beans>
