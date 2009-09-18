@@ -45,8 +45,16 @@ public class PropertyFileLoginModule extends AbstractLoginModule {
   }
 
   @Override
-  protected KnownPrincipal getKnownPrincipal(String userName) {
-    return _knownUsers.get(userName);
+  protected NutchGuiPrincipal authenticate(String userName, String password) {
+    NutchGuiPrincipal principal = new NutchGuiPrincipal.AnonymousPrincipal();
+    KnownPrincipal knownPrincipal = _knownUsers.get(userName);
+    if (knownPrincipal != null) {
+      String knownPassword = knownPrincipal.getPassword();
+      if (knownPassword.equals(new String(password))) {
+        principal = knownPrincipal;
+      }
+    }
+    return principal;
   }
 
 }

@@ -1,56 +1,77 @@
 package org.apache.nutch.admin.security;
 
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.security.auth.login.LoginContext;
 
-public class NutchGuiPrincipal {
+public abstract class NutchGuiPrincipal implements Principal {
 
-  public static class AnonymousPrincipal implements Principal {
+  private final Set<String> _roles;
+  private final String _name;
+  private final String _password;
+
+  public NutchGuiPrincipal(String name, String password, Set<String> roles) {
+    _name = name;
+    _password = password;
+    _roles = roles;
+  }
+
+  public Set<String> getRoles() {
+    return _roles;
+  }
+
+  public String getPassword() {
+    return _password;
+  }
+
+  @Override
+  public String getName() {
+    return _name;
+  }
+
+  public boolean isInRole(String role) {
+    return _roles.contains(role);
+  }
+
+  @Override
+  public int hashCode() {
+    return _name.hashCode();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    NutchGuiPrincipal other = (NutchGuiPrincipal) obj;
+    return other._name.equals(_name);
+  }
+
+  @Override
+  public String toString() {
+    return _name;
+  }
+
+  public abstract boolean isAuthenticated();
+
+  public static class AnonymousPrincipal extends NutchGuiPrincipal {
+
+    public AnonymousPrincipal() {
+      super("Anonymous", null, new HashSet<String>());
+    }
 
     @Override
-    public String getName() {
-      return "Anonymous";
+    public boolean isAuthenticated() {
+      return false;
     }
 
   }
 
-  public static class KnownPrincipal implements Principal {
+  public static class KnownPrincipal extends NutchGuiPrincipal {
 
-    private final Set<String> _roles;
-    private final String _name;
-    private final String _password;
     private LoginContext _loginContext;
 
     public KnownPrincipal(String name, String password, Set<String> roles) {
-      _name = name;
-      _password = password;
-      _roles = roles;
-    }
-
-    @Override
-    public String getName() {
-      return _name;
-    }
-
-    public String getPassword() {
-      return _password;
-    }
-
-    public boolean isInRole(String role) {
-      return _roles.contains(role);
-    }
-
-    @Override
-    public int hashCode() {
-      return _name.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      KnownPrincipal other = (KnownPrincipal) obj;
-      return other._name.equals(_name);
+      super(name, password, roles);
     }
 
     public LoginContext getLoginContext() {
@@ -62,8 +83,8 @@ public class NutchGuiPrincipal {
     }
 
     @Override
-    public String toString() {
-      return _name;
+    public boolean isAuthenticated() {
+      return true;
     }
   }
 }

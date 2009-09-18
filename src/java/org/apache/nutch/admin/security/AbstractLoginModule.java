@@ -14,7 +14,6 @@ import javax.security.auth.spi.LoginModule;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.nutch.admin.security.NutchGuiPrincipal.KnownPrincipal;
 
 public abstract class AbstractLoginModule implements LoginModule {
 
@@ -24,7 +23,7 @@ public abstract class AbstractLoginModule implements LoginModule {
   private CallbackHandler _callbackHandler;
   private boolean _authenticated;
 
-  private KnownPrincipal _currentPrincipal;
+  private NutchGuiPrincipal _currentPrincipal;
 
   private boolean _committed;
 
@@ -73,14 +72,12 @@ public abstract class AbstractLoginModule implements LoginModule {
       char[] password = passwordCallback.getPassword();
 
       if (name != null && name.length() > 0) {
-        KnownPrincipal knownPrincipal = getKnownPrincipal(name);
-        if (knownPrincipal != null) {
-          if (password != null && password.length > 0) {
-            String knownPassword = knownPrincipal.getPassword();
-            if (knownPassword.equals(new String(password))) {
-              setAuthenticated(true);
-              _currentPrincipal = knownPrincipal;
-            }
+        if (password != null && password.length > 0) {
+          NutchGuiPrincipal nutchGuiPrincipal = authenticate(name, new String(
+                  password));
+          if (nutchGuiPrincipal.isAuthenticated()) {
+            setAuthenticated(true);
+            _currentPrincipal = nutchGuiPrincipal;
           }
         }
       }
@@ -106,5 +103,6 @@ public abstract class AbstractLoginModule implements LoginModule {
     return true;
   }
 
-  protected abstract KnownPrincipal getKnownPrincipal(String userName);
+  protected abstract NutchGuiPrincipal authenticate(String userName,
+          String password);
 }

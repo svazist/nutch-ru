@@ -42,7 +42,7 @@ public class NutchGuiRealm implements UserRealm {
         LOG.info("principal has logged in: " + principal);
       }
     } catch (LoginException e) {
-      LOG.error("login failed", e);
+      LOG.error("login failed for user: " + userName);
     }
     return principal;
   }
