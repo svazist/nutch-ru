@@ -55,8 +55,10 @@ public class NutchGuiRealm implements UserRealm, SSORealm {
 
   private final Log LOG = LogFactory.getLog(NutchGuiRealm.class);
   private Map<String, SSOToken> _ssoMap = new HashMap<String, SSOToken>();
+  private final boolean _securityEnabled;
 
-  public NutchGuiRealm() {
+  public NutchGuiRealm(boolean securityEnabled) {
+    _securityEnabled = securityEnabled;
     System.setProperty("java.security.auth.login.config", System
             .getProperty("user.dir")
             + "/conf/nutchgui.auth");
@@ -65,23 +67,32 @@ public class NutchGuiRealm implements UserRealm, SSORealm {
   @Override
   public Principal authenticate(String userName, Object password,
           HttpRequest request) {
-    Principal principal = new NutchGuiPrincipal.AnonymousPrincipal();
-    try {
-      JUserJPasswordCallbackHandler handler = new JUserJPasswordCallbackHandler(
-              request);
-      LoginContext loginContext = new LoginContext("PropertyFileLogin", handler);
-      loginContext.login();
-      Subject subject = loginContext.getSubject();
-      Set<Principal> principals = subject.getPrincipals();
-      principal = principals.isEmpty() ? principal : principals.iterator()
-              .next();
-      if (principal instanceof KnownPrincipal) {
-        KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
-        knownPrincipal.setLoginContext(loginContext);
-        LOG.info("principal has logged in: " + principal);
+
+    Principal principal = new NutchGuiPrincipal.SuperAdmin("Admin");
+    if (_securityEnabled) {
+      principal = null;
+      try {
+        JUserJPasswordCallbackHandler handler = new JUserJPasswordCallbackHandler(
+                request);
+        LoginContext loginContext = new LoginContext("PropertyFileLogin",
+                handler);
+        loginContext.login();
+        Subject subject = loginContext.getSubject();
+        Set<Principal> principals = subject.getPrincipals();
+        Principal tmpPrincipal = principals.isEmpty() ? principal : principals
+                .iterator().next();
+        if (tmpPrincipal instanceof KnownPrincipal) {
+          KnownPrincipal knownPrincipal = (KnownPrincipal) tmpPrincipal;
+          knownPrincipal.setLoginContext(loginContext);
+          principal = knownPrincipal;
+          LOG.info("principal has logged in: " + principal);
+        }
+      } catch (LoginException e) {
+        LOG.error("login error for user: " + userName);
       }
-    } catch (LoginException e) {
-      LOG.error("login failed for user: " + userName);
+    }
+    if (principal == null) {
+      LOG.info("login failed for userName: " + userName);
     }
     return principal;
   }
@@ -117,7 +128,9 @@ public class NutchGuiRealm implements UserRealm, SSORealm {
       if (principal instanceof KnownPrincipal) {
         KnownPrincipal knownPrincipal = (KnownPrincipal) principal;
         LoginContext loginContext = knownPrincipal.getLoginContext();
-        loginContext.logout();
+        if (loginContext != null) {
+          loginContext.logout();
+        }
         LOG.info("principal has logged out: " + knownPrincipal);
       }
     } catch (LoginException e) {
@@ -181,6 +194,17 @@ public class NutchGuiRealm implements UserRealm, SSORealm {
   @Override
   public void setSingleSignOn(HttpRequest request, HttpResponse response,
           Principal principal, Credential credential) {
+    Set<String> keySet = _ssoMap.keySet();
+    Iterator<String> iterator = keySet.iterator();
+    while (iterator.hasNext()) {
+      String id = (String) iterator.next();
+      SSOToken ssoToken = _ssoMap.get(id);
+      if (ssoToken._principal.getName().equals(principal.getName())) {
+        LOG.info("remove sso token [" + id + "] for user ["
+                + principal.getName() + "].");
+        iterator.remove();
+      }
+    }
     String id = generateId(request);
     LOG.info("create new sso token for id: " + id);
     _ssoMap.put(id, new SSOToken(principal, credential));

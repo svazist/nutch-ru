@@ -69,19 +69,6 @@ public abstract class NutchGuiPrincipal implements Principal {
 
   public abstract boolean isAuthenticated();
 
-  public static class AnonymousPrincipal extends NutchGuiPrincipal {
-
-    public AnonymousPrincipal() {
-      super("Anonymous", null, new HashSet<String>());
-    }
-
-    @Override
-    public boolean isAuthenticated() {
-      return false;
-    }
-
-  }
-
   public static class KnownPrincipal extends NutchGuiPrincipal {
 
     private LoginContext _loginContext;
@@ -102,5 +89,35 @@ public abstract class NutchGuiPrincipal implements Principal {
     public boolean isAuthenticated() {
       return true;
     }
+  }
+
+  public static class SuperAdmin extends KnownPrincipal {
+
+    public SuperAdmin(String name) {
+      super(name, null, null);
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+      return true;
+    }
+
+    @Override
+    public boolean isInRole(String role) {
+      return true;
+    }
+  }
+
+  public static class AnonymousPrincipal extends NutchGuiPrincipal {
+
+    public AnonymousPrincipal() {
+      super("Anonymous", null, new HashSet<String>());
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+      return false;
+    }
+
   }
 }

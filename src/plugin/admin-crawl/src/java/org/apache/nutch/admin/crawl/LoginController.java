@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.nutch.admin.NavigationSelector;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -27,8 +28,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class LoginController extends NavigationSelector {
 
   @RequestMapping(value = "/login.html", method = RequestMethod.GET)
-  public String login() {
+  public String login(Model model, HttpSession session) {
+    Boolean secure = (Boolean) session.getAttribute("securityEnabled");
+    model.addAttribute("securityEnabled", secure);
     return "login";
+  }
+
+  @RequestMapping(value = "/loginFailure.html", method = RequestMethod.GET)
+  public String loginFailure() {
+    return "loginFailure";
   }
 
   @RequestMapping(value = "/logout.html", method = RequestMethod.GET)

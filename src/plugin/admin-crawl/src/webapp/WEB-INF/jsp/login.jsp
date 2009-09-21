@@ -73,7 +73,7 @@
 					<div>
 				        <div>
 				        	<p>&nbsp;</p>
-				            <form method="post" action="j_security_check">
+				            <form method="post" action="j_security_check" id="login">
 				                <fieldset>
 				                  <legend><fmt:message key="login.legend" bundle="${globalBundle}"/></legend>
 				                    <label><fmt:message key="login.username" bundle="${globalBundle}"/></label>
@@ -83,7 +83,11 @@
 				                </fieldset>
 				                  <input type="submit" value="Login"/>
 				            </form>
-				        	
+				        	<c:if test="${!securityEnabled}">
+					        	<script>
+					        		document.getElementById('login').submit();
+					        	</script>
+				        	</c:if>
 				        </div>
 				    </div>
 				</div>

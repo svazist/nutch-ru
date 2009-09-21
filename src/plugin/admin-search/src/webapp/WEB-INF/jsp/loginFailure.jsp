@@ -73,22 +73,7 @@
 					<div>
 				        <div>
 				        	<p>&nbsp;</p>
-				            <form method="post" action="j_security_check" id="login">
-				                <fieldset>
-				                  <legend><fmt:message key="login.legend" bundle="${globalBundle}"/></legend>
-				                    <label><fmt:message key="login.username" bundle="${globalBundle}"/></label>
-				                    <input type="text" name="j_username"/>
-				                    <label><fmt:message key="login.password" bundle="${globalBundle}"/></label>
-				                    <input type="password" name="j_password" />
-				                </fieldset>
-				                  <input type="submit" value="Login"/>
-				            </form>
-				        	<c:if test="${!securityEnabled}">
-					        	<script>
-					        		document.getElementById('login').submit();
-					        	</script>
-				        	</c:if>
-				        	
+							<fmt:message key="login.failure" bundle="${globalBundle}"/>
 				        </div>
 				    </div>
 				</div>

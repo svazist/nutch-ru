@@ -22,7 +22,7 @@ public class AdministrationApplication {
 
   public static void main(String[] args) throws Exception {
 
-    if (args.length != 2) {
+    if (args.length < 2) {
       System.err.println("Usage: "
               + AdministrationApplication.class.getSimpleName()
               + " <workingDirectory> <port>");
@@ -30,7 +30,8 @@ public class AdministrationApplication {
     }
     File workingDirectory = new File(args[0]);
     int port = Integer.parseInt(args[1]);
-    HttpServer httpServer = new HttpServer(port);
+    boolean secure = args.length > 2 ? args[2].equals("--secure") : false;
+    HttpServer httpServer = new HttpServer(port, secure);
     httpServer.startHttpServer();
 
     ConfigurationUtil configurationUtil = new ConfigurationUtil(

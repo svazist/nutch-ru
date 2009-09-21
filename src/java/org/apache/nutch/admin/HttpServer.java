@@ -39,9 +39,11 @@ public class HttpServer extends Thread {
   private final int _port;
   private Server _server = new Server();
   private Map<String, Object> _contextAttributes = new HashMap<String, Object>();
+  private final boolean _secure;
 
-  public HttpServer(int port) {
+  public HttpServer(int port, boolean secure) {
     _port = port;
+    _secure = secure;
   }
 
   @Override
@@ -58,7 +60,7 @@ public class HttpServer extends Thread {
       SocketListener listener = new SocketListener();
       listener.setPort(_port);
       _server.addListener(listener);
-      _server.addRealm(new NutchGuiRealm());
+      _server.addRealm(new NutchGuiRealm(_secure));
       start();
     }
   }
@@ -94,6 +96,7 @@ public class HttpServer extends Thread {
     // add theme into view to load different css files
     String theme = System.getProperty("nutch.gui.theme", "default");
     context.setAttribute("theme", theme);
+    context.setAttribute("securityEnabled", _secure);
     ((HashSessionManager) context.getServletHandler().getSessionManager())
             .setCrossContextSessionIDs(true);
 
