@@ -243,7 +243,7 @@
 						    new YAHOO.widget.Dialog("startCrawl", 
 						             { width: "500px",
 						               fixedcenter: true,
-						               visible: false,
+						               visible: ${showDialog},
 						               draggable: false,
 						               close: true,
 						               constraintoviewport: true,
@@ -287,11 +287,18 @@
 						    <row>
 						        <label><fmt:message key="listCrawls.pagesPerSegment" bundle="${localBundle}"/>:</label>
 						        <field>
-						         <form:input path="topn"/>
+						         	<form:input path="topn"/>
 						            <div class="error"><form:errors path="topn" /></div>
 						        </field>
 						        <desc></desc>
 						    </row>
+						    <row>
+						        <field>
+						            <div class="error"><form:errors path="globalRejectAttribute" /></div>
+						        </field>
+						        <desc></desc>
+						    </row>
+						    
 						</fieldset>
 					</form:form>
 					</div>

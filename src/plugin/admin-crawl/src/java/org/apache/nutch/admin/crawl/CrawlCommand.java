@@ -24,6 +24,8 @@ public class CrawlCommand {
 
   private String _crawlFolder;
 
+  private Object _globalRejectAttribute;
+
   public Integer getDepth() {
     return _depth;
   }
@@ -46,6 +48,14 @@ public class CrawlCommand {
 
   public void setCrawlFolder(String crawlFolder) {
     _crawlFolder = crawlFolder;
+  }
+
+  public Object getGlobalRejectAttribute() {
+    return _globalRejectAttribute;
+  }
+
+  public void setGlobalRejectAttribute(Object globalRejectAttribute) {
+    _globalRejectAttribute = globalRejectAttribute;
   }
 
 }

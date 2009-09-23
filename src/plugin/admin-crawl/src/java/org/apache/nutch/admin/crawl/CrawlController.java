@@ -36,6 +36,7 @@ import org.apache.nutch.admin.NutchInstance;
 import org.apache.nutch.crawl.CrawlTool;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -81,6 +82,7 @@ public class CrawlController extends NavigationSelector {
         break;
       }
     }
+    model.addAttribute("showDialog", false);
     return "listCrawls";
   }
 
@@ -151,7 +153,8 @@ public class CrawlController extends NavigationSelector {
   @RequestMapping(value = "/startCrawl.html", method = RequestMethod.POST)
   public String postStartCrawl(
           @ModelAttribute("crawlCommand") CrawlCommand crawlCommand,
-          HttpSession session) throws IOException {
+          BindingResult errors, Model model, HttpSession session)
+          throws IOException {
     ServletContext servletContext = session.getServletContext();
     NutchInstance nutchInstance = (NutchInstance) servletContext
             .getAttribute("nutchInstance");
@@ -164,6 +167,12 @@ public class CrawlController extends NavigationSelector {
     Path crawlDir = new Path(path, crawlCommand.getCrawlFolder());
     CrawlTool crawlTool = new CrawlTool(configuration, crawlDir);
 
+    String agentName = configuration.get("http.agent.name");
+    if (agentName == null || "".equals(agentName.trim())) {
+      errors.rejectValue("globalRejectAttribute", "configure.http.agent.name");
+      model.addAttribute("showDialog", true);
+      return "listCrawls";
+    }
     Integer topn = crawlCommand.getTopn();
     Integer depth = crawlCommand.getDepth();
     Runnable runnable = new StartCrawlRunnable(crawlTool, topn, depth);
