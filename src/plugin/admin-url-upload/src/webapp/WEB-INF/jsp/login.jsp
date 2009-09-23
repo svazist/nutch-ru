@@ -76,10 +76,18 @@
 				            <form method="post" action="j_security_check" id="login">
 				                <fieldset>
 				                  <legend><fmt:message key="login.legend" bundle="${globalBundle}"/></legend>
-				                    <label><fmt:message key="login.username" bundle="${globalBundle}"/></label>
-				                    <input type="text" name="j_username"/>
-				                    <label><fmt:message key="login.password" bundle="${globalBundle}"/></label>
-				                    <input type="password" name="j_password" />
+				                  	<row>
+					                    <label><fmt:message key="login.username" bundle="${globalBundle}"/></label>
+					                    <field>
+						                    <input type="text" name="j_username"/>
+					                    </field>
+				                    </row>
+				                    <row>
+				                    	<label><fmt:message key="login.password" bundle="${globalBundle}"/></label>
+				                    	<field>
+				                    		<input type="password" name="j_password" />
+				                    	</field>
+				                    </row>
 				                </fieldset>
 				                  <input type="submit" value="Login"/>
 				            </form>
@@ -88,7 +96,6 @@
 					        		document.getElementById('login').submit();
 					        	</script>
 				        	</c:if>
-				        	
 				        </div>
 				    </div>
 				</div>

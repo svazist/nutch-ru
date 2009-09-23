@@ -89,5 +89,6 @@
 	<classpathentry kind="lib" path="src/plugin/admin-scheduling/lib/cron4j-1.1.6.jar"/>
 	<classpathentry kind="lib" path="lib/admin-ui-ext/commons-fileupload-1.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/admin-ui-ext/commons-io-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/admin-ui-ext/mockito-all-1.8.0.jar"/>
 	<classpathentry kind="output" path="eclipse-classes"/>
 </classpath>
