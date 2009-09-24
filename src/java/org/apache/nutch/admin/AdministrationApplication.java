@@ -25,7 +25,7 @@ public class AdministrationApplication {
     if (args.length < 2) {
       System.err.println("Usage: "
               + AdministrationApplication.class.getSimpleName()
-              + " <workingDirectory> <port>");
+              + " <workingDirectory> <port> [--secure]");
       return;
     }
     File workingDirectory = new File(args[0]);
