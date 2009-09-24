@@ -40,7 +40,7 @@ public class NutchGuiRealmTest extends TestCase {
   }
 
   public void testReauthenticate() throws Exception {
-    UserRealm realm = new NutchGuiRealm();
+    UserRealm realm = new NutchGuiRealm(true);
     Principal principal = new NutchGuiPrincipal.KnownPrincipal("user",
             "password", null);
     boolean reauthenticate = realm.reauthenticate(principal);
@@ -48,7 +48,7 @@ public class NutchGuiRealmTest extends TestCase {
   }
 
   public void testPushRole() throws Exception {
-    UserRealm realm = new NutchGuiRealm();
+    UserRealm realm = new NutchGuiRealm(true);
     Principal principal = new NutchGuiPrincipal.KnownPrincipal("user",
             "password", null);
     Principal principal2 = realm.pushRole(principal, "role");
@@ -56,7 +56,7 @@ public class NutchGuiRealmTest extends TestCase {
   }
 
   public void testPopRole() throws Exception {
-    UserRealm realm = new NutchGuiRealm();
+    UserRealm realm = new NutchGuiRealm(true);
     Principal principal = new NutchGuiPrincipal.KnownPrincipal("user",
             "password", null);
     Principal principal2 = realm.popRole(principal);
@@ -64,7 +64,7 @@ public class NutchGuiRealmTest extends TestCase {
   }
 
   public void testIsUserInRole() throws Exception {
-    UserRealm realm = new NutchGuiRealm();
+    UserRealm realm = new NutchGuiRealm(true);
     Set<String> set = new HashSet<String>();
     set.add("role");
     Principal principal = new NutchGuiPrincipal.KnownPrincipal("user",
@@ -74,7 +74,7 @@ public class NutchGuiRealmTest extends TestCase {
   }
 
   public void testGetPrincipal() throws Exception {
-    UserRealm realm = new NutchGuiRealm();
+    UserRealm realm = new NutchGuiRealm(true);
     try {
       realm.getPrincipal(null);
       fail();
@@ -83,17 +83,17 @@ public class NutchGuiRealmTest extends TestCase {
   }
 
   public void testGetName() throws Exception {
-    UserRealm realm = new NutchGuiRealm();
+    UserRealm realm = new NutchGuiRealm(true);
     assertEquals(NutchGuiRealm.class.getSimpleName(), realm.getName());
   }
 
   public void testDisassociate() throws Exception {
-    UserRealm realm = new NutchGuiRealm();
+    UserRealm realm = new NutchGuiRealm(true);
     realm.disassociate(null);
   }
 
   public void testAuthenticate() throws Exception {
-    UserRealm realm = new NutchGuiRealm();
+    UserRealm realm = new NutchGuiRealm(true);
     Mockito.when(_request.getParameter("j_username")).thenReturn("foo");
     Mockito.when(_request.getParameter("j_password")).thenReturn("bar");
 
@@ -104,7 +104,7 @@ public class NutchGuiRealmTest extends TestCase {
   }
 
   public void testIsUserInRoleAfterLogin() throws Exception {
-    UserRealm realm = new NutchGuiRealm();
+    UserRealm realm = new NutchGuiRealm(true);
     Mockito.when(_request.getParameter("j_username")).thenReturn("foo");
     Mockito.when(_request.getParameter("j_password")).thenReturn("bar");
 
@@ -115,7 +115,7 @@ public class NutchGuiRealmTest extends TestCase {
   }
 
   public void testLogout() throws Exception {
-    UserRealm realm = new NutchGuiRealm();
+    UserRealm realm = new NutchGuiRealm(true);
     Mockito.when(_request.getParameter("j_username")).thenReturn("foo");
     Mockito.when(_request.getParameter("j_password")).thenReturn("bar");
 

@@ -33,6 +33,7 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathFilter;
 import org.apache.nutch.admin.NavigationSelector;
 import org.apache.nutch.admin.NutchInstance;
+import org.apache.nutch.admin.searcher.SearcherFactory;
 import org.apache.nutch.crawl.CrawlTool;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -219,6 +220,10 @@ public class CrawlController extends NavigationSelector {
     } else {
       fileSystem.delete(searchDoneFile, false);
     }
+
+    SearcherFactory factory = SearcherFactory.getInstance(nutchInstance
+            .getConfiguration());
+    factory.reload();
   }
 
   private CrawlPath[] listPaths(Path path, FileSystem fileSystem,

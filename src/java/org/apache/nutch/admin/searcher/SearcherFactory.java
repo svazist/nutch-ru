@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
@@ -29,6 +31,8 @@ import org.apache.hadoop.fs.Path;
 import org.apache.nutch.searcher.NutchBean;
 
 public class SearcherFactory {
+
+  private Log LOG = LogFactory.getLog(SearcherFactory.class);
 
   private static Map<String, SearcherFactory> _instances = new HashMap<String, SearcherFactory>();
 
@@ -52,10 +56,10 @@ public class SearcherFactory {
     return _instances.get(instance);
   }
 
-  public MultipleSearcher get(boolean reload) throws IOException {
+  public MultipleSearcher get() throws IOException {
     String instance = _configuration.get("nutch.instance.folder");
-    if (!_map.containsKey(instance) || reload) {
-      clearCache(instance);
+    if (!_map.containsKey(instance)) {
+      LOG.info("create new searcher for instance: " + instance);
       Path parent = new Path(instance);
       if (instance.endsWith("/general")) {
         parent = parent.getParent();
@@ -78,9 +82,17 @@ public class SearcherFactory {
     return searcher;
   }
 
+  public void reload() throws IOException {
+    String instance = _configuration.get("nutch.instance.folder");
+    LOG.info("reload searcher for instance: " + instance);
+    clearCache(instance);
+    get();
+  }
+
   private void clearCache(String instance) throws IOException {
     MultipleSearcher cachedSearcher = _map.remove(instance);
     if (cachedSearcher != null) {
+      LOG.info("remove and close searcher: " + cachedSearcher);
       cachedSearcher.close();
       cachedSearcher = null;
     }

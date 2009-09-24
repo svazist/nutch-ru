@@ -58,7 +58,7 @@ public class SearchController extends NavigationSelector {
     Configuration configuration = nutchInstance.getConfiguration();
     SearcherFactory searcherFactory = SearcherFactory
             .getInstance(configuration);
-    MultipleSearcher searcher = searcherFactory.get(false);
+    MultipleSearcher searcher = searcherFactory.get();
     Query query = Query.parse(queryString, configuration);
     int numHits = start + length;
     Hits hits = searcher.search(query, numHits, null, null, false);

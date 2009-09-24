@@ -73,8 +73,13 @@ public class TestSearcherFactory extends TestCase {
     Configuration configuration = NutchConfiguration.create();
     configuration.set("nutch.instance.folder", new File(_folder, "testCrawl")
             .getAbsolutePath());
+    configuration.set("plugin.folders", "src/plugin");
+    configuration
+            .set(
+                    "plugin.includes",
+                    "protocol-http|urlfilter-regex|parse-(text|html|js)|index-(basic|anchor|metadata)|query-(basic|site|url)|response-(json|xml)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)");
     SearcherFactory instance = SearcherFactory.getInstance(configuration);
-    MultipleSearcher searcher = instance.get(false);
+    MultipleSearcher searcher = instance.get();
     assertEquals(2, searcher.getNutchBeanLength());
   }
 
@@ -82,15 +87,21 @@ public class TestSearcherFactory extends TestCase {
     Configuration configuration = NutchConfiguration.create();
     configuration.set("nutch.instance.folder", new File(_folder, "testCrawl")
             .getAbsolutePath());
+    configuration.set("plugin.folders", "src/plugin");
+    configuration
+            .set(
+                    "plugin.includes",
+                    "protocol-http|urlfilter-regex|parse-(text|html|js)|index-(basic|anchor|metadata)|query-(basic|site|url)|response-(json|xml)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)");
     SearcherFactory instance = SearcherFactory.getInstance(configuration);
-    MultipleSearcher searcher = instance.get(false);
+    MultipleSearcher searcher = instance.get();
     assertEquals(2, searcher.getNutchBeanLength());
     assertTrue(new File(_folder,
             "testCrawl/crawls/Crawl-2009.08.17_00.00.02/search.done")
             .createNewFile());
-    searcher = instance.get(false);
+    searcher = instance.get();
     assertEquals(2, searcher.getNutchBeanLength());
-    searcher = instance.get(true);
+    instance.reload();
+    searcher = instance.get();
     assertEquals(3, searcher.getNutchBeanLength());
   }
 
@@ -98,8 +109,13 @@ public class TestSearcherFactory extends TestCase {
     Configuration configuration = NutchConfiguration.create();
     configuration.set("nutch.instance.folder", new File(_folder, "general")
             .getAbsolutePath());
+    configuration.set("plugin.folders", "src/plugin");
+    configuration
+            .set(
+                    "plugin.includes",
+                    "protocol-http|urlfilter-regex|parse-(text|html|js)|index-(basic|anchor|metadata)|query-(basic|site|url)|response-(json|xml)|summary-basic|scoring-opic|urlnormalizer-(pass|regex|basic)");
     SearcherFactory instance = SearcherFactory.getInstance(configuration);
-    MultipleSearcher searcher = instance.get(false);
+    MultipleSearcher searcher = instance.get();
     assertEquals(4, searcher.getNutchBeanLength());
     assertTrue(new File(_folder,
             "testCrawl/crawls/Crawl-2009.08.17_00.00.02/search.done")
@@ -107,9 +123,10 @@ public class TestSearcherFactory extends TestCase {
     assertTrue(new File(_folder,
             "testCrawl2/crawls/Crawl-2009.08.17_00.00.02/search.done")
             .createNewFile());
-    searcher = instance.get(false);
+    searcher = instance.get();
     assertEquals(4, searcher.getNutchBeanLength());
-    searcher = instance.get(true);
+    instance.reload();
+    searcher = instance.get();
     assertEquals(6, searcher.getNutchBeanLength());
 
   }

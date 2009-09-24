@@ -19,7 +19,12 @@ package org.apache.nutch.admin.searcher;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class ThreadPool {
+
+  private Log LOG = LogFactory.getLog(ThreadPool.class);
 
   class PooledThread extends Thread {
     @Override
@@ -32,7 +37,7 @@ public class ThreadPool {
           // put itself, wait's until it is possible
           _threads.put(this);
         } catch (InterruptedException e) {
-          e.printStackTrace();
+          LOG.info("thread was interurupted.");
         }
       }
     }
@@ -52,7 +57,7 @@ public class ThreadPool {
       // put runnable, wait's until a thread is calling take
       _runnables.put(runnable);
     } catch (InterruptedException e) {
-      e.printStackTrace();
+      LOG.warn("can not add new runnable to queue.", e);
     }
   }
 
