@@ -77,7 +77,7 @@ public class NutchGuiRealm implements UserRealm, SSORealm {
       try {
         JUserJPasswordCallbackHandler handler = new JUserJPasswordCallbackHandler(
                 request);
-        LoginContext loginContext = new LoginContext("PropertyFileLogin",
+        LoginContext loginContext = new LoginContext("NutchGuiLogin",
                 handler);
         loginContext.login();
         Subject subject = loginContext.getSubject();

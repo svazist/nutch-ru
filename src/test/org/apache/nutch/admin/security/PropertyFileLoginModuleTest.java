@@ -41,7 +41,7 @@ public class PropertyFileLoginModuleTest extends TestCase {
             + "/conf/nutchgui.auth");
     JUserJPasswordCallbackHandler handler = new JUserJPasswordCallbackHandler(
             _httpRequest);
-    _loginContext = new LoginContext("PropertyFileLogin", handler);
+    _loginContext = new LoginContext("NutchGuiLogin", handler);
   }
 
   public void testLoginFailed() throws LoginException {
@@ -54,14 +54,14 @@ public class PropertyFileLoginModuleTest extends TestCase {
   }
 
   public void testLogin() throws LoginException {
-    Mockito.when(_httpRequest.getParameter("j_username")).thenReturn("foo");
-    Mockito.when(_httpRequest.getParameter("j_password")).thenReturn("bar");
+    Mockito.when(_httpRequest.getParameter("j_username")).thenReturn("nutch");
+    Mockito.when(_httpRequest.getParameter("j_password")).thenReturn("nutch");
     _loginContext.login();
   }
 
   public void testLogout() throws LoginException {
-    Mockito.when(_httpRequest.getParameter("j_username")).thenReturn("foo");
-    Mockito.when(_httpRequest.getParameter("j_password")).thenReturn("bar");
+    Mockito.when(_httpRequest.getParameter("j_username")).thenReturn("nutch");
+    Mockito.when(_httpRequest.getParameter("j_password")).thenReturn("nutch");
     _loginContext.login();
     _loginContext.logout();
   }
