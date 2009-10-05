@@ -59,9 +59,12 @@ public class NutchGuiRealm implements UserRealm, SSORealm {
 
   public NutchGuiRealm(boolean securityEnabled) {
     _securityEnabled = securityEnabled;
-    System.setProperty("java.security.auth.login.config", System
-            .getProperty("user.dir")
-            + "/conf/nutchgui.auth");
+    String authFile = System.getProperty("java.security.auth.login.config");
+    if (authFile == null) {
+      System.setProperty("java.security.auth.login.config", System
+              .getProperty("user.dir")
+              + "/conf/nutchgui.auth");
+    }
   }
 
   @Override
