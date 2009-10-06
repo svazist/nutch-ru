@@ -20,17 +20,17 @@
 <head>
 	<title><fmt:message key="system.title" bundle="${localBundle}"/></title>
 
-	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css" />
-	<script type="text/javascript" src="${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/event/event-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/connection/connection-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/element/element-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/tabview/tabview-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/getLog.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/css/reset-fonts-grids.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css" />
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/event/event-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/connection/connection-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/element/element-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/tabview/tabview-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/getLog.js"></script>
 	 
-	<link rel="stylesheet" type="text/css" href="${theme}/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/css/style.css" />
 	<script>
 		var lineCount = 1000;
 	</script>
@@ -91,9 +91,9 @@
 				<div style="margin-top:25px"></div>
 				<input type="hidden" id="mode" value="start"/>
 				<h3><fmt:message key="system.logfile" bundle="${localBundle}"/></h3>
-				<img src="${theme}/gfx/console.png" align="absmiddle"/> <fmt:message key="system.show" bundle="${localBundle}"/> <input type="text" id="lineCount" value="" size="5"/> <fmt:message key="system.recentLines" bundle="${localBundle}"/> <input type="button" value="<fmt:message key="button.set" bundle="${globalBundle}"/>" onClick="lineCount = document.getElementById('lineCount').value; getLog(lineCount); "/>
-				<img src="${theme}/gfx/play_inactive.png" align="absmiddle" id="start" onclick="handleStartStop('start')" style="cursor:pointer">
-				<img src="${theme}/gfx/pause.png" align="absmiddle" id="stop" onclick="handleStartStop('stop')"  style="cursor:pointer">
+				<img src="<%=request.getContextPath()%>/theme/${theme}/gfx/console.png" align="absmiddle"/> <fmt:message key="system.show" bundle="${localBundle}"/> <input type="text" id="lineCount" value="" size="5"/> <fmt:message key="system.recentLines" bundle="${localBundle}"/> <input type="button" value="<fmt:message key="button.set" bundle="${globalBundle}"/>" onClick="lineCount = document.getElementById('lineCount').value; getLog(lineCount); "/>
+				<img src="<%=request.getContextPath()%>/theme/${theme}/gfx/play_inactive.png" align="absmiddle" id="start" onclick="handleStartStop('start')" style="cursor:pointer">
+				<img src="<%=request.getContextPath()%>/theme/${theme}/gfx/pause.png" align="absmiddle" id="stop" onclick="handleStartStop('stop')"  style="cursor:pointer">
 				<script>
 					function handleStartStop(action){
 						var startImage = document.getElementById('start');
