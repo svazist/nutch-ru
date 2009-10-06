@@ -19,30 +19,30 @@
 <html>
 <head>
 	<title><fmt:message key="listCrawls.title" bundle="${localBundle}"/></title>
-	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css">
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/container/assets/skins/sam/container.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/css/reset-fonts-grids.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css">
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/container/assets/skins/sam/container.css" />
 	
-	<script type="text/javascript" src="${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/element/element-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/connection/connection-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/tabview/tabview-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/element/element-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/connection/connection-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/tabview/tabview-min.js"></script>
 	
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/paginator/assets/skins/sam/paginator.css" />
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/datatable/assets/skins/sam/datatable.css" />
-	<script type="text/javascript" src="${theme}/js/yui/build/json/json-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/paginator/paginator-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/datasource/datasource-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/datatable/datatable-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/paginator/assets/skins/sam/paginator.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/datatable/assets/skins/sam/datatable.css" />
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/json/json-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/paginator/paginator-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/datasource/datasource-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/datatable/datatable-min.js"></script>
 	
-	<script type="text/javascript" src="${theme}/js/yui/build/yahoo/yahoo-min.js" ></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/event/event-min.js" ></script>
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/button/assets/skins/sam/button.css" />
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/yahoo/yahoo-min.js" ></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/event/event-min.js" ></script>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/button/assets/skins/sam/button.css" />
 
-	<script type="text/javascript" src="${theme}/js/yui/build/button/button-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/container/container-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/animation/animation-min.js"></script>
-	<link rel="stylesheet" type="text/css" href="${theme}/css/style.css" />
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/button/button-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/container/container-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/animation/animation-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/css/style.css" />
 </head>
 <body class="yui-skin-sam">
 	<div id="doc2">
@@ -89,7 +89,7 @@
 				<div class="yui-b">
 					
 					<div style="float:right">
-						<img src="${theme}/gfx/add.png" align="absmiddle"/> <b><a href="#" id="showCreateCrawl"><fmt:message key="listCrawls.createCrawl" bundle="${localBundle}"/></a></b>
+						<img src="<%=request.getContextPath()%>/theme/${theme}/gfx/add.png" align="absmiddle"/> <b><a href="#" id="showCreateCrawl"><fmt:message key="listCrawls.createCrawl" bundle="${localBundle}"/></a></b>
 					</div>
 					<h3><fmt:message key="listCrawls.headline" bundle="${localBundle}"/></h3>
 					<div id="markup">
@@ -107,7 +107,7 @@
 						            <tr>
 						            	<td>
 						            		<div class="<c:choose><c:when test="${crawlPath.searchable}">switchOff</c:when><c:otherwise>switchOn</c:otherwise></c:choose>" id="switch_${i.index}">
-						            			<img src="${theme}/gfx/switch_button.png" id="button_${i.index}"/>
+						            			<img src="<%=request.getContextPath()%>/theme/${theme}/gfx/switch_button.png" id="button_${i.index}"/>
 						            		</div>
 						            		
 						            		
@@ -163,15 +163,15 @@
 						            	<td>
 						            		<c:choose>
 						            			<c:when test="${empty runningCrawl}">
-								            		<a href="#" id="showStartCrawl${i.index}" onclick="document.getElementById('crawlFolder').value = '${crawlPath.path.name}'"><img src="${theme}/gfx/play.png"/></a>
+								            		<a href="#" id="showStartCrawl${i.index}" onclick="document.getElementById('crawlFolder').value = '${crawlPath.path.name}'"><img src="<%=request.getContextPath()%>/theme/${theme}/gfx/play.png"/></a>
 						            			</c:when>
 						            			<c:otherwise>
 						            				<c:choose>
 						            					<c:when test="${crawlPath.running}">
-										            		<img src="${theme}/gfx/loading.gif"/>
+										            		<img src="<%=request.getContextPath()%>/theme/${theme}/gfx/loading.gif"/>
 						            					</c:when>
 						            					<c:otherwise>
-										            		<img src="${theme}/gfx/play_inactive.png"/>
+										            		<img src="<%=request.getContextPath()%>/theme/${theme}/gfx/play_inactive.png"/>
 						            					</c:otherwise>
 						            				</c:choose>
 						            			</c:otherwise>

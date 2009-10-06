@@ -20,9 +20,9 @@
 java.security.Principal  principal = request.getUserPrincipal();
 if(principal != null) {
 %>
-	<a href ="logout.html" style="color:black">Logout</a>
+	<a href ="<%=request.getContextPath()%>/auth/logout.html" style="color:black">Logout</a>
 <%
 }
 %>
 </div>
-<img src="${theme}/gfx/logo.gif" />
+<img src="<%=request.getContextPath()%>/theme/${theme}/gfx/logo.gif" />

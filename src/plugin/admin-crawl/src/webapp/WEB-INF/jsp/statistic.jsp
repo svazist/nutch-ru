@@ -19,16 +19,16 @@
 <html>
 <head>
 	<title><fmt:message key="crawlStatistics.title" bundle="${localBundle}"/></title>
-	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css">
-	<script type="text/javascript" src="${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/element/element-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/connection/connection-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/tabview/tabview-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/json/json-min.js"></script> 
-	<script type="text/javascript" src="${theme}/js/yui/build/charts/charts-min.js"></script> 
-	<script type="text/javascript" src="${theme}/js/yui/build/datasource/datasource-min.js"></script>
-	<link rel="stylesheet" type="text/css" href="${theme}/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/css/reset-fonts-grids.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css">
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/element/element-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/connection/connection-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/tabview/tabview-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/json/json-min.js"></script> 
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/charts/charts-min.js"></script> 
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/datasource/datasource-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/css/style.css" />
 </head>
 <body class="yui-skin-sam">
 	<div id="doc2">
@@ -78,7 +78,7 @@
 
 					<script type="text/javascript">
 					
-						YAHOO.widget.Chart.SWFURL = "${theme}/js/yui/build/charts/assets/charts.swf";
+						YAHOO.widget.Chart.SWFURL = "<%=request.getContextPath()%>/theme/${theme}/js/yui/build/charts/assets/charts.swf";
 						
 						//used to format x axis labels
 						YAHOO.example.numberToCurrency = function( value )
@@ -141,7 +141,7 @@
 
 					<script type="text/javascript">
 					
-						YAHOO.widget.Chart.SWFURL = "${theme}/js/yui/build/charts/assets/charts.swf";
+						YAHOO.widget.Chart.SWFURL = "<%=request.getContextPath()%>/theme/${theme}/js/yui/build/charts/assets/charts.swf";
 						
 						//used to format x axis labels
 						YAHOO.example.numberToCurrency = function( value )
