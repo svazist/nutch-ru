@@ -27,19 +27,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class LoginController extends NavigationSelector {
 
-  @RequestMapping(value = "/login.html", method = RequestMethod.GET)
+  @RequestMapping(value = "/auth/login.html", method = RequestMethod.GET)
   public String login(Model model, HttpSession session) {
     Boolean secure = (Boolean) session.getAttribute("securityEnabled");
     model.addAttribute("securityEnabled", secure);
     return "login";
   }
 
-  @RequestMapping(value = "/loginFailure.html", method = RequestMethod.GET)
+  @RequestMapping(value = "/auth/loginFailure.html", method = RequestMethod.GET)
   public String loginFailure() {
     return "loginFailure";
   }
 
-  @RequestMapping(value = "/logout.html", method = RequestMethod.GET)
+  @RequestMapping(value = "/auth/roleFailure.html", method = RequestMethod.GET)
+  public String roleFailure() {
+    return "roleFailure";
+  }
+
+  @RequestMapping(value = "/auth/logout.html", method = RequestMethod.GET)
   public String logout(HttpSession session) {
     session.invalidate();
     return "redirect:/index.html";
