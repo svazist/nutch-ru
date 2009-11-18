@@ -20,23 +20,23 @@
 <head>
 	<title><fmt:message key="crawlDetails.title" bundle="${localBundle}"/></title>
 
-	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/css/reset-fonts-grids.css" />
 	
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/reset-fonts-grids/reset-fonts-grids.css" />
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css" />
-	<script type="text/javascript" src="${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/element/element-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/tabview/tabview-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/reset-fonts-grids/reset-fonts-grids.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css" />
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/element/element-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/tabview/tabview-min.js"></script>
 
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/datatable/assets/skins/sam/datatable.css" />
-	<script type="text/javascript" src="${theme}/js/yui/build/datasource/datasource-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/datatable/datatable-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/datatable/assets/skins/sam/datatable.css" />
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/datasource/datasource-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/datatable/datatable-min.js"></script>
 	
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/button/assets/skins/sam/button.css" />
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/container/assets/skins/sam/container.css" />
-	<script type="text/javascript" src="${theme}/js/yui/build/button/button-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/container/container-min.js"></script>
-	<link rel="stylesheet" type="text/css" href="${theme}/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/button/assets/skins/sam/button.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/container/assets/skins/sam/container.css" />
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/button/button-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/container/container-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/css/style.css" />
 </head>
 
 <body class="yui-skin-sam">

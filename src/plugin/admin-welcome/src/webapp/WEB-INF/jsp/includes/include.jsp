@@ -20,5 +20,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-<fmt:setBundle basename="webapp/${theme}/i18n/messages" var="globalBundle" />
-<fmt:setBundle basename="${theme}/i18n/welcome_messages" var="localBundle" /> 
+<fmt:setBundle basename="webapp/theme/${theme}/i18n/messages" var="globalBundle" />
+<fmt:setBundle basename="theme/${theme}/i18n/welcome_messages" var="localBundle" /> 

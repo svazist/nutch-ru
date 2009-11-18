@@ -14,4 +14,4 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<img src="${theme}/gfx/logo.gif" />
+<img src="<%=request.getContextPath()%>/theme/${theme}/gfx/logo.gif" />

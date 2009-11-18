@@ -20,15 +20,15 @@
 <head>
 	<title><fmt:message key="scheduling.title" bundle="${localBundle}"/></title>
 
-	<link rel="stylesheet" type="text/css" href="${theme}/css/reset-fonts-grids.css" />
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/css/reset-fonts-grids.css" />
 	
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css" />
-	<script type="text/javascript" src="${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/element/element-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/tabview/tabview-min.js"></script>
-	<script type="text/javascript" src="${theme}/js/yui/build/button/button-min.js"></script>
-	<link rel="stylesheet" type="text/css" href="${theme}/js/yui/build/button/assets/skins/sam/button.css"> 
-	<link rel="stylesheet" type="text/css" href="${theme}/css/style.css" /> 
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/tabview/assets/skins/sam/tabview.css" />
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/element/element-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/tabview/tabview-min.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/button/button-min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/js/yui/build/button/assets/skins/sam/button.css"> 
+	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/theme/${theme}/css/style.css" /> 
 </head>
 
 <body class="yui-skin-sam">
@@ -78,7 +78,7 @@
 					<div class="row">
 						<form action="delete.html" method="post">
 							<label><fmt:message key="scheduling.cronPattern" bundle="${localBundle}"/>:</label>&nbsp;${savedPattern}
-							<input type="image" src="${theme}/gfx/delete.png" title="Löschen" align="absmiddle">
+							<input type="image" src="<%=request.getContextPath()%>/theme/${theme}/gfx/delete.png" title="Löschen" align="absmiddle">
 						</form>
 					</div>
 					<div class="row">

@@ -121,4 +121,5 @@ public abstract class AbstractLoginModule implements LoginModule {
 
   protected abstract NutchGuiPrincipal authenticate(String userName,
           String password);
+
 }

@@ -20,6 +20,7 @@ import java.io.File;
 
 import junit.framework.TestCase;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.nutch.util.NutchConfiguration;
@@ -31,6 +32,9 @@ public class TestSearcherFactory extends TestCase {
 
   @Override
   protected void setUp() throws Exception {
+    if (_folder.exists()) {
+      FileUtils.forceDelete(_folder);
+    }
     assertTrue(_folder.mkdirs());
     assertTrue(new File(_folder, "general").mkdirs());
     // create test crawl folder
@@ -73,7 +77,7 @@ public class TestSearcherFactory extends TestCase {
     Configuration configuration = NutchConfiguration.create();
     configuration.set("nutch.instance.folder", new File(_folder, "testCrawl")
             .getAbsolutePath());
-    configuration.set("plugin.folders", "src/plugin");
+    configuration.set("plugin.folders", "src/plugin,plugins");
     configuration
             .set(
                     "plugin.includes",
@@ -87,7 +91,7 @@ public class TestSearcherFactory extends TestCase {
     Configuration configuration = NutchConfiguration.create();
     configuration.set("nutch.instance.folder", new File(_folder, "testCrawl")
             .getAbsolutePath());
-    configuration.set("plugin.folders", "src/plugin");
+    configuration.set("plugin.folders", "src/plugin,plugins");
     configuration
             .set(
                     "plugin.includes",
@@ -109,7 +113,7 @@ public class TestSearcherFactory extends TestCase {
     Configuration configuration = NutchConfiguration.create();
     configuration.set("nutch.instance.folder", new File(_folder, "general")
             .getAbsolutePath());
-    configuration.set("plugin.folders", "src/plugin");
+    configuration.set("plugin.folders", "src/plugin,plugins");
     configuration
             .set(
                     "plugin.includes",

@@ -60,12 +60,12 @@ public class BWUpdateDb extends Configured {
   public static final Log LOG = LogFactory.getLog(BWUpdateDb.class);
 
   public static class ObjectWritableMapper implements
-      Mapper<HostTypeKey, Writable, HostTypeKey, ObjectWritable> {
+          Mapper<HostTypeKey, Writable, HostTypeKey, ObjectWritable> {
 
     @Override
     public void map(HostTypeKey key, Writable value,
-        OutputCollector<HostTypeKey, ObjectWritable> collector,
-        Reporter reporter) throws IOException {
+            OutputCollector<HostTypeKey, ObjectWritable> collector,
+            Reporter reporter) throws IOException {
       ObjectWritable objectWritable = new ObjectWritable(value);
       collector.collect(key, objectWritable);
     }
@@ -123,12 +123,12 @@ public class BWUpdateDb extends Configured {
    * {@link HostTypeKey}
    */
   public static class BWMapper implements
-      Mapper<Text, CrawlDatum, HostTypeKey, Entry> {
+          Mapper<Text, CrawlDatum, HostTypeKey, Entry> {
 
     @Override
     public void map(Text key, CrawlDatum value,
-        OutputCollector<HostTypeKey, Entry> out, Reporter rep)
-        throws IOException {
+            OutputCollector<HostTypeKey, Entry> out, Reporter rep)
+            throws IOException {
 
       String host = new URL((key).toString()).getHost();
       Entry entry = new Entry(key, value);
@@ -147,51 +147,33 @@ public class BWUpdateDb extends Configured {
    * Collects only entries that match a white list entry and no black list entry
    */
   public static class BwReducer implements
-      Reducer<HostTypeKey, ObjectWritable, HostTypeKey, ObjectWritable> {
+          Reducer<HostTypeKey, ObjectWritable, HostTypeKey, ObjectWritable> {
 
     private BWPatterns _patterns;
 
     public void reduce(HostTypeKey key, Iterator<ObjectWritable> values,
-        OutputCollector<HostTypeKey, ObjectWritable> out, Reporter report)
-        throws IOException {
+            OutputCollector<HostTypeKey, ObjectWritable> out, Reporter report)
+            throws IOException {
 
       while (values.hasNext()) {
-        ObjectWritable obj = (ObjectWritable) values.next();
-        Object value = obj.get(); // unwrap
+        ObjectWritable objectWritable = (ObjectWritable) values.next();
+        Object value = objectWritable.get(); // unwrap
+        
         if (value instanceof BWPatterns) {
           _patterns = (BWPatterns) value;
           // next values should be a list of entries
           return;
         }
 
-
         if (_patterns == null) {
           return;
         }
 
-        boolean negativeMatch = false;
-        Text url = ((Entry) value)._url;
-        int count = _patterns._negative.length;
-        for (int i = 0; i < count; i++) {
-          if (url.toString().toLowerCase().startsWith(
-              _patterns._negative[i].toString().toLowerCase())) {
-            negativeMatch = true;
-            break;
-            // match a black list entry
-          }
+        String url = (((Entry) value)._url).toString();
+        if (_patterns.willPassBWLists(url)) {
+          // url is outside the black list and matches the white list
+          out.collect(key, objectWritable);
         }
-        if (!negativeMatch) {
-          count = _patterns._positive.length;
-          for (int i = 0; i < count; i++) {
-            if (url.toString().toLowerCase().startsWith(
-                _patterns._positive[i].toString().toLowerCase())) {
-              // match a white list entry
-              out.collect(key, obj);
-              break;
-            }
-          }
-        }
-
       }
     }
 
@@ -209,9 +191,10 @@ public class BWUpdateDb extends Configured {
    * same job
    */
   public static class FormatConverter implements
-      Mapper<HostTypeKey, ObjectWritable, Text, CrawlDatum> {
+          Mapper<HostTypeKey, ObjectWritable, Text, CrawlDatum> {
     public void map(HostTypeKey key, ObjectWritable value,
-        OutputCollector<Text, CrawlDatum> out, Reporter rep) throws IOException {
+            OutputCollector<Text, CrawlDatum> out, Reporter rep)
+            throws IOException {
       Entry entry = (Entry) value.get();
       out.collect(entry._url, entry._crawlDatum);
     }
@@ -230,7 +213,7 @@ public class BWUpdateDb extends Configured {
   // TODO use normalize and filter inside the bw-job? and not only in the
   // crawldb-job.
   public void update(Path crawlDb, Path bwdb, Path[] segments,
-      boolean normalize, boolean filter) throws IOException {
+          boolean normalize, boolean filter) throws IOException {
     LOG.info("bw update: starting");
     LOG.info("bw update: db: " + crawlDb);
     LOG.info("bw update: bwdb: " + bwdb);
@@ -248,9 +231,9 @@ public class BWUpdateDb extends Configured {
 
     for (Path segment : segments) {
       FileInputFormat.addInputPath(job, new Path(segment,
-          CrawlDatum.FETCH_DIR_NAME)); // ??
+              CrawlDatum.FETCH_DIR_NAME)); // ??
       FileInputFormat.addInputPath(job, new Path(segment,
-          CrawlDatum.PARSE_DIR_NAME));
+              CrawlDatum.PARSE_DIR_NAME));
     }
 
     job.setMapperClass(BWMapper.class);
@@ -301,7 +284,7 @@ public class BWUpdateDb extends Configured {
 
     JobConf updateJob = CrawlDb.createJob(getConf(), crawlDb);
     boolean additionsAllowed = getConf().getBoolean(
-        CrawlDb.CRAWLDB_ADDITIONS_ALLOWED, true);
+            CrawlDb.CRAWLDB_ADDITIONS_ALLOWED, true);
     updateJob.setBoolean(CrawlDb.CRAWLDB_ADDITIONS_ALLOWED, additionsAllowed);
     updateJob.setBoolean(CrawlDbFilter.URL_FILTERING, filter);
     updateJob.setBoolean(CrawlDbFilter.URL_NORMALIZING, normalize);
@@ -321,11 +304,11 @@ public class BWUpdateDb extends Configured {
     BWUpdateDb bwDb = new BWUpdateDb(NutchConfiguration.create());
     if (args.length != 5) {
       System.err
-          .println("Usage: <crawldb> <bwdb> <segment> <normalize> <filter>");
+              .println("Usage: <crawldb> <bwdb> <segment> <normalize> <filter>");
       return;
     }
     bwDb.update(new Path(args[0]), new Path(args[1]), new Path[] { new Path(
-        args[2]) }, Boolean.valueOf(args[3]), Boolean.valueOf(args[4]));
+            args[2]) }, Boolean.valueOf(args[3]), Boolean.valueOf(args[4]));
   }
 
 }
