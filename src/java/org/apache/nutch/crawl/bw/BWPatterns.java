@@ -20,7 +20,14 @@ package org.apache.nutch.crawl.bw;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 
@@ -29,42 +36,125 @@ import org.apache.hadoop.io.Writable;
  */
 public class BWPatterns implements Writable {
 
-  public Text[] _positive;
+  private static final Log LOG = LogFactory.getLog(BWPatterns.class);
 
-  public Text[] _negative;
+  private List<Text> _positive;
+  private List<Text> _negative;
+
+  private List<Pattern> _posPattern = new ArrayList<Pattern>();
+  private List<Pattern> _negPattern = new ArrayList<Pattern>();
 
   public BWPatterns(Text[] positivePatterns, Text[] negativePatterns) {
-    _positive = positivePatterns;
-    _negative = negativePatterns;
+    _positive = new ArrayList<Text>(Arrays.asList(positivePatterns));
+    _negative = new ArrayList<Text>(Arrays.asList(negativePatterns));
+    syncPosPattern();
+    syncNegPattern();
+  }
+
+  private void syncPosPattern() {
+    syncPattern(_positive, _posPattern);
+  }
+
+  private void syncNegPattern() {
+    syncPattern(_negative, _negPattern);
+  }
+
+  private void syncPattern(List<Text> regExpressions, List<Pattern> patterns) {
+    patterns.clear();
+    for (Text text : regExpressions) {
+      patterns.add(Pattern.compile(text.toString().toLowerCase()));
+    }
   }
 
   public BWPatterns() {
   }
 
+  public List<Text> getPositive() {
+    return _positive;
+  }
+
+  public void setPositive(List<Text> positive) {
+    _positive = positive;
+    syncPosPattern();
+  }
+
+  public List<Text> getNegative() {
+    return _negative;
+  }
+
+  public void setNegative(List<Text> negative) {
+    _negative = negative;
+    syncNegPattern();
+  }
+
   public void write(DataOutput out) throws IOException {
-    out.writeInt(_positive.length);
-    for (int i = 0; i < _positive.length; i++) {
-      _positive[i].write(out);
+    out.writeInt(_positive.size());
+    for (Text text : _positive) {
+      text.write(out);
     }
-    out.writeInt(_negative.length);
-    for (int i = 0; i < _negative.length; i++) {
-      _negative[i].write(out);
+    out.writeInt(_negative.size());
+    for (Text text : _negative) {
+      text.write(out);
     }
   }
 
   public void readFields(DataInput in) throws IOException {
     int count = in.readInt();
-    _positive = new Text[count];
-    for (int i = 0; i < _positive.length; i++) {
-      _positive[i] = new Text();
-      _positive[i].readFields(in);
+    _positive = new ArrayList<Text>(count);
+    for (int i = 0; i < count; i++) {
+      Text text = new Text();
+      text.readFields(in);
+      _positive.add(text);
     }
+    syncPosPattern();
     count = in.readInt();
-    _negative = new Text[count];
-    for (int i = 0; i < _negative.length; i++) {
-      _negative[i] = new Text();
-      _negative[i].readFields(in);
+    _negative = new ArrayList<Text>(count);
+    for (int i = 0; i < count; i++) {
+      Text text = new Text();
+      text.readFields(in);
+      _negative.add(text);
     }
+    syncNegPattern();
   }
 
+  public boolean willPassBlackList(String url) {
+    if (_negative == null || _negative.size() == 0) {
+      // there is no negative list, so every url will be accepted
+      return true;
+    }
+
+    String lowerCaseUrl = url.toLowerCase();
+
+    for (Pattern pattern : _negPattern) {
+      Matcher matcher = pattern.matcher(lowerCaseUrl);
+      if (matcher.find()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public boolean willPassWhiteList(String url) {
+    if (_positive == null || _positive.size() == 0) {
+      // there is no positive list, so every url will be accepted
+      return true;
+    }
+
+    String lowerCaseUrl = url.toLowerCase();
+
+    for (Pattern pattern : _posPattern) {
+      Matcher matcher = pattern.matcher(lowerCaseUrl);
+      if (matcher.find()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public boolean willPassBWLists(String url) {
+    boolean ret = (willPassWhiteList(url) && willPassBlackList(url));
+    LOG.debug("**********Url '" + url + "' will " + (ret ? "pass" : "NOT pass")
+            + ".");
+    return ret;
+  }
 }

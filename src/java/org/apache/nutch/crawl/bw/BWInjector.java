@@ -19,7 +19,6 @@ package org.apache.nutch.crawl.bw;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
@@ -135,8 +134,8 @@ public class BWInjector extends Configured {
 
       while (values.hasNext()) {
         BWPatterns value = values.next();
-        pos.addAll(Arrays.asList(value._positive));
-        neg.addAll(Arrays.asList(value._negative));
+        pos.addAll(value.getPositive());
+        neg.addAll(value.getNegative());
       }
 
       Text[] negative = neg.toArray(new Text[neg.size()]);

@@ -18,11 +18,14 @@
 package org.apache.nutch.util;
 
 import java.io.ByteArrayInputStream;
+
 import junit.framework.TestCase;
 
 import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
 
 
 
@@ -57,8 +60,9 @@ public class TestNodeWalker extends TestCase {
     ULCONTENT[3]="operate at minimal cost" ;
   }
 
-  public void testSkipChildren() {
+  public void testSkipChildren() throws SAXNotRecognizedException, SAXNotSupportedException {
     DOMParser parser= new DOMParser();
+  parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);  
     try {
       parser.parse(new InputSource(new ByteArrayInputStream(WEBPAGE.getBytes())));
     } catch (Exception e) {
