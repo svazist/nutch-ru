@@ -52,8 +52,8 @@ public class StartCrawlRunnable implements Runnable {
     } finally {
       try {
         fileSystem.delete(lockPath, false);
-      } catch (IOException e) {
-        LOG.warn("can not delete lock file.", e);
+      } catch (Throwable e) {
+        LOG.warn("Can not delete lock file.", e);
       }
     }
   }
