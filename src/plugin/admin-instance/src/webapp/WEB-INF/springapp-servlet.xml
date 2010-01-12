@@ -28,6 +28,14 @@
         <property name="suffix" value=".jsp"></property>
     </bean>
 
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"> 
+        <property name="basenames"> 
+            <list>
+                <value>theme/default/i18n/instance_messages</value>
+            </list> 
+        </property> 
+    </bean>
+
     <context:component-scan base-package="org.apache.nutch.admin.instance"/>
     
 </beans>

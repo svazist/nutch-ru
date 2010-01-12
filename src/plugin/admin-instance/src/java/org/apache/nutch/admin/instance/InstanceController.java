@@ -17,6 +17,8 @@
 package org.apache.nutch.admin.instance;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -24,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.nutch.admin.ConfigurationUtil;
 import org.apache.nutch.admin.NavigationSelector;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,6 +35,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/index.html")
 public class InstanceController extends NavigationSelector {
 
+  public static final String NAME_PATTERN_STRING = "^[\\w\\.-]+$";
+  public static final Pattern NAME_PATTERN = Pattern.compile(NAME_PATTERN_STRING);
+  
   @RequestMapping(method = RequestMethod.GET)
   public String welcome() {
     return "instance";
@@ -62,16 +68,34 @@ public class InstanceController extends NavigationSelector {
   @RequestMapping(method = RequestMethod.POST)
   public String createIstance(
           @ModelAttribute("createInstance") CreateInstanceCommandObject commandObject,
-          HttpSession httpSession) throws IOException {
+          Errors errors, HttpSession httpSession) throws IOException {
     ServletContext servletContext = httpSession.getServletContext();
     ConfigurationUtil configurationUtil = (ConfigurationUtil) servletContext
-            .getAttribute("configurationUtil");
-    String folderName = commandObject.getFolderName();
-    if (folderName != null && !"".equals(folderName.trim())
-            && !configurationUtil.existsConfiguration(folderName)) {
-      configurationUtil.createNewConfiguration(folderName);
+    .getAttribute("configurationUtil");
+    
+    validate(errors, commandObject, configurationUtil);
+    
+    if (!errors.hasErrors()) {
+      configurationUtil.createNewConfiguration(commandObject.getFolderName());
+      return "redirect:index.html";
     }
-    return "redirect:index.html";
+    
+    return "instance";
   }
 
+  private void validate(Errors errors, CreateInstanceCommandObject commandObject, ConfigurationUtil configurationUtil) {
+    String name = commandObject.getFolderName();
+    if (name == null || name.length() < 1) {
+      errors.rejectValue("folderName", "CreateInstanceCommandObject.folderName.empty");
+    } else {
+      Matcher matcher = NAME_PATTERN.matcher(commandObject.getFolderName());
+      if (!matcher.matches()) {
+        errors.rejectValue("folderName", "CreateInstanceCommandObject.folderName.invalid");
+      }
+      
+      if (configurationUtil.existsConfiguration(name)) {
+        errors.rejectValue("folderName", "CreateInstanceCommandObject.folderName.duplicate");
+      }
+    }
+  }
 }

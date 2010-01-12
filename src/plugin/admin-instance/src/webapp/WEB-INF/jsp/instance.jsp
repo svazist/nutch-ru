@@ -77,7 +77,7 @@
 				        <label><form:label path="folderName" >Name: </form:label></label>
 				        <field>
 				           <form:input path="folderName"/>
-				            <div class="error"><form:errors path="folderName" /></div>
+				           <form:errors path="folderName" cssClass="error" element="div" />
 				        </field>
 				        <desc></desc>
 				    </row>
