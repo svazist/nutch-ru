@@ -18,7 +18,7 @@ package org.apache.nutch.admin.scheduling;
 
 public class AdvancedCommand extends CrawlCommand {
 
-  private String _pattern;
+  private String _pattern = "* * * * *";
 
   public String getPattern() {
     return _pattern;

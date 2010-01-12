@@ -388,7 +388,11 @@
 					        					<field>
 					        						<form:input path="pattern" />
 					        						<div class="error"><form:errors path="pattern" /></div>
+					        						<div><fmt:message key="scheduling.cronPatternDescription"/></div>
 					        					</field>
+					        				</row>
+					        				<row>
+					        					<desc><fmt:message key="scheduling.cronPatternExample"/></desc>
 					        				</row>
 						        		</fieldset>
 					        			
