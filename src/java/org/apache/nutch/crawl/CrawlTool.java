@@ -1,6 +1,7 @@
 package org.apache.nutch.crawl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.apache.commons.logging.Log;
@@ -18,6 +19,7 @@ import org.apache.nutch.indexer.DeleteDuplicates;
 import org.apache.nutch.indexer.IndexMerger;
 import org.apache.nutch.indexer.Indexer;
 import org.apache.nutch.parse.ParseSegment;
+import org.apache.nutch.segment.SegmentMerger;
 import org.apache.nutch.tools.HostStatistic;
 import org.apache.nutch.util.HadoopFSUtil;
 
@@ -115,6 +117,7 @@ public class CrawlTool {
     }
 
     int i;
+    ArrayList<Path> segs = new ArrayList<Path>();
     for (i = 0; i < depth; i++) { // generate new segment
       Path segment = generator.generate(crawlDb, segments, -1, topn, System
               .currentTimeMillis());
@@ -122,23 +125,50 @@ public class CrawlTool {
         LOG.info("Stopping at depth=" + i + " - no more URLs to fetch.");
         break;
       }
+      segs.add(segment);
       fetcher.fetch(segment, threads, org.apache.nutch.fetcher.Fetcher
               .isParsing(_configuration)); // fetch it
       if (!Fetcher.isParsing(_configuration)) {
         parseSegment.parse(segment); // parse it, if needed
       }
-      hostStatistic.statistic(crawlDb, segment);
       if (bwEnable) {
         bwUpdateDb.update(crawlDb, bwDb, new Path[] { segment }, true, true); // update
       }
+      hostStatistic.statistic(crawlDb, segment);
       if (metadataEnable) {
         if (_fileSystem.exists(metadataDb)) {
           parseDataUpdater.update(metadataDb, segment);
         }
       }
     }
+
+    // list of all segments that will be used
+    FileStatus[] listStatus = _fileSystem.listStatus(segments, HadoopFSUtil.getPassDirectoriesFilter(_fileSystem));
+    Path[] mergeSegments = HadoopFSUtil.getPaths(listStatus);
+    // list of all segments that will be deleted after indexing
+    Path[] segmentsToDelete = null;
+    try {
+      // merge segments
+      SegmentMerger segmentMerger = new SegmentMerger(_configuration);
+      Path mergeDir = new Path(segments, "merge-segments");
+      segmentMerger.merge(mergeDir, mergeSegments, false, false, 0);
+      // get merged segment
+      Path mergeSegTemp = _fileSystem.listStatus(mergeDir)[0].getPath();
+      // move merged segment to others
+      Path mergeSegment = new Path(segments, mergeSegTemp.getName());
+      _fileSystem.rename(mergeSegTemp, mergeSegment);
+      _fileSystem.delete(mergeDir, true);
+      // create statistic
+      hostStatistic.statistic(crawlDb, mergeSegment);
+      // use only merged segment
+      segmentsToDelete = mergeSegments;
+      mergeSegments = new Path[] { mergeSegment };
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
     if (i > 0) {
-      linkDbTool.invert(linkDb, segments, true, true, false); // invert links
+      linkDbTool.invert(linkDb, mergeSegments, true, true, false); // invert links
 
       if (indexes != null) {
         // Delete old indexes
@@ -155,13 +185,10 @@ public class CrawlTool {
       }
 
       // index, dedup & merge
-      FileStatus[] fstats = _fileSystem.listStatus(segments, HadoopFSUtil
-              .getPassDirectoriesFilter(_fileSystem));
-      indexer.index(indexes, crawlDb, linkDb, Arrays.asList(HadoopFSUtil
-              .getPaths(fstats)));
+      indexer.index(indexes, crawlDb, linkDb, Arrays.asList(mergeSegments));
       if (indexes != null) {
         dedup.dedup(new Path[] { indexes });
-        fstats = _fileSystem.listStatus(indexes, HadoopFSUtil
+        FileStatus[] fstats = _fileSystem.listStatus(indexes, HadoopFSUtil
                 .getPassDirectoriesFilter(_fileSystem));
         Path tmpDir = new Path(_configuration.get("mapred.temp.dir", ".")
                 + CrawlTool.class.getName() + "_mergeIndex");
@@ -174,6 +201,12 @@ public class CrawlTool {
       LOG.info("crawl finished: " + _crawlDir);
     }
 
+    // delete old segments (after indexing so searching is meanwhile still possible)
+    if (segmentsToDelete != null) {
+      for (Path p : segmentsToDelete) {
+        _fileSystem.delete(p, true);
+      }
+    }
   }
 
   public FileSystem getFileSystem() {
