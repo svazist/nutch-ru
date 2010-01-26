@@ -147,27 +147,29 @@ public class CrawlTool {
     Path[] mergeSegments = HadoopFSUtil.getPaths(listStatus);
     // list of all segments that will be deleted after indexing
     Path[] segmentsToDelete = null;
-    try {
-      // merge segments
-      SegmentMerger segmentMerger = new SegmentMerger(_configuration);
-      Path mergeDir = new Path(segments, "merge-segments");
-      segmentMerger.merge(mergeDir, mergeSegments, false, false, 0);
-      // get merged segment
-      Path mergeSegTemp = _fileSystem.listStatus(mergeDir)[0].getPath();
-      // move merged segment to others
-      Path mergeSegment = new Path(segments, mergeSegTemp.getName());
-      _fileSystem.rename(mergeSegTemp, mergeSegment);
-      _fileSystem.delete(mergeDir, true);
-      // create statistic
-      hostStatistic.statistic(crawlDb, mergeSegment);
-      // use only merged segment
-      segmentsToDelete = mergeSegments;
-      mergeSegments = new Path[] { mergeSegment };
-    } catch (Exception e) {
-      e.printStackTrace();
+    if (i > 0) {
+      try {
+        // merge segments
+        SegmentMerger segmentMerger = new SegmentMerger(_configuration);
+        Path mergeDir = new Path(segments, "merge-segments");
+        segmentMerger.merge(mergeDir, mergeSegments, false, false, 0);
+        // get merged segment
+        Path mergeSegTemp = _fileSystem.listStatus(mergeDir)[0].getPath();
+        // move merged segment to others
+        Path mergeSegment = new Path(segments, mergeSegTemp.getName());
+        _fileSystem.rename(mergeSegTemp, mergeSegment);
+        _fileSystem.delete(mergeDir, true);
+        // create statistic
+        hostStatistic.statistic(crawlDb, mergeSegment);
+        // use only merged segment
+        segmentsToDelete = mergeSegments;
+        mergeSegments = new Path[] { mergeSegment };
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
     
-    if (i > 0) {
+    if (mergeSegments.length > 0) {
       linkDbTool.invert(linkDb, mergeSegments, true, true, false); // invert links
 
       if (indexes != null) {
@@ -197,15 +199,16 @@ public class CrawlTool {
     } else {
       LOG.warn("No URLs to fetch - check your seed list and URL filters.");
     }
-    if (LOG.isInfoEnabled()) {
-      LOG.info("crawl finished: " + _crawlDir);
-    }
-
+    
     // delete old segments (after indexing so searching is meanwhile still possible)
     if (segmentsToDelete != null) {
       for (Path p : segmentsToDelete) {
         _fileSystem.delete(p, true);
       }
+    }
+    
+    if (LOG.isInfoEnabled()) {
+      LOG.info("crawl finished: " + _crawlDir);
     }
   }
 
